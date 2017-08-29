@@ -263,9 +263,9 @@ int main(int argc, char* argv[])
 		}
 	}
 
-	SERVICE_TABLE_ENTRY serviceTable[] =
+	const SERVICE_TABLE_ENTRY serviceTable[] =
 	{
-		{ TEXT("InspIRCd"), (LPSERVICE_MAIN_FUNCTION)ServiceMain },
+		{ const_cast<decltype(serviceTable->lpServiceName)>(TEXT("InspIRCd")), (LPSERVICE_MAIN_FUNCTION)&ServiceMain },
 		{ NULL, NULL }
 	};
 

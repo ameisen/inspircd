@@ -19,6 +19,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// Temporary hack to get around a warning being thrown by a Microsoft header.
+#if _MSC_VER == 1911
+#	pragma warning( disable : 4244 )  
+	#include <xstring>
+#	pragma warning( default : 4244 )  
+#endif
 
 #include "inspircd.h"
 #include "modules/exemption.h"

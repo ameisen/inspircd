@@ -404,15 +404,15 @@ static int BF_decode(BF_word *dst, const char *src, int size)
 	do {
 		BF_safe_atoi64(c1, *sptr++);
 		BF_safe_atoi64(c2, *sptr++);
-		*dptr++ = (c1 << 2) | ((c2 & 0x30) >> 4);
+		*dptr++ = static_cast<unsigned char>((c1 << 2) | ((c2 & 0x30) >> 4));
 		if (dptr >= end) break;
 
 		BF_safe_atoi64(c3, *sptr++);
-		*dptr++ = ((c2 & 0x0F) << 4) | ((c3 & 0x3C) >> 2);
+		*dptr++ = static_cast<unsigned char>(((c2 & 0x0F) << 4) | ((c3 & 0x3C) >> 2));
 		if (dptr >= end) break;
 
 		BF_safe_atoi64(c4, *sptr++);
-		*dptr++ = ((c3 & 0x03) << 6) | c4;
+		*dptr++ = static_cast<unsigned char>(((c3 & 0x03) << 6) | c4);
 	} while (dptr < end);
 
 	return 0;
@@ -880,11 +880,24 @@ static char *_crypt_blowfish_rn(const char *key, const char *setting,
 static char *_crypt_gensalt_blowfish_rn(const char *prefix, unsigned long count,
 	const char *input, int size, char *output, int output_size)
 {
-	if (size < 16 || output_size < 7 + 22 + 1 ||
-	    (count && (count < 4 || count > 31)) ||
-	    prefix[0] != '$' || prefix[1] != '2' ||
-	    (prefix[2] != 'a' && prefix[2] != 'b' && prefix[2] != 'y')) {
-		if (output_size > 0) output[0] = '\0';
+	if (
+		size < 16 ||
+		output_size < 7 + 22 + 1 ||
+	    (
+			count &&
+			(count < 4 || count > 31)
+		) ||
+	    prefix[0] != '$' ||
+		prefix[1] != '2' ||
+	    (
+			prefix[2] != 'a' &&
+			prefix[2] != 'b' &&
+			prefix[2] != 'y'
+		)
+	)
+	{
+		if (output_size > 0)
+			output[0] = '\0';
 		return NULL;
 	}
 
@@ -894,8 +907,8 @@ static char *_crypt_gensalt_blowfish_rn(const char *prefix, unsigned long count,
 	output[1] = '2';
 	output[2] = prefix[2];
 	output[3] = '$';
-	output[4] = '0' + count / 10;
-	output[5] = '0' + count % 10;
+	output[4] = '0' + static_cast<char>(count / 10);
+	output[5] = '0' + (count % 10);
 	output[6] = '$';
 
 	BF_encode(&output[7], (const BF_word *)input, 16);

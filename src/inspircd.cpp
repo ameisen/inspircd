@@ -143,11 +143,13 @@ void InspIRCd::QuickExit(int status)
 	exit(status);
 }
 
+#ifndef _WIN32
 // Required for returning the proper value of EXIT_SUCCESS for the parent process
 static void VoidSignalHandler(int signalreceived)
 {
 	exit(0);
 }
+#endif
 
 bool InspIRCd::DaemonSeed()
 {
@@ -279,10 +281,10 @@ InspIRCd::InspIRCd(int argc, char** argv) :
 	srandom(TIME.tv_nsec ^ TIME.tv_sec);
 #endif
 
-	struct option longopts[] =
+	const option longopts[] =
 	{
 		{ "nofork",	no_argument,		&do_nofork,	1	},
-		{ "config",	required_argument,	NULL,		'c'	},
+		{ "config",	required_argument,	nullptr,		'c'	},
 		{ "debug",	no_argument,		&do_debug,	1	},
 		{ "nolog",	no_argument,		&do_nolog,	1	},
 		{ "runasroot",	no_argument,		&do_root,	1	},
@@ -290,7 +292,6 @@ InspIRCd::InspIRCd(int argc, char** argv) :
 #ifdef INSPIRCD_ENABLE_TESTSUITE
 		{ "testsuite",	no_argument,		&do_testsuite,	1	},
 #endif
-		{ 0, 0, 0, 0 }
 	};
 
 	int c;

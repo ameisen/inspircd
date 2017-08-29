@@ -95,13 +95,15 @@ typedef int ssize_t;
 #define no_argument            0
 #define required_argument      1
 #define optional_argument      2
+
 struct option
 {
-	char *name;
-	int has_arg;
-	int *flag;
-	int val;
+	const char * __restrict const name;
+	const int has_arg;
+	int * const __restrict flag;
+	const int val;
 };
+
 extern int optind;
 extern char optarg[514];
 int getopt_long(int ___argc, char *const *___argv, const char *__shortopts, const struct option *__longopts, int *__longind);

@@ -511,13 +511,13 @@ void StreamSocket::AddIOHook(IOHook* newhook)
 	}
 
 	IOHookMiddle* lasthook;
-	while (curr)
+	do
 	{
 		lasthook = IOHookMiddle::ToMiddleHook(curr);
 		if (!lasthook)
 			return;
 		curr = lasthook->GetNextHook();
-	}
+	} while (curr);
 
 	lasthook->SetNextHook(newhook);
 }

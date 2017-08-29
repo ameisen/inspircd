@@ -73,7 +73,7 @@ class Cap::ManagerImpl : public Cap::Manager, public ReloadModule::EventListener
 
 		for (unsigned int i = 0; i < MAX_CAPS; i++)
 		{
-			Capability::Bit bit = (1 << i);
+			Capability::Bit bit = (Capability::Bit{1} << i);
 			if (!(used & bit))
 				return bit;
 		}
