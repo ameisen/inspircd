@@ -103,7 +103,7 @@ CmdResult MessageCommandBase::HandleMessage(const std::vector<std::string>& para
 		const char* servermask = (parameters[0].c_str()) + 1;
 
 		FOREACH_MOD(OnText, (user, (void*)parameters[0].c_str(), TYPE_SERVER, text, 0, except_list));
-		if (InspIRCd::Match(ServerInstance->Config->ServerName, servermask, NULL))
+		if (InspIRCd::Match(ServerInstance->Config->ServerName, servermask, nullptr))
 		{
 			SendAll(user, text, mt);
 		}

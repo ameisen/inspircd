@@ -75,7 +75,7 @@ class CommandOjoin : public SplitCommand
 			changelist.push_add(npmh, user->nick);
 			if (op)
 				changelist.push_add(ServerInstance->Modes->FindMode('o', MODETYPE_CHANNEL), user->nick);
-			ServerInstance->Modes->Process(ServerInstance->FakeClient, channel, NULL, changelist);
+			ServerInstance->Modes->Process(ServerInstance->FakeClient, channel, nullptr, changelist);
 		}
 		return CMD_SUCCESS;
 	}

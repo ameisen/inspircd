@@ -26,7 +26,7 @@ CmdResult CommandMetadata::Handle(User* srcuser, std::vector<std::string>& param
 	if (params[0] == "*")
 	{
 		std::string value = params.size() < 3 ? "" : params[2];
-		FOREACH_MOD(OnDecodeMetaData, (NULL,params[1],value));
+		FOREACH_MOD(OnDecodeMetaData, (nullptr,params[1],value));
 		return CMD_SUCCESS;
 	}
 

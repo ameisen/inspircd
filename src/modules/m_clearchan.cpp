@@ -16,6 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+ // Temporary hack to get around a warning being thrown by a Microsoft header.
+#if _MSC_VER == 1911
+#	pragma warning( disable : 4244 )  
+#include <algorithm>
+#	pragma warning( default : 4244 )  
+#endif
 
 #include "inspircd.h"
 #include "xline.h"
@@ -52,7 +58,7 @@ class CommandClearChan : public Command
 			std::transform(method.begin(), method.end(), method.begin(), ::toupper);
 		}
 
-		XLineFactory* xlf = NULL;
+		XLineFactory* xlf = nullptr;
 		bool kick = (method == "KICK");
 		if ((!kick) && (method != "KILL"))
 		{

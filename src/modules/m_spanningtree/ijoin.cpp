@@ -47,7 +47,7 @@ CmdResult CommandIJoin::HandleRemote(RemoteUser* user, std::vector<std::string>&
 		apply_modes = false;
 
 	// Join the user and set the membership id to what they sent
-	Membership* memb = chan->ForceJoin(user, apply_modes ? &params[3] : NULL);
+	Membership* memb = chan->ForceJoin(user, apply_modes ? &params[3] : nullptr);
 	if (!memb)
 		return CMD_FAILURE;
 

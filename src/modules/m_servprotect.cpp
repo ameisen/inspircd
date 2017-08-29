@@ -101,7 +101,7 @@ class ModuleServProtectMode : public Module, public Whois::EventListener, public
 
 	ModResult OnKill(User* src, User* dst, const std::string &reason) CXX11_OVERRIDE
 	{
-		if (src == NULL)
+		if (src == nullptr)
 			return MOD_RES_PASSTHRU;
 
 		if (dst->IsModeSet(bm))

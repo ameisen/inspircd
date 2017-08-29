@@ -95,7 +95,7 @@ Link* TreeSocket::AuthRemote(const parameterlist& params)
 	if (params.size() < 5)
 	{
 		SendError("Protocol error - Not enough parameters for SERVER command");
-		return NULL;
+		return nullptr;
 	}
 
 	const std::string& sname = params[0];
@@ -108,7 +108,7 @@ Link* TreeSocket::AuthRemote(const parameterlist& params)
 	if (!ServerInstance->IsSID(sid))
 	{
 		this->SendError("Invalid format server ID: "+sid+"!");
-		return NULL;
+		return nullptr;
 	}
 
 	for (std::vector<reference<Link> >::iterator i = Utils->LinkBlocks.begin(); i < Utils->LinkBlocks.end(); i++)
@@ -124,7 +124,7 @@ Link* TreeSocket::AuthRemote(const parameterlist& params)
 		}
 
 		if (!CheckDuplicate(sname, sid))
-			return NULL;
+			return nullptr;
 
 		ServerInstance->SNO->WriteToSnoMask('l',"Verified server connection " + linkID + " ("+description+")");
 
@@ -141,7 +141,7 @@ Link* TreeSocket::AuthRemote(const parameterlist& params)
 
 	this->SendError("Mismatched server name or password (check the other server's snomask output for details - e.g. umode +s +Ll)");
 	ServerInstance->SNO->WriteToSnoMask('l',"Server connection from \2"+sname+"\2 denied, invalid link credentials");
-	return NULL;
+	return nullptr;
 }
 
 /*

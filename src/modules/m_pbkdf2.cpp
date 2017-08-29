@@ -182,7 +182,7 @@ class ModulePBKDF2 : public Module
 
 	void Prioritize() CXX11_OVERRIDE
 	{
-		OnLoadModule(NULL);
+		OnLoadModule(nullptr);
 	}
 
 	void OnLoadModule(Module* mod) CXX11_OVERRIDE
@@ -195,7 +195,7 @@ class ModulePBKDF2 : public Module
 			ServiceProvider* provider = i->second;
 
 			// Does the service belong to the new mod?
-			// In the case this is our first run (mod == NULL, continue anyway)
+			// In the case this is our first run (mod == nullptr, continue anyway)
 			if (mod && provider->creator != mod)
 				continue;
 

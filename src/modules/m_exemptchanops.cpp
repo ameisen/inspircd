@@ -85,7 +85,7 @@ class ExemptHandler : public CheckExemption::EventListener
 			return ServerInstance->Modes->FindPrefixMode(mid[0]);
 
 		ModeHandler* mh = ServerInstance->Modes->FindMode(mid, MODETYPE_CHANNEL);
-		return mh ? mh->IsPrefixMode() : NULL;
+		return mh ? mh->IsPrefixMode() : nullptr;
 	}
 
 	ModResult OnCheckExemption(User* user, Channel* chan, const std::string& restriction) CXX11_OVERRIDE

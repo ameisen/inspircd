@@ -361,7 +361,7 @@ ModResult ModuleFilter::OnUserPreMessage(User* user, void* dest, int target_type
 		else if (f->action == FA_GLINE)
 		{
 			GLine* gl = new GLine(ServerInstance->Time(), f->gline_time, ServerInstance->Config->ServerName.c_str(), f->reason.c_str(), "*", user->GetIPString());
-			if (ServerInstance->XLines->AddLine(gl,NULL))
+			if (ServerInstance->XLines->AddLine(gl,nullptr))
 			{
 				ServerInstance->XLines->ApplyLines();
 			}
@@ -434,7 +434,7 @@ ModResult ModuleFilter::OnPreCommand(std::string &command, std::vector<std::stri
 			{
 				/* Note: We gline *@IP so that if their host doesnt resolve the gline still applies. */
 				GLine* gl = new GLine(ServerInstance->Time(), f->gline_time, ServerInstance->Config->ServerName.c_str(), f->reason.c_str(), "*", user->GetIPString());
-				if (ServerInstance->XLines->AddLine(gl,NULL))
+				if (ServerInstance->XLines->AddLine(gl,nullptr))
 				{
 					ServerInstance->XLines->ApplyLines();
 				}
@@ -470,7 +470,7 @@ void ModuleFilter::ReadConfig(ConfigStatus& status)
 
 	std::string newrxengine = ServerInstance->Config->ConfValue("filteropts")->getString("engine");
 
-	factory = RegexEngine ? (RegexEngine.operator->()) : NULL;
+	factory = RegexEngine ? (RegexEngine.operator->()) : nullptr;
 
 	if (newrxengine.empty())
 		RegexEngine.SetProvider("regex");
@@ -555,7 +555,7 @@ void ModuleFilter::OnSyncNetwork(ProtocolInterface::Server& server)
 
 void ModuleFilter::OnDecodeMetaData(Extensible* target, const std::string &extname, const std::string &extdata)
 {
-	if ((target == NULL) && (extname == "filter"))
+	if ((target == nullptr) && (extname == "filter"))
 	{
 		try
 		{
@@ -591,7 +591,7 @@ FilterResult* ModuleFilter::FilterMatch(User* user, const std::string &text, int
 		if (filter->regex->Matches(filter->flag_strip_color ? stripped_text : text))
 			return filter;
 	}
-	return NULL;
+	return nullptr;
 }
 
 bool ModuleFilter::DeleteFilter(const std::string &freeform)

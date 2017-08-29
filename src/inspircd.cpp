@@ -55,7 +55,7 @@
 #include "exitcodes.h"
 #include "testsuite.h"
 
-InspIRCd* ServerInstance = NULL;
+InspIRCd* ServerInstance = nullptr;
 
 /** Seperate from the other casemap tables so that code *can* still exclusively rely on RFC casemapping
  * if it must.
@@ -94,7 +94,7 @@ static int do_testsuite = 0;
 template<typename T> static void DeleteZero(T*&n)
 {
 	T* t = n;
-	n = NULL;
+	n = nullptr;
 	delete t;
 }
 
@@ -228,7 +228,7 @@ InspIRCd::InspIRCd(int argc, char** argv) :
 	  * THIS MUST MATCH THE ORDER OF DECLARATION OF THE FUNCTORS, e.g. the methods
 	  * themselves within the class.
 	  */
-	 OperQuit("operquit", ExtensionItem::EXT_USER, NULL),
+	 OperQuit("operquit", ExtensionItem::EXT_USER, nullptr),
 	 GenRandom(&HandleGenRandom),
 	 IsChannel(&HandleIsChannel),
 	 IsNick(&HandleIsNick),
@@ -246,8 +246,8 @@ InspIRCd::InspIRCd(int argc, char** argv) :
 	// Initialize so that if we exit before proper initialization they're not deleted
 	this->Config = 0;
 	this->XLines = 0;
-	this->ConfigThread = NULL;
-	this->FakeClient = NULL;
+	this->ConfigThread = nullptr;
+	this->FakeClient = nullptr;
 
 	UpdateTime();
 	this->startup_time = TIME.tv_sec;
@@ -406,7 +406,7 @@ InspIRCd::InspIRCd(int argc, char** argv) :
 	 * a seperate thread
 	 */
 	this->Config->Read();
-	this->Config->Apply(NULL, "");
+	this->Config->Apply(nullptr, "");
 	Logs->OpenFileLogs();
 	ModeParser::InitBuiltinModes();
 
@@ -512,7 +512,7 @@ InspIRCd::InspIRCd(int argc, char** argv) :
 		int ret;
 
 		// setgroups
-		ret = setgroups(0, NULL);
+		ret = setgroups(0, nullptr);
 
 		if (ret == -1)
 		{
@@ -574,14 +574,14 @@ void InspIRCd::UpdateTime()
 	SYSTEMTIME st;
 	GetSystemTime(&st);
 
-	TIME.tv_sec = time(NULL);
+	TIME.tv_sec = time(nullptr);
 	TIME.tv_nsec = st.wMilliseconds;
 #else
 	#ifdef HAS_CLOCK_GETTIME
 		clock_gettime(CLOCK_REALTIME, &TIME);
 	#else
 		struct timeval tv;
-		gettimeofday(&tv, NULL);
+		gettimeofday(&tv, nullptr);
 		TIME.tv_sec = tv.tv_sec;
 		TIME.tv_nsec = tv.tv_usec * 1000;
 	#endif
@@ -619,7 +619,7 @@ void InspIRCd::Run()
 
 			ConfigThread->join();
 			delete ConfigThread;
-			ConfigThread = NULL;
+			ConfigThread = nullptr;
 		}
 
 		UpdateTime();

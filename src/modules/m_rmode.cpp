@@ -37,14 +37,14 @@ class CommandRMode : public Command
 		Channel* chan = ServerInstance->FindChan(parameters[0]);
 		char modeletter = parameters[1][0];
 
-		if (chan == NULL)
+		if (chan == nullptr)
 		{
 			user->WriteNotice("The channel " + parameters[0] + " does not exist.");
 			return CMD_FAILURE;
 		}
 
 		mh = ServerInstance->Modes->FindMode(modeletter, MODETYPE_CHANNEL);
-		if (mh == NULL || parameters[1].size() > 1)
+		if (mh == nullptr || parameters[1].size() > 1)
 		{
 			user->WriteNotice(parameters[1] + " is not a valid channel mode.");
 			return CMD_FAILURE;
@@ -74,7 +74,7 @@ class CommandRMode : public Command
 					changelist.push_remove(mh, it->first->nick);
 			}
 		}
-		else if ((lm = mh->IsListModeBase()) && ((ml = lm->GetList(chan)) != NULL))
+		else if ((lm = mh->IsListModeBase()) && ((ml = lm->GetList(chan)) != nullptr))
 		{
 			for (ListModeBase::ModeList::iterator it = ml->begin(); it != ml->end(); ++it)
 			{
@@ -89,7 +89,7 @@ class CommandRMode : public Command
 				changelist.push_remove(mh);
 		}
 
-		ServerInstance->Modes->Process(user, chan, NULL, changelist);
+		ServerInstance->Modes->Process(user, chan, nullptr, changelist);
 		return CMD_SUCCESS;
 	}
 };

@@ -21,7 +21,7 @@
 #include "inspircd.h"
 #include "builtinmodes.h"
 
-ModeUserOperator::ModeUserOperator() : ModeHandler(NULL, "oper", 'o', PARAM_NONE, MODETYPE_USER)
+ModeUserOperator::ModeUserOperator() : ModeHandler(nullptr, "oper", 'o', PARAM_NONE, MODETYPE_USER)
 {
 	oper = true;
 }

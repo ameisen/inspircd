@@ -210,7 +210,7 @@ const char* irc::irc_char_traits::find(const char* s1, int  n, char c)
 {
 	while(n-- > 0 && national_case_insensitive_map[(unsigned char)*s1] != national_case_insensitive_map[(unsigned char)c])
 		s1++;
-	return (n >= 0) ? s1 : NULL;
+	return (n >= 0) ? s1 : nullptr;
 }
 
 irc::tokenstream::tokenstream(const std::string &source) : spacesepstream(source)

@@ -580,7 +580,7 @@ void ModuleSpanningTree::OnPreRehash(User* user, const std::string &parameter)
 	{
 		CmdBuilder params((user ? user->uuid : ServerInstance->Config->GetSID()), "REHASH");
 		params.push_back(parameter);
-		params.Forward(user ? TreeServer::Get(user)->GetRoute() : NULL);
+		params.Forward(user ? TreeServer::Get(user)->GetRoute() : nullptr);
 	}
 }
 

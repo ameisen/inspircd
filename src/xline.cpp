@@ -182,7 +182,7 @@ XLineLookup* XLineManager::GetAll(const std::string &type)
 	ContainerIter n = lookup_lines.find(type);
 
 	if (n == lookup_lines.end())
-		return NULL;
+		return nullptr;
 
 	LookupIter safei;
 	const time_t current = ServerInstance->Time();
@@ -334,14 +334,14 @@ void ELine::Unset()
 	ServerInstance->XLines->CheckELines();
 }
 
-// returns a pointer to the reason if a nickname matches a qline, NULL if it didnt match
+// returns a pointer to the reason if a nickname matches a qline, nullptr if it didnt match
 
 XLine* XLineManager::MatchesLine(const std::string &type, User* user)
 {
 	ContainerIter x = lookup_lines.find(type);
 
 	if (x == lookup_lines.end())
-		return NULL;
+		return nullptr;
 
 	const time_t current = ServerInstance->Time();
 
@@ -367,7 +367,7 @@ XLine* XLineManager::MatchesLine(const std::string &type, User* user)
 
 		i = safei;
 	}
-	return NULL;
+	return nullptr;
 }
 
 XLine* XLineManager::MatchesLine(const std::string &type, const std::string &pattern)
@@ -375,7 +375,7 @@ XLine* XLineManager::MatchesLine(const std::string &type, const std::string &pat
 	ContainerIter x = lookup_lines.find(type);
 
 	if (x == lookup_lines.end())
-		return NULL;
+		return nullptr;
 
 	const time_t current = ServerInstance->Time();
 
@@ -402,7 +402,7 @@ XLine* XLineManager::MatchesLine(const std::string &type, const std::string &pat
 
 		i = safei;
 	}
-	return NULL;
+	return nullptr;
 }
 
 // removes lines that have expired
@@ -752,7 +752,7 @@ XLineFactory* XLineManager::GetFactory(const std::string &type)
 	XLineFactMap::iterator n = line_factory.find(type);
 
 	if (n == line_factory.end())
-		return NULL;
+		return nullptr;
 
 	return n->second;
 }

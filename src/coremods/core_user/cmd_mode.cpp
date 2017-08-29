@@ -34,7 +34,7 @@ CmdResult CommandMode::Handle(const std::vector<std::string>& parameters, User* 
 {
 	const std::string& target = parameters[0];
 	Channel* targetchannel = ServerInstance->FindChan(target);
-	User* targetuser = NULL;
+	User* targetuser = nullptr;
 	if (!targetchannel)
 	{
 		if (IS_LOCAL(user))

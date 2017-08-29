@@ -19,6 +19,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+ // Temporary hack to get around a warning being thrown by a Microsoft header.
+#if _MSC_VER == 1911
+#	pragma warning( disable : 4244 )  
+#include <algorithm>
+#	pragma warning( default : 4244 )  
+#endif
 
 #include "inspircd.h"
 
@@ -152,7 +158,7 @@ class ModuleAlias : public Module
 		{
 			if (i->second.UserCommand)
 			{
-				if (DoAlias(user, NULL, &(i->second), compare, original_line))
+				if (DoAlias(user, nullptr, &(i->second), compare, original_line))
 				{
 					return MOD_RES_DENY;
 				}

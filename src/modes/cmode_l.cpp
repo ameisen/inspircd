@@ -23,7 +23,7 @@
 #include "builtinmodes.h"
 
 ModeChannelLimit::ModeChannelLimit()
-	: ParamMode<ModeChannelLimit, LocalIntExt>(NULL, "limit", 'l')
+	: ParamMode<ModeChannelLimit, LocalIntExt>(nullptr, "limit", 'l')
 {
 }
 

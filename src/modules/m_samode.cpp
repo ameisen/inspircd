@@ -53,7 +53,7 @@ class CommandSamode : public Command
 
 		// XXX: Make ModeParser clear LastParse
 		Modes::ChangeList emptychangelist;
-		ServerInstance->Modes->ProcessSingle(ServerInstance->FakeClient, NULL, ServerInstance->FakeClient, emptychangelist);
+		ServerInstance->Modes->ProcessSingle(ServerInstance->FakeClient, nullptr, ServerInstance->FakeClient, emptychangelist);
 
 		this->active = true;
 		CmdResult result = ServerInstance->Parser.CallHandler("MODE", parameters, user);

@@ -71,7 +71,7 @@ class CommandStartTLS : public SplitCommand
 		 */
 		user->eh.DoWrite();
 
-		ssl->OnAccept(&user->eh, NULL, NULL);
+		ssl->OnAccept(&user->eh, nullptr, nullptr);
 
 		return CMD_SUCCESS;
 	}

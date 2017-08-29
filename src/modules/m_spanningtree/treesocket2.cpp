@@ -260,7 +260,7 @@ User* TreeSocket::FindSource(const std::string& prefix, const std::string& comma
 	}
 
 	// Unknown prefix
-	return NULL;
+	return nullptr;
 }
 
 void TreeSocket::ProcessConnectedLine(std::string& prefix, std::string& command, parameterlist& params)
@@ -304,7 +304,7 @@ void TreeSocket::ProcessConnectedLine(std::string& prefix, std::string& command,
 
 	ServerCommand* scmd = Utils->Creator->CmdManager.GetHandler(command);
 	CommandBase* cmdbase = scmd;
-	Command* cmd = NULL;
+	Command* cmd = nullptr;
 	if (!scmd)
 	{
 		// Not a special server-to-server command

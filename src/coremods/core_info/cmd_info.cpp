@@ -71,7 +71,7 @@ static const char* const lines[] = {
 	"   Asmo            Brik            fraggeln",
 	" ",
 	" Best experienced with: \2An IRC client\2",
-	NULL
+	nullptr
 };
 
 /** Handle /INFO

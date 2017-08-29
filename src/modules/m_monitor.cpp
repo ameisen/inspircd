@@ -16,6 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+ // Temporary hack to get around a warning being thrown by a Microsoft header.
+#if _MSC_VER == 1911
+#	pragma warning( disable : 4244 )  
+#include <algorithm>
+#	pragma warning( default : 4244 )  
+#endif
 
 #include "inspircd.h"
 
@@ -179,7 +185,7 @@ class IRCv3::Monitor::Manager
 		Entry* entry = Find(nick);
 		if (entry)
 			return &entry->watchers;
-		return NULL;
+		return nullptr;
 	}
 
 	static User* FindNick(const std::string& nick)
@@ -187,7 +193,7 @@ class IRCv3::Monitor::Manager
 		User* user = ServerInstance->FindNickOnly(nick);
 		if ((user) && (user->registered == REG_ALL))
 			return user;
-		return NULL;
+		return nullptr;
 	}
 
  private:
@@ -198,7 +204,7 @@ class IRCv3::Monitor::Manager
 		NickHash::iterator it = nicks.find(nick);
 		if (it != nicks.end())
 			return &it->second;
-		return NULL;
+		return nullptr;
 	}
 
 	Entry* AddWatcher(const std::string& nick, LocalUser* user)
@@ -236,7 +242,7 @@ class IRCv3::Monitor::Manager
 	{
 		ExtData* extdata = ext.get(user, create);
 		if (!extdata)
-			return NULL;
+			return nullptr;
 		return &extdata->list;
 	}
 

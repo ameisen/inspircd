@@ -118,7 +118,7 @@ class ModuleIRCv3CapNotify : public Module, public Cap::EventListener, public Re
 			return;
 		reloadedmod = mod->ModuleSourceFile;
 		// Request callback when reload is complete
-		cd.add(this, NULL);
+		cd.add(this, nullptr);
 	}
 
 	void OnReloadModuleRestore(Module* mod, void* data) CXX11_OVERRIDE
@@ -133,7 +133,7 @@ class ModuleIRCv3CapNotify : public Module, public Cap::EventListener, public Re
 			{
 				const std::string& capname = *i;
 				if (!capmanager->Find(capname))
-					Send(capname, NULL, false);
+					Send(capname, nullptr, false);
 			}
 		}
 		reloadedmod.clear();

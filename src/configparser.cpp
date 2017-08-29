@@ -256,7 +256,7 @@ struct Parser
 			stack.output.insert(std::make_pair(name, tag));
 		}
 		// this is not a leak; reference<> takes care of the delete
-		tag = NULL;
+		tag = nullptr;
 	}
 
 	bool outer_parse()
@@ -416,7 +416,7 @@ long ConfigTag::getInt(const std::string &key, long def, long min, long max)
 		return def;
 
 	const char* res_cstr = result.c_str();
-	char* res_tail = NULL;
+	char* res_tail = nullptr;
 	long res = strtol(res_cstr, &res_tail, 0);
 	if (res_tail == res_cstr)
 		return def;
@@ -463,7 +463,7 @@ double ConfigTag::getFloat(const std::string &key, double def)
 	std::string result;
 	if (!readString(key, result))
 		return def;
-	return strtod(result.c_str(), NULL);
+	return strtod(result.c_str(), nullptr);
 }
 
 bool ConfigTag::getBool(const std::string &key, bool def)

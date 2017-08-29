@@ -246,7 +246,7 @@ ModeAction ModeParser::TryMode(User* user, User* targetuser, Channel* chan, Mode
 			unsigned int ourrank = chan->GetPrefixValue(user);
 			if (ourrank < neededrank)
 			{
-				const PrefixMode* neededmh = NULL;
+				const PrefixMode* neededmh = nullptr;
 				const PrefixModeList& prefixmodes = GetPrefixModes();
 				for (PrefixModeList::const_iterator i = prefixmodes.begin(); i != prefixmodes.end(); ++i)
 				{
@@ -505,7 +505,7 @@ void ModeParser::ShowListModeList(User* user, Channel* chan, ModeHandler* mh)
 			{
 				std::string dummyparam;
 
-				if (!mw->BeforeMode(user, NULL, chan, dummyparam, true))
+				if (!mw->BeforeMode(user, nullptr, chan, dummyparam, true))
 				{
 					// A mode watcher doesn't want us to show the list
 					display = false;
@@ -663,7 +663,7 @@ bool ModeParser::DelMode(ModeHandler* mh)
 
 				Modes::ChangeList changelist;
 				mh->RemoveMode(chan, changelist);
-				this->Process(ServerInstance->FakeClient, chan, NULL, changelist, MODE_LOCALONLY);
+				this->Process(ServerInstance->FakeClient, chan, nullptr, changelist, MODE_LOCALONLY);
 			}
 		}
 		break;
@@ -671,8 +671,8 @@ bool ModeParser::DelMode(ModeHandler* mh)
 
 	mhmap.erase(mhmapit);
 	if (mh->GetId() != MODEID_MAX)
-		modehandlersbyid[mh->GetModeType()][mh->GetId()] = NULL;
-	slot = NULL;
+		modehandlersbyid[mh->GetModeType()][mh->GetId()] = nullptr;
+	slot = nullptr;
 	if (mh->IsPrefixMode())
 		mhlist.prefix.erase(std::find(mhlist.prefix.begin(), mhlist.prefix.end(), mh->IsPrefixMode()));
 	else if (mh->IsListModeBase())
@@ -689,13 +689,13 @@ ModeHandler* ModeParser::FindMode(const std::string& modename, ModeType mt)
 	if (it != mhmap.end())
 		return it->second;
 
-	return NULL;
+	return nullptr;
 }
 
 ModeHandler* ModeParser::FindMode(unsigned const char modeletter, ModeType mt)
 {
 	if ((modeletter < 'A') || (modeletter > 'z'))
-		return NULL;
+		return nullptr;
 
 	return modehandlers[mt][modeletter-65];
 }
@@ -704,7 +704,7 @@ PrefixMode* ModeParser::FindPrefixMode(unsigned char modeletter)
 {
 	ModeHandler* mh = FindMode(modeletter, MODETYPE_CHANNEL);
 	if (!mh)
-		return NULL;
+		return nullptr;
 	return mh->IsPrefixMode();
 }
 
@@ -736,7 +736,7 @@ PrefixMode* ModeParser::FindPrefix(unsigned const char pfxletter)
 		if (pm->GetPrefix() == pfxletter)
 			return pm;
 	}
-	return NULL;
+	return nullptr;
 }
 
 std::string ModeParser::GiveModeList(ModeType mt)
@@ -846,7 +846,7 @@ void ModeHandler::RemoveMode(User* user)
 	{
 		Modes::ChangeList changelist;
 		changelist.push_remove(this);
-		ServerInstance->Modes->Process(ServerInstance->FakeClient, NULL, user, changelist, ModeParser::MODE_LOCALONLY);
+		ServerInstance->Modes->Process(ServerInstance->FakeClient, nullptr, user, changelist, ModeParser::MODE_LOCALONLY);
 	}
 }
 
@@ -893,13 +893,13 @@ struct builtin_modes
 	ModeUserServerNoticeMask us;
 
 	builtin_modes()
-		: s(NULL, "secret", 's')
-		, p(NULL, "private", 'p')
-		, m(NULL, "moderated", 'm')
-		, t(NULL, "topiclock", 't')
-		, n(NULL, "noextmsg", 'n')
-		, i(NULL, "inviteonly", 'i')
-		, ui(NULL, "invisible", 'i')
+		: s(nullptr, "secret", 's')
+		, p(nullptr, "private", 'p')
+		, m(nullptr, "moderated", 'm')
+		, t(nullptr, "topiclock", 't')
+		, n(nullptr, "noextmsg", 'n')
+		, i(nullptr, "inviteonly", 'i')
+		, ui(nullptr, "invisible", 'i')
 	{
 	}
 

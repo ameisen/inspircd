@@ -29,7 +29,7 @@
 #include "resolvers.h"
 #include "commandbuilder.h"
 
-SpanningTreeUtilities* Utils = NULL;
+SpanningTreeUtilities* Utils = nullptr;
 
 ModResult ModuleSpanningTree::OnAcceptConnection(int newsock, ListenSocket* from, irc::sockets::sockaddrs* client, irc::sockets::sockaddrs* server)
 {
@@ -63,7 +63,7 @@ TreeServer* SpanningTreeUtilities::FindServer(const std::string &ServerName)
 	}
 	else
 	{
-		return NULL;
+		return nullptr;
 	}
 }
 
@@ -77,7 +77,7 @@ TreeServer* SpanningTreeUtilities::FindServerMask(const std::string &ServerName)
 		if (InspIRCd::Match(i->first,ServerName))
 			return i->second;
 	}
-	return NULL;
+	return nullptr;
 }
 
 TreeServer* SpanningTreeUtilities::FindServerID(const std::string &id)
@@ -86,7 +86,7 @@ TreeServer* SpanningTreeUtilities::FindServerID(const std::string &id)
 	if (iter != sidlist.end())
 		return iter->second;
 	else
-		return NULL;
+		return nullptr;
 }
 
 TreeServer* SpanningTreeUtilities::FindRouteTarget(const std::string& target)
@@ -99,11 +99,11 @@ TreeServer* SpanningTreeUtilities::FindRouteTarget(const std::string& target)
 	if (user)
 		return TreeServer::Get(user);
 
-	return NULL;
+	return nullptr;
 }
 
 SpanningTreeUtilities::SpanningTreeUtilities(ModuleSpanningTree* C)
-	: Creator(C), TreeRoot(NULL)
+	: Creator(C), TreeRoot(nullptr)
 	, PingFreq(60) // XXX: TreeServer constructor reads this and TreeRoot is created before the config is read, so init it to something (value doesn't matter) to avoid a valgrind warning in TimerManager on unload
 {
 	ServerInstance->Timers.AddTimer(&RefreshTimer);
@@ -336,7 +336,7 @@ Link* SpanningTreeUtilities::FindLink(const std::string& name)
 			return x;
 		}
 	}
-	return NULL;
+	return nullptr;
 }
 
 void SpanningTreeUtilities::SendChannelMessage(const std::string& prefix, Channel* target, const std::string& text, char status, const CUList& exempt_list, const char* message_type, TreeSocket* omit)

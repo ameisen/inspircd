@@ -28,10 +28,10 @@
 
 namespace
 {
-	ChanModeReference ban(NULL, "ban");
-	ChanModeReference inviteonlymode(NULL, "inviteonly");
-	ChanModeReference keymode(NULL, "key");
-	ChanModeReference limitmode(NULL, "limit");
+	ChanModeReference ban(nullptr, "ban");
+	ChanModeReference inviteonlymode(nullptr, "inviteonly");
+	ChanModeReference keymode(nullptr, "key");
+	ChanModeReference limitmode(nullptr, "limit");
 }
 
 Channel::Channel(const std::string &cname, time_t ts)
@@ -68,7 +68,7 @@ Membership* Channel::AddUser(User* user)
 {
 	std::pair<MemberMap::iterator, bool> ret = userlist.insert(std::make_pair(user, insp::aligned_storage<Membership>()));
 	if (!ret.second)
-		return NULL;
+		return nullptr;
 
 	Membership* memb = new(ret.first->second) Membership(user, this);
 	return memb;
@@ -116,7 +116,7 @@ Membership* Channel::GetUser(User* user)
 {
 	MemberMap::iterator i = userlist.find(user);
 	if (i == userlist.end())
-		return NULL;
+		return nullptr;
 	return i->second;
 }
 
@@ -165,7 +165,7 @@ Channel* Channel::JoinUser(LocalUser* user, std::string cname, bool override, co
 	if (user->registered != REG_ALL)
 	{
 		ServerInstance->Logs->Log("CHANNELS", LOG_DEBUG, "Attempted to join unregistered user " + user->uuid + " to channel " + cname);
-		return NULL;
+		return nullptr;
 	}
 
 	/*
@@ -189,7 +189,7 @@ Channel* Channel::JoinUser(LocalUser* user, std::string cname, bool override, co
 		if (user->chans.size() >= maxchans)
 		{
 			user->WriteNumeric(ERR_TOOMANYCHANNELS, cname, "You are on too many channels");
-			return NULL;
+			return nullptr;
 		}
 	}
 
@@ -198,7 +198,7 @@ Channel* Channel::JoinUser(LocalUser* user, std::string cname, bool override, co
 		cname.resize(ServerInstance->Config->Limits.ChanMax);
 
 	Channel* chan = ServerInstance->FindChan(cname);
-	bool created_by_local = (chan == NULL); // Flag that will be passed to modules in the OnUserJoin() hook later
+	bool created_by_local = (chan == nullptr); // Flag that will be passed to modules in the OnUserJoin() hook later
 	std::string privs; // Prefix mode(letter)s to give to the joining user
 
 	if (!chan)
@@ -207,11 +207,11 @@ Channel* Channel::JoinUser(LocalUser* user, std::string cname, bool override, co
 
 		if (override == false)
 		{
-			// Ask the modules whether they're ok with the join, pass NULL as Channel* as the channel is yet to be created
+			// Ask the modules whether they're ok with the join, pass nullptr as Channel* as the channel is yet to be created
 			ModResult MOD_RESULT;
-			FIRST_MOD_RESULT(OnUserPreJoin, MOD_RESULT, (user, NULL, cname, privs, key));
+			FIRST_MOD_RESULT(OnUserPreJoin, MOD_RESULT, (user, nullptr, cname, privs, key));
 			if (MOD_RESULT == MOD_RES_DENY)
-				return NULL; // A module wasn't happy with the join, abort
+				return nullptr; // A module wasn't happy with the join, abort
 		}
 
 		chan = new Channel(cname, ServerInstance->Time());
@@ -222,7 +222,7 @@ Channel* Channel::JoinUser(LocalUser* user, std::string cname, bool override, co
 	{
 		/* Already on the channel */
 		if (chan->HasUser(user))
-			return NULL;
+			return nullptr;
 
 		if (override == false)
 		{
@@ -232,7 +232,7 @@ Channel* Channel::JoinUser(LocalUser* user, std::string cname, bool override, co
 			// A module explicitly denied the join and (hopefully) generated a message
 			// describing the situation, so we may stop here without sending anything
 			if (MOD_RESULT == MOD_RES_DENY)
-				return NULL;
+				return nullptr;
 
 			// If no module returned MOD_RES_DENY or MOD_RES_ALLOW (which is the case
 			// most of the time) then proceed to check channel modes +k, +i, +l and bans,
@@ -249,7 +249,7 @@ Channel* Channel::JoinUser(LocalUser* user, std::string cname, bool override, co
 					{
 						// If no key provided, or key is not the right one, and can't bypass +k (not invited or option not enabled)
 						user->WriteNumeric(ERR_BADCHANNELKEY, chan->name, "Cannot join channel (Incorrect channel key)");
-						return NULL;
+						return nullptr;
 					}
 				}
 
@@ -259,7 +259,7 @@ Channel* Channel::JoinUser(LocalUser* user, std::string cname, bool override, co
 					if (MOD_RESULT != MOD_RES_ALLOW)
 					{
 						user->WriteNumeric(ERR_INVITEONLYCHAN, chan->name, "Cannot join channel (Invite only)");
-						return NULL;
+						return nullptr;
 					}
 				}
 
@@ -270,14 +270,14 @@ Channel* Channel::JoinUser(LocalUser* user, std::string cname, bool override, co
 					if (!MOD_RESULT.check((chan->GetUserCounter() < atol(limit.c_str()))))
 					{
 						user->WriteNumeric(ERR_CHANNELISFULL, chan->name, "Cannot join channel (Channel is full)");
-						return NULL;
+						return nullptr;
 					}
 				}
 
 				if (chan->IsBanned(user))
 				{
 					user->WriteNumeric(ERR_BANNEDFROMCHAN, chan->name, "Cannot join channel (You're banned)");
-					return NULL;
+					return nullptr;
 				}
 			}
 		}
@@ -294,12 +294,12 @@ Membership* Channel::ForceJoin(User* user, const std::string* privs, bool bursti
 	if (IS_SERVER(user))
 	{
 		ServerInstance->Logs->Log("CHANNELS", LOG_DEBUG, "Attempted to join server user " + user->uuid + " to channel " + this->name);
-		return NULL;
+		return nullptr;
 	}
 
 	Membership* memb = this->AddUser(user);
 	if (!memb)
-		return NULL; // Already on the channel
+		return nullptr; // Already on the channel
 
 	user->chans.push_front(memb);
 
@@ -314,7 +314,7 @@ Membership* Channel::ForceJoin(User* user, const std::string* privs, bool bursti
 			{
 				std::string nick = user->nick;
 				// Set the mode on the user
-				mh->OnModeChange(ServerInstance->FakeClient, NULL, this, nick, true);
+				mh->OnModeChange(ServerInstance->FakeClient, nullptr, this, nick, true);
 			}
 		}
 	}
@@ -378,12 +378,12 @@ bool Channel::CheckBan(User* user, const std::string& mask)
 
 	const std::string nickIdent = user->nick + "!" + user->ident;
 	std::string prefix(mask, 0, at);
-	if (InspIRCd::Match(nickIdent, prefix, NULL))
+	if (InspIRCd::Match(nickIdent, prefix, nullptr))
 	{
 		std::string suffix(mask, at + 1);
-		if (InspIRCd::Match(user->host, suffix, NULL) ||
-			InspIRCd::Match(user->dhost, suffix, NULL) ||
-			InspIRCd::MatchCIDR(user->GetIPString(), suffix, NULL))
+		if (InspIRCd::Match(user->host, suffix, nullptr) ||
+			InspIRCd::Match(user->dhost, suffix, nullptr) ||
+			InspIRCd::MatchCIDR(user->GetIPString(), suffix, nullptr))
 			return true;
 	}
 	return false;

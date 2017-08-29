@@ -16,6 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+ // Temporary hack to get around a warning being thrown by a Microsoft header.
+#if _MSC_VER == 1911
+#	pragma warning( disable : 4244 )  
+#include <algorithm>
+#	pragma warning( default : 4244 )  
+#endif
 
 #include "inspircd.h"
 
@@ -148,7 +154,7 @@ class CommandWatch : public SplitCommand
 		for (std::vector<std::string>::const_iterator i = parameters.begin(); i != parameters.end(); ++i)
 		{
 			const std::string& token = *i;
-			char subcmd = toupper(token[0]);
+			char subcmd = static_cast<char>(toupper(token[0]));
 			if (subcmd == '+')
 			{
 				HandlePlus(user, token.substr(1));

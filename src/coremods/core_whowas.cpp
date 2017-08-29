@@ -75,7 +75,7 @@ const WhoWas::Nick* WhoWas::Manager::FindNick(const std::string& nickname) const
 {
 	whowas_users::const_iterator it = whowas.find(nickname);
 	if (it == whowas.end())
-		return NULL;
+		return nullptr;
 	return it->second;
 }
 
@@ -100,7 +100,7 @@ void WhoWas::Manager::Add(User* user)
 
 	// Insert nick if it doesn't exist
 	// 'first' will point to the newly inserted element or to the existing element with an equivalent key
-	std::pair<whowas_users::iterator, bool> ret = whowas.insert(std::make_pair(user->nick, static_cast<WhoWas::Nick*>(NULL)));
+	std::pair<whowas_users::iterator, bool> ret = whowas.insert(std::make_pair(user->nick, static_cast<WhoWas::Nick*>(nullptr)));
 
 	if (ret.second) // If inserted
 	{

@@ -250,7 +250,7 @@ class ModuleSSLInfo : public Module, public Whois::EventListener
 		}
 		else if (myclass->config->getBool("requiressl"))
 		{
-			ok = (cert != NULL);
+			ok = (cert != nullptr);
 		}
 
 		if (!ok)

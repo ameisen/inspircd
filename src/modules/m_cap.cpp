@@ -16,6 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+ // Temporary hack to get around a warning being thrown by a Microsoft header.
+#if _MSC_VER == 1911
+#	pragma warning( disable : 4244 )  
+#include <algorithm>
+#	pragma warning( default : 4244 )  
+#endif
 
 #include "inspircd.h"
 #include "modules/reload.h"
@@ -205,7 +211,7 @@ class Cap::ManagerImpl : public Cap::Manager, public ReloadModule::EventListener
 		CapMap::const_iterator it = caps.find(capname);
 		if (it != caps.end())
 			return it->second;
-		return NULL;
+		return nullptr;
 	}
 
 	void NotifyValueChange(Capability* cap) CXX11_OVERRIDE

@@ -81,7 +81,7 @@ class ModuleHostCycle : public Module
 			for (Channel::MemberMap::const_iterator j = ulist.begin(); j != ulist.end(); ++j)
 			{
 				LocalUser* u = IS_LOCAL(j->first);
-				if (u == NULL || u == user)
+				if (u == nullptr || u == user)
 					continue;
 				if (u->already_sent == silent_id)
 					continue;

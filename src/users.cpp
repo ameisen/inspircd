@@ -436,7 +436,7 @@ void User::UnOper()
 	 * note, order is important - this must come before modes as -o attempts
 	 * to call UnOper. -- w00t
 	 */
-	oper = NULL;
+	oper = nullptr;
 
 
 	/* Remove all oper only modes from the user when the deoper - Bug #466*/
@@ -449,7 +449,7 @@ void User::UnOper()
 			changelist.push_remove(mh);
 	}
 
-	ServerInstance->Modes->Process(this, NULL, this, changelist);
+	ServerInstance->Modes->Process(this, nullptr, this, changelist);
 
 	// Remove the user from the oper list
 	stdalgo::vector::swaperase(ServerInstance->Users->all_opers, this);
@@ -499,7 +499,7 @@ void LocalUser::CheckClass(bool clone_count)
 
 bool LocalUser::CheckLines(bool doZline)
 {
-	const char* check[] = { "G" , "K", (doZline) ? "Z" : NULL, NULL };
+	const char* check[] = { "G" , "K", (doZline) ? "Z" : nullptr, nullptr };
 
 	if (!this->exempt)
 	{
@@ -529,7 +529,7 @@ void LocalUser::FullConnect()
 	 * may put the user into a totally seperate class with different restrictions! so we *must* check again.
 	 * Don't remove this! -- w00t
 	 */
-	MyClass = NULL;
+	MyClass = nullptr;
 	SetClass();
 	CheckClass();
 	CheckLines();
@@ -738,7 +738,7 @@ void LocalUser::SetClientIP(const irc::sockets::sockaddrs& sa, bool recheck_elin
 	{
 		User::SetClientIP(sa);
 		if (recheck_eline)
-			this->exempt = (ServerInstance->XLines->MatchesLine("E", this) != NULL);
+			this->exempt = (ServerInstance->XLines->MatchesLine("E", this) != nullptr);
 
 		FOREACH_MOD(OnSetUserIP, (this));
 	}
@@ -1042,7 +1042,7 @@ bool User::ChangeIdent(const std::string& newident)
  */
 void LocalUser::SetClass(const std::string &explicit_name)
 {
-	ConnectClass *found = NULL;
+	ConnectClass *found = nullptr;
 
 	ServerInstance->Logs->Log("CONNECTCLASS", LOG_DEBUG, "Setting connect class for UID %s", this->uuid.c_str());
 
@@ -1085,8 +1085,8 @@ void LocalUser::SetClass(const std::string &explicit_name)
 				continue;
 
 			/* check if host matches.. */
-			if (!InspIRCd::MatchCIDR(this->GetIPString(), c->GetHost(), NULL) &&
-			    !InspIRCd::MatchCIDR(this->host, c->GetHost(), NULL))
+			if (!InspIRCd::MatchCIDR(this->GetIPString(), c->GetHost(), nullptr) &&
+			    !InspIRCd::MatchCIDR(this->host, c->GetHost(), nullptr))
 			{
 				ServerInstance->Logs->Log("CONNECTCLASS", LOG_DEBUG, "No host match (for %s)", c->GetHost().c_str());
 				continue;

@@ -318,7 +318,7 @@ FileWriter::FileWriter(FILE* logfile, unsigned int flushcount)
 
 void FileWriter::WriteLogLine(const std::string &line)
 {
-	if (log == NULL)
+	if (log == nullptr)
 		return;
 // XXX: For now, just return. Don't throw an exception. It'd be nice to find out if this is happening, but I'm terrified of breaking so close to final release. -- w00t
 //		throw CoreException("FileWriter::WriteLogLine called with a closed logfile");
@@ -336,6 +336,6 @@ FileWriter::~FileWriter()
 	{
 		fflush(log);
 		fclose(log);
-		log = NULL;
+		log = nullptr;
 	}
 }

@@ -89,7 +89,7 @@ class CommandProp : public SplitCommand
 					modes.push(mh, plus);
 			}
 		}
-		ServerInstance->Modes->ProcessSingle(src, chan, NULL, modes, ModeParser::MODE_CHECKACCESS);
+		ServerInstance->Modes->ProcessSingle(src, chan, nullptr, modes, ModeParser::MODE_CHECKACCESS);
 		return CMD_SUCCESS;
 	}
 };

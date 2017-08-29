@@ -75,7 +75,7 @@ class ModuleConnectBan : public Module
 			{
 				// Create zline for set duration.
 				ZLine* zl = new ZLine(ServerInstance->Time(), banduration, ServerInstance->Config->ServerName, banmessage, mask.str());
-				if (!ServerInstance->XLines->AddLine(zl, NULL))
+				if (!ServerInstance->XLines->AddLine(zl, nullptr))
 				{
 					delete zl;
 					return;

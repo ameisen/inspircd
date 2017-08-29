@@ -108,7 +108,7 @@ void Invite::APIImpl::Create(LocalUser* user, Channel* chan, time_t timeout)
 		{
 			// Convert timed invite to non-expiring
 			delete inv->expiretimer;
-			inv->expiretimer = NULL;
+			inv->expiretimer = nullptr;
 		}
 		else if (inv->expiretimer->GetTrigger() >= ServerInstance->Time() + timeout)
 		{
@@ -135,7 +135,7 @@ Invite::Invite* Invite::APIImpl::Find(LocalUser* user, Channel* chan)
 {
 	const List* list = APIImpl::GetList(user);
 	if (!list)
-		return NULL;
+		return nullptr;
 
 	for (List::iterator i = list->begin(); i != list->end(); ++i)
 	{
@@ -144,7 +144,7 @@ Invite::Invite* Invite::APIImpl::Find(LocalUser* user, Channel* chan)
 			return inv;
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 const Invite::List* Invite::APIImpl::GetList(LocalUser* user)
@@ -152,7 +152,7 @@ const Invite::List* Invite::APIImpl::GetList(LocalUser* user)
 	Store<LocalUser>* list = userext.get(user);
 	if (list)
 		return &list->invites;
-	return NULL;
+	return nullptr;
 }
 
 void Invite::APIImpl::Unserialize(LocalUser* user, const std::string& value)
@@ -169,7 +169,7 @@ void Invite::APIImpl::Unserialize(LocalUser* user, const std::string& value)
 Invite::Invite::Invite(LocalUser* u, Channel* c)
 	: user(u)
 	, chan(c)
-	, expiretimer(NULL)
+	, expiretimer(nullptr)
 {
 }
 

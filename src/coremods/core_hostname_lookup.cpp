@@ -66,7 +66,7 @@ class UserResolver : public DNS::Request
 		}
 
 		const DNS::ResourceRecord* ans_record = r->FindAnswerOfType(this->question.type);
-		if (ans_record == NULL)
+		if (ans_record == nullptr)
 		{
 			OnError(r);
 			return;
@@ -132,7 +132,7 @@ class UserResolver : public DNS::Request
 			{
 				std::string* hostname = ph->get(bound_user);
 
-				if (hostname == NULL)
+				if (hostname == nullptr)
 				{
 					ServerInstance->Logs->Log(MODNAME, LOG_DEFAULT, "ERROR: User has no hostname attached when doing a forward lookup");
 					bound_user->WriteNotice("*** There was an internal error resolving your host, using your IP address (" + bound_user->GetIPString() + ") instead.");

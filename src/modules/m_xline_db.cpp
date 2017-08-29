@@ -46,7 +46,7 @@ class ModuleXLineDB : public Module
 
 	/** Called whenever an xline is added by a local user.
 	 * This method is triggered after the line is added.
-	 * @param source The sender of the line or NULL for local server
+	 * @param source The sender of the line or nullptr for local server
 	 * @param line The xline being added
 	 */
 	void OnAddLine(User* source, XLine* line) CXX11_OVERRIDE
@@ -56,7 +56,7 @@ class ModuleXLineDB : public Module
 
 	/** Called whenever an xline is deleted.
 	 * This method is triggered after the line is deleted.
-	 * @param source The user removing the line or NULL for local server
+	 * @param source The user removing the line or nullptr for local server
 	 * @param line the line being deleted
 	 */
 	void OnDelLine(User* source, XLine* line) CXX11_OVERRIDE
@@ -198,7 +198,7 @@ class ModuleXLineDB : public Module
 				XLine* xl = xlf->Generate(ServerInstance->Time(), atoi(command_p[5].c_str()), command_p[3], command_p[6], command_p[2]);
 				xl->SetCreateTime(atoi(command_p[4].c_str()));
 
-				if (ServerInstance->XLines->AddLine(xl, NULL))
+				if (ServerInstance->XLines->AddLine(xl, nullptr))
 				{
 					ServerInstance->SNO->WriteToSnoMask('x', "database: Added a line of type %s", command_p[1].c_str());
 				}

@@ -241,7 +241,7 @@ class HashSHA256 : public HashProvider
 	void SHA256(const char *src, unsigned char *dest, unsigned int len)
 	{
 		SHA256Context ctx;
-		SHA256Init(&ctx, NULL);
+		SHA256Init(&ctx, nullptr);
 		SHA256Update(&ctx, (unsigned char *)src, len);
 		SHA256Final(&ctx, dest);
 	}

@@ -53,7 +53,7 @@ bool ModuleManager::Load(const std::string& modname, bool defer)
 		return false;
 	}
 
-	Module* newmod = NULL;
+	Module* newmod = nullptr;
 	DLLManager* newhandle = new DLLManager(moduleFile.c_str());
 	ServiceList newservices;
 	if (!defer)
@@ -62,7 +62,7 @@ bool ModuleManager::Load(const std::string& modname, bool defer)
 	try
 	{
 		newmod = newhandle->CallInit();
-		this->NewServices = NULL;
+		this->NewServices = nullptr;
 
 		if (newmod)
 		{
@@ -100,7 +100,7 @@ bool ModuleManager::Load(const std::string& modname, bool defer)
 	}
 	catch (CoreException& modexcept)
 	{
-		this->NewServices = NULL;
+		this->NewServices = nullptr;
 
 		// failure in module constructor
 		if (newmod)
@@ -133,7 +133,7 @@ void ModuleManager::LoadCoreModules(std::map<std::string, ServiceList>& servicem
 	DIR* library = opendir(ServerInstance->Config->Paths.Module.c_str());
 	if (library)
 	{
-		dirent* entry = NULL;
+		dirent* entry = nullptr;
 		while (0 != (entry = readdir(library)))
 		{
 			if (InspIRCd::Match(entry->d_name, "core_*.so", ascii_case_insensitive_map))

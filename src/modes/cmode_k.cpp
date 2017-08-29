@@ -24,14 +24,14 @@
 #include "builtinmodes.h"
 
 ModeChannelKey::ModeChannelKey()
-	: ParamMode<ModeChannelKey, LocalStringExt>(NULL, "key", 'k', PARAM_ALWAYS)
+	: ParamMode<ModeChannelKey, LocalStringExt>(nullptr, "key", 'k', PARAM_ALWAYS)
 {
 }
 
 ModeAction ModeChannelKey::OnModeChange(User* source, User*, Channel* channel, std::string &parameter, bool adding)
 {
 	const std::string* key = ext.get(channel);
-	bool exists = (key != NULL);
+	bool exists = (key != nullptr);
 	if (IS_LOCAL(source))
 	{
 		if (exists == adding)

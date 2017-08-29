@@ -47,7 +47,7 @@ void InspIRCd::Exit(int status)
 	SetServiceStopped(status);
 #endif
 	this->Cleanup();
-	ServerInstance = NULL;
+	ServerInstance = nullptr;
 	delete this;
 	exit (status);
 }

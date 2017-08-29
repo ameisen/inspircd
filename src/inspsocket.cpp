@@ -30,18 +30,18 @@ static IOHook* GetNextHook(IOHook* hook)
 	IOHookMiddle* const iohm = IOHookMiddle::ToMiddleHook(hook);
 	if (iohm)
 		return iohm->GetNextHook();
-	return NULL;
+	return nullptr;
 }
 
 BufferedSocket::BufferedSocket()
 {
-	Timeout = NULL;
+	Timeout = nullptr;
 	state = I_ERROR;
 }
 
 BufferedSocket::BufferedSocket(int newfd)
 {
-	Timeout = NULL;
+	Timeout = nullptr;
 	this->fd = newfd;
 	this->state = I_CONNECTED;
 	if (fd > -1)
@@ -239,7 +239,7 @@ void StreamSocket::DoWrite()
 	while (hook)
 	{
 		int rv = hook->OnStreamSocketWrite(this, *psendq);
-		psendq = NULL;
+		psendq = nullptr;
 
 		// rv == 0 means the socket has blocked. Stop trying to send data.
 		// IOHook has requested unblock notification from the socketengine.
@@ -253,7 +253,7 @@ void StreamSocket::DoWrite()
 		}
 
 		IOHookMiddle* const iohm = IOHookMiddle::ToMiddleHook(hook);
-		hook = NULL;
+		hook = nullptr;
 		if (iohm)
 		{
 			psendq = &iohm->GetSendQ();
@@ -396,7 +396,7 @@ bool SocketTimeout::Tick(time_t)
 		ServerInstance->GlobalCulls.AddItem(sock);
 	}
 
-	this->sock->Timeout = NULL;
+	this->sock->Timeout = nullptr;
 	delete this;
 	return false;
 }
@@ -498,7 +498,7 @@ IOHook* StreamSocket::GetModHook(Module* mod) const
 		if (curr->prov->creator == mod)
 			return curr;
 	}
-	return NULL;
+	return nullptr;
 }
 
 void StreamSocket::AddIOHook(IOHook* newhook)

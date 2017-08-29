@@ -52,7 +52,7 @@ class CommandWho : public Command
 			if (source == u || !has_modes || memb->chan->HasUser(source))
 				return memb;
 		}
-		return NULL;
+		return nullptr;
 	}
 
  public:
@@ -368,7 +368,7 @@ CmdResult CommandWho::Handle (const std::vector<std::string>& parameters, User *
 							continue;
 					}
 
-					SendWhoLine(user, parameters, NULL, oper, whoresults);
+					SendWhoLine(user, parameters, nullptr, oper, whoresults);
 				}
 			}
 		}
@@ -385,7 +385,7 @@ CmdResult CommandWho::Handle (const std::vector<std::string>& parameters, User *
 							continue;
 					}
 
-					SendWhoLine(user, parameters, NULL, i->second, whoresults);
+					SendWhoLine(user, parameters, nullptr, i->second, whoresults);
 				}
 			}
 		}

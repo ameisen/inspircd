@@ -34,10 +34,10 @@
  */
 TreeServer::TreeServer()
 	: Server(ServerInstance->Config->ServerName, ServerInstance->Config->ServerDesc)
-	, Parent(NULL), Route(NULL)
+	, Parent(nullptr), Route(nullptr)
 	, VersionString(ServerInstance->GetVersionString())
 	, fullversion(ServerInstance->GetVersionString(true))
-	, Socket(NULL), sid(ServerInstance->Config->GetSID()), behind_bursting(0), isdead(false)
+	, Socket(nullptr), sid(ServerInstance->Config->GetSID()), behind_bursting(0), isdead(false)
 	, pingtimer(this)
 	, ServerUser(ServerInstance->FakeClient)
 	, age(ServerInstance->Time()), UserCount(ServerInstance->Users.LocalUserCount())

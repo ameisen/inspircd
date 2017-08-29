@@ -36,7 +36,7 @@ DLLManager::DLLManager(const char *fname)
 	if (!strstr(fname,".so"))
 	{
 		err = "This doesn't look like a module file to me...";
-		h = NULL;
+		h = nullptr;
 		return;
 	}
 
@@ -66,7 +66,7 @@ union init_t {
 Module* DLLManager::CallInit()
 {
 	if (!h)
-		return NULL;
+		return nullptr;
 
 	init_t initfn;
 	initfn.vptr = dlsym(h, MODULE_INIT_STR);
@@ -77,7 +77,7 @@ Module* DLLManager::CallInit()
 #else
 		err = dlerror();
 #endif
-		return NULL;
+		return nullptr;
 	}
 
 	return (*initfn.fptr)();
@@ -99,7 +99,7 @@ void DLLManager::RetrieveLastError()
 {
 	char errmsg[500];
 	DWORD dwErrorCode = GetLastError();
-	if (FormatMessageA(FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS, NULL, dwErrorCode, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPSTR)errmsg, _countof(errmsg), NULL) == 0)
+	if (FormatMessageA(FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS, nullptr, dwErrorCode, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPSTR)errmsg, _countof(errmsg), nullptr) == 0)
 		sprintf_s(errmsg, _countof(errmsg), "Error code: %u", dwErrorCode);
 	SetLastError(ERROR_SUCCESS);
 	err = errmsg;

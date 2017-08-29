@@ -23,9 +23,9 @@
 
 void ThreadEngine::Start(Thread* thread)
 {
-	thread->state.handle = CreateThread(NULL, 0, ThreadEngine::Entry, thread, 0, NULL);
+	thread->state.handle = CreateThread(nullptr, 0, ThreadEngine::Entry, thread, 0, nullptr);
 
-	if (thread->state.handle == NULL)
+	if (thread->state.handle == nullptr)
 	{
 		DWORD lasterr = GetLastError();
 		std::string err = "Unable to create new thread: " + ConvToStr(lasterr);

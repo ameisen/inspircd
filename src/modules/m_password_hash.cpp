@@ -52,7 +52,7 @@ class CommandMkpasswd : public Command
 
 			std::string salt = ServerInstance->GenRandomStr(hp->out_size, false);
 			std::string target = hp->hmac(salt, stuff);
-			std::string str = BinToBase64(salt) + "$" + BinToBase64(target, NULL, 0);
+			std::string str = BinToBase64(salt) + "$" + BinToBase64(target, nullptr, 0);
 
 			user->WriteNotice(algo + " hashed password for " + stuff + " is " + str);
 			return;

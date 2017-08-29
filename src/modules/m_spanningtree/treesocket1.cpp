@@ -37,7 +37,7 @@
  * and only do minor initialization tasks ourselves.
  */
 TreeSocket::TreeSocket(Link* link, Autoconnect* myac, const std::string& ipaddr)
-	: linkID(link->Name), LinkState(CONNECTING), MyRoot(NULL), proto_version(0)
+	: linkID(link->Name), LinkState(CONNECTING), MyRoot(nullptr), proto_version(0)
 	, burstsent(false), age(ServerInstance->Time())
 {
 	capab = new CapabData;
@@ -54,7 +54,7 @@ TreeSocket::TreeSocket(Link* link, Autoconnect* myac, const std::string& ipaddr)
  */
 TreeSocket::TreeSocket(int newfd, ListenSocket* via, irc::sockets::sockaddrs* client, irc::sockets::sockaddrs* server)
 	: BufferedSocket(newfd)
-	, linkID("inbound from " + client->addr()), LinkState(WAIT_AUTH_1), MyRoot(NULL), proto_version(0)
+	, linkID("inbound from " + client->addr()), LinkState(WAIT_AUTH_1), MyRoot(nullptr), proto_version(0)
 	, burstsent(false), age(ServerInstance->Time())
 {
 	capab = new CapabData;
@@ -86,7 +86,7 @@ void TreeSocket::CleanNegotiationInfo()
 	if (capab->ac)
 		capab->ac->position = -1;
 	delete capab;
-	capab = NULL;
+	capab = nullptr;
 }
 
 CullResult TreeSocket::cull()

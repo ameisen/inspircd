@@ -32,7 +32,7 @@
 	#include <dirent.h>
 #endif
 
-static insp::intrusive_list<dynamic_reference_base>* dynrefs = NULL;
+static insp::intrusive_list<dynamic_reference_base>* dynrefs = nullptr;
 
 void dynamic_reference_base::reset_all()
 {
@@ -444,7 +444,7 @@ namespace
 			DLLManager* dll = mod->ModuleDLLManager;
 			ServerInstance->Modules->DoSafeUnload(mod);
 			ServerInstance->GlobalCulls.Apply();
-			// In pure static mode this is always NULL
+			// In pure static mode this is always nullptr
 			delete dll;
 			ServerInstance->GlobalCulls.AddItem(this);
 		}
@@ -502,7 +502,7 @@ void ModuleManager::LoadAll()
 		}
 	}
 
-	this->NewServices = NULL;
+	this->NewServices = nullptr;
 
 	if (!PrioritizeHooks())
 		ServerInstance->Exit(EXIT_STATUS_MODULE);
@@ -576,7 +576,7 @@ ServiceProvider* ModuleManager::FindService(ServiceType type, const std::string&
 			std::multimap<std::string, ServiceProvider*>::iterator i = DataProviders.find(name);
 			if (i != DataProviders.end() && i->second->service == type)
 				return i->second;
-			return NULL;
+			return nullptr;
 		}
 		// TODO implement finding of the other types
 		default:
@@ -595,7 +595,7 @@ std::string ModuleManager::ExpandModName(const std::string& modname)
 }
 
 dynamic_reference_base::dynamic_reference_base(Module* Creator, const std::string& Name)
-	: name(Name), hook(NULL), value(NULL), creator(Creator)
+	: name(Name), hook(nullptr), value(nullptr), creator(Creator)
 {
 	if (!dynrefs)
 		dynrefs = new insp::intrusive_list<dynamic_reference_base>;
@@ -612,7 +612,7 @@ dynamic_reference_base::~dynamic_reference_base()
 	if (dynrefs->empty())
 	{
 		delete dynrefs;
-		dynrefs = NULL;
+		dynrefs = nullptr;
 	}
 }
 
@@ -638,7 +638,7 @@ void dynamic_reference_base::resolve()
 		}
 	}
 	else
-		value = NULL;
+		value = nullptr;
 }
 
 Module* ModuleManager::Find(const std::string &name)
@@ -646,7 +646,7 @@ Module* ModuleManager::Find(const std::string &name)
 	std::map<std::string, Module*>::const_iterator modfind = Modules.find(ExpandModName(name));
 
 	if (modfind == Modules.end())
-		return NULL;
+		return nullptr;
 	else
 		return modfind->second;
 }

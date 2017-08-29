@@ -27,7 +27,7 @@
 void ModuleSpanningTree::OnPostCommand(Command* command, const std::vector<std::string>& parameters, LocalUser* user, CmdResult result, const std::string& original_line)
 {
 	if (result == CMD_SUCCESS)
-		Utils->RouteCommand(NULL, command, parameters, user);
+		Utils->RouteCommand(nullptr, command, parameters, user);
 }
 
 void SpanningTreeUtilities::RouteCommand(TreeServer* origin, CommandBase* thiscmd, const parameterlist& parameters, User* user)
@@ -39,7 +39,7 @@ void SpanningTreeUtilities::RouteCommand(TreeServer* origin, CommandBase* thiscm
 
 	const bool encap = ((routing.type == ROUTE_TYPE_OPT_BCAST) || (routing.type == ROUTE_TYPE_OPT_UCAST));
 	CmdBuilder params(user, encap ? "ENCAP" : command.c_str());
-	TreeServer* sdest = NULL;
+	TreeServer* sdest = nullptr;
 
 	if (routing.type == ROUTE_TYPE_OPT_BCAST)
 	{
@@ -100,7 +100,7 @@ void SpanningTreeUtilities::RouteCommand(TreeServer* origin, CommandBase* thiscm
 				return;
 			// TODO OnBuildExemptList hook was here
 			CUList exempts;
-			SendChannelMessage(user->uuid, c, parameters[1], pfx, exempts, command.c_str(), origin ? origin->GetSocket() : NULL);
+			SendChannelMessage(user->uuid, c, parameters[1], pfx, exempts, command.c_str(), origin ? origin->GetSocket() : nullptr);
 		}
 		else if (dest[0] == '$')
 		{

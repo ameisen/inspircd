@@ -77,7 +77,7 @@ class FlagExtItem : public ExtensionItem
 
 	bool get(const Extensible* container) const
 	{
-		return (get_raw(container) != NULL);
+		return (get_raw(container) != nullptr);
 	}
 
 	std::string serialize(SerializeFormat format, const Extensible* container, void* item) const

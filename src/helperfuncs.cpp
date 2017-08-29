@@ -45,7 +45,7 @@ User* InspIRCd::FindNickOnly(const std::string &nick)
 	user_hash::iterator iter = this->Users->clientlist.find(nick);
 
 	if (iter == this->Users->clientlist.end())
-		return NULL;
+		return nullptr;
 
 	return iter->second;
 }
@@ -55,7 +55,7 @@ User *InspIRCd::FindUUID(const std::string &uid)
 	user_hash::iterator finduuid = this->Users->uuidlist.find(uid);
 
 	if (finduuid == this->Users->uuidlist.end())
-		return NULL;
+		return nullptr;
 
 	return finduuid->second;
 }
@@ -67,7 +67,7 @@ Channel* InspIRCd::FindChan(const std::string &chan)
 
 	if (iter == chanlist.end())
 		/* Couldn't find it */
-		return NULL;
+		return nullptr;
 
 	return iter->second;
 }

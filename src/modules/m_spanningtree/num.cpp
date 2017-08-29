@@ -34,7 +34,7 @@ CmdResult CommandNum::HandleServer(TreeServer* server, std::vector<std::string>&
 		return CMD_SUCCESS;
 
 	Numeric::Numeric numeric(ConvToInt(params[2]));
-	// Passing NULL is ok, in that case the numeric source becomes this server
+	// Passing nullptr is ok, in that case the numeric source becomes this server
 	numeric.SetServer(Utils->FindServerID(params[0]));
 	numeric.GetParams().insert(numeric.GetParams().end(), params.begin()+3, params.end());
 

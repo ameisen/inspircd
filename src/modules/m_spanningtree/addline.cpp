@@ -35,7 +35,7 @@ CmdResult CommandAddLine::Handle(User* usr, std::vector<std::string>& params)
 		return CMD_FAILURE;
 	}
 
-	XLine* xl = NULL;
+	XLine* xl = nullptr;
 	try
 	{
 		xl = xlf->Generate(ServerInstance->Time(), ConvToInt(params[4]), params[2], params[5], params[1]);
@@ -46,7 +46,7 @@ CmdResult CommandAddLine::Handle(User* usr, std::vector<std::string>& params)
 		return CMD_FAILURE;
 	}
 	xl->SetCreateTime(ConvToInt(params[3]));
-	if (ServerInstance->XLines->AddLine(xl, NULL))
+	if (ServerInstance->XLines->AddLine(xl, nullptr))
 	{
 		if (xl->duration)
 		{

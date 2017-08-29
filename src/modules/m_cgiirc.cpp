@@ -201,7 +201,7 @@ class ModuleCgiIRC : public Module
 
 	static void RecheckClass(LocalUser* user)
 	{
-		user->MyClass = NULL;
+		user->MyClass = nullptr;
 		user->SetClass();
 		user->CheckClass();
 	}
@@ -399,7 +399,7 @@ public:
 			return false;
 
 		errno = 0;
-		unsigned long ipaddr = strtoul(ident, NULL, 16);
+		unsigned long ipaddr = strtoul(ident, nullptr, 16);
 		if (errno)
 			return false;
 		newip.s_addr = htonl(ipaddr);

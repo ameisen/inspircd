@@ -48,7 +48,7 @@ CmdResult CommandKick::Handle (const std::vector<std::string>& parameters, User 
 		return CMD_FAILURE;
 	}
 
-	Membership* srcmemb = NULL;
+	Membership* srcmemb = nullptr;
 	if (IS_LOCAL(user))
 	{
 		srcmemb = c->GetUser(user);

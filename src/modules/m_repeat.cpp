@@ -16,6 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+ // Temporary hack to get around a warning being thrown by a Microsoft header.
+#if _MSC_VER == 1911
+#	pragma warning( disable : 4244 )  
+#include <algorithm>
+#	pragma warning( default : 4244 )  
+#endif
 
 #include "inspircd.h"
 #include "modules/exemption.h"
@@ -386,7 +392,7 @@ class RepeatModule : public Module
 			{
 				Modes::ChangeList changelist;
 				changelist.push_add(ServerInstance->Modes->FindMode('b', MODETYPE_CHANNEL), "*!*@" + user->dhost);
-				ServerInstance->Modes->Process(ServerInstance->FakeClient, chan, NULL, changelist);
+				ServerInstance->Modes->Process(ServerInstance->FakeClient, chan, nullptr, changelist);
 			}
 
 			memb->chan->KickUser(ServerInstance->FakeClient, user, "Repeat flood");

@@ -23,8 +23,8 @@
 
 static bool MatchInternal(const unsigned char* str, const unsigned char* mask, unsigned const char* map)
 {
-	unsigned char* cp = NULL;
-	unsigned char* mp = NULL;
+	unsigned char* cp = nullptr;
+	unsigned char* mp = nullptr;
 	unsigned char* string = (unsigned char*)str;
 	unsigned char* wild = (unsigned char*)mask;
 

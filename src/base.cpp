@@ -56,7 +56,7 @@ CullResult::CullResult()
 }
 
 // This trick detects heap allocations of refcountbase objects
-static void* last_heap = NULL;
+static void* last_heap = nullptr;
 
 void* refcountbase::operator new(size_t size)
 {
@@ -67,7 +67,7 @@ void* refcountbase::operator new(size_t size)
 void refcountbase::operator delete(void* obj)
 {
 	if (last_heap == obj)
-		last_heap = NULL;
+		last_heap = nullptr;
 	::operator delete(obj);
 }
 
@@ -114,7 +114,7 @@ void* ExtensionItem::get_raw(const Extensible* container) const
 	Extensible::ExtensibleStore::const_iterator i =
 		container->extensions.find(const_cast<ExtensionItem*>(this));
 	if (i == container->extensions.end())
-		return NULL;
+		return nullptr;
 	return i->second;
 }
 
@@ -124,7 +124,7 @@ void* ExtensionItem::set_raw(Extensible* container, void* value)
 		container->extensions.insert(std::make_pair(this, value));
 	if (rv.second)
 	{
-		return NULL;
+		return nullptr;
 	}
 	else
 	{
@@ -138,7 +138,7 @@ void* ExtensionItem::unset_raw(Extensible* container)
 {
 	Extensible::ExtensibleStore::iterator i = container->extensions.find(this);
 	if (i == container->extensions.end())
-		return NULL;
+		return nullptr;
 	void* rv = i->second;
 	container->extensions.erase(i);
 	return rv;
@@ -174,7 +174,7 @@ ExtensionItem* ExtensionManager::GetItem(const std::string& name)
 {
 	ExtMap::iterator i = types.find(name);
 	if (i == types.end())
-		return NULL;
+		return nullptr;
 	return i->second;
 }
 

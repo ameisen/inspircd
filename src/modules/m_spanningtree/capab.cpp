@@ -187,7 +187,7 @@ void TreeSocket::SendCapabilities(int phase)
 			// in 2.0, we advertise it here to not break linking to previous versions.
 			// Protocol version 1201 (1.2) does not have this issue because we advertise m_globops
 			// to 1201 protocol servers irrespectively of its module flags.
-			(ServerInstance->Modules->Find("m_globops.so") != NULL ? " GLOBOPS=1" : " GLOBOPS=0")
+			(ServerInstance->Modules->Find("m_globops.so") != nullptr ? " GLOBOPS=1" : " GLOBOPS=0")
 			);
 
 	this->WriteLine("CAPAB END");

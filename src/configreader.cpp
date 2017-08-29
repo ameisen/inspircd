@@ -123,7 +123,7 @@ static void ReadXLine(ServerConfig* conf, const std::string& tag, const std::str
 			throw CoreException("<"+tag+":"+key+"> missing at " + ctag->getTagLocation());
 		std::string reason = ctag->getString("reason", "<Config>");
 		XLine* xl = make->Generate(ServerInstance->Time(), 0, "<Config>", reason, mask);
-		if (!ServerInstance->XLines->AddLine(xl, NULL))
+		if (!ServerInstance->XLines->AddLine(xl, nullptr))
 			delete xl;
 	}
 }
@@ -242,7 +242,7 @@ void ServerConfig::CrossCheckConnectBlocks(ServerConfig* current)
 			if (Classes[i])
 				continue;
 
-			ConnectClass* parent = NULL;
+			ConnectClass* parent = nullptr;
 			std::string parentName = tag->getString("parent");
 			if (!parentName.empty())
 			{
@@ -604,7 +604,7 @@ void ServerConfig::Apply(ServerConfig* old, const std::string &useruid)
 		}
 	}
 
-	User* user = useruid.empty() ? NULL : ServerInstance->FindNick(useruid);
+	User* user = useruid.empty() ? nullptr : ServerInstance->FindNick(useruid);
 
 	if (!valid)
 	{
@@ -797,7 +797,7 @@ void ConfigReaderThread::Finish()
 		ServerInstance->Users.RehashCloneCounts();
 		ServerInstance->XLines->CheckELines();
 		ServerInstance->XLines->ApplyLines();
-		ChanModeReference ban(NULL, "ban");
+		ChanModeReference ban(nullptr, "ban");
 		static_cast<ListModeBase*>(*ban)->DoRehash();
 		Config->ApplyDisabledCommands(Config->DisabledCommands);
 		User* user = ServerInstance->FindNick(TheUserUID);

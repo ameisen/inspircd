@@ -475,7 +475,7 @@ void DataKeeper::Restore(Module* newmod)
 
 void DataKeeper::Fail()
 {
-	this->mod = NULL;
+	this->mod = nullptr;
 
 	ServerInstance->Logs->Log(MODNAME, LOG_DEBUG, "Restore failed, notifying modules");
 	DoRestoreModules();
@@ -521,7 +521,7 @@ void DataKeeper::DoRestoreUsers()
 		}
 
 		RestoreObj(userdata, user, MODETYPE_USER, modechange);
-		ServerInstance->Modes.Process(ServerInstance->FakeClient, NULL, user, modechange, ModeParser::MODE_LOCALONLY);
+		ServerInstance->Modes.Process(ServerInstance->FakeClient, nullptr, user, modechange, ModeParser::MODE_LOCALONLY);
 		modechange.clear();
 	}
 }
@@ -543,12 +543,12 @@ void DataKeeper::DoRestoreChans()
 
 		RestoreObj(chandata, chan, MODETYPE_CHANNEL, modechange);
 		// Process the mode change before applying any prefix modes
-		ServerInstance->Modes.Process(ServerInstance->FakeClient, chan, NULL, modechange, ModeParser::MODE_LOCALONLY);
+		ServerInstance->Modes.Process(ServerInstance->FakeClient, chan, nullptr, modechange, ModeParser::MODE_LOCALONLY);
 		modechange.clear();
 
 		// Restore all member data
 		RestoreMemberData(chan, chandata.memberdatalist, modechange);
-		ServerInstance->Modes.Process(ServerInstance->FakeClient, chan, NULL, modechange, ModeParser::MODE_LOCALONLY);
+		ServerInstance->Modes.Process(ServerInstance->FakeClient, chan, nullptr, modechange, ModeParser::MODE_LOCALONLY);
 		modechange.clear();
 	}
 }

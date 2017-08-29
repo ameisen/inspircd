@@ -22,7 +22,7 @@
 #include "inspircd.h"
 #include "builtinmodes.h"
 
-ModeUserServerNoticeMask::ModeUserServerNoticeMask() : ModeHandler(NULL, "snomask", 's', PARAM_SETONLY, MODETYPE_USER)
+ModeUserServerNoticeMask::ModeUserServerNoticeMask() : ModeHandler(nullptr, "snomask", 's', PARAM_SETONLY, MODETYPE_USER)
 {
 	oper = true;
 }

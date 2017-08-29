@@ -140,7 +140,7 @@ class ModuleMsgFlood : public Module
 				{
 					Modes::ChangeList changelist;
 					changelist.push_add(ServerInstance->Modes->FindMode('b', MODETYPE_CHANNEL), "*!*@" + user->dhost);
-					ServerInstance->Modes->Process(ServerInstance->FakeClient, dest, NULL, changelist);
+					ServerInstance->Modes->Process(ServerInstance->FakeClient, dest, nullptr, changelist);
 				}
 
 				const std::string kickMessage = "Channel flood triggered (trigger is " + ConvToStr(f->lines) +

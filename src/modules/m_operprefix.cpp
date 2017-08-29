@@ -83,7 +83,7 @@ class ModuleOperPrefixMode : public Module
 		// The user was force joined and OnUserPreJoin() did not run. Set the operprefix now.
 		Modes::ChangeList changelist;
 		changelist.push_add(&opm, memb->user->nick);
-		ServerInstance->Modes.Process(ServerInstance->FakeClient, memb->chan, NULL, changelist);
+		ServerInstance->Modes.Process(ServerInstance->FakeClient, memb->chan, nullptr, changelist);
 	}
 
 	void SetOperPrefix(User* user, bool add)
@@ -91,7 +91,7 @@ class ModuleOperPrefixMode : public Module
 		Modes::ChangeList changelist;
 		changelist.push(&opm, add, user->nick);
 		for (User::ChanList::iterator v = user->chans.begin(); v != user->chans.end(); v++)
-			ServerInstance->Modes->Process(ServerInstance->FakeClient, (*v)->chan, NULL, changelist);
+			ServerInstance->Modes->Process(ServerInstance->FakeClient, (*v)->chan, nullptr, changelist);
 	}
 
 	void OnPostOper(User* user, const std::string& opername, const std::string& opertype) CXX11_OVERRIDE

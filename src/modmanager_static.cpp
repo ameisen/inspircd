@@ -26,8 +26,8 @@
 #ifdef INSPIRCD_STATIC
 
 typedef std::map<std::string, AllModuleList*> modmap;
-static std::vector<AllCommandList::fn>* cmdlist = NULL;
-static modmap* modlist = NULL;
+static std::vector<AllCommandList::fn>* cmdlist = nullptr;
+static modmap* modlist = nullptr;
 
 AllCommandList::AllCommandList(fn cmd)
 {
@@ -86,7 +86,7 @@ bool ModuleManager::Load(const std::string& inputname, bool defer)
 	modmap::iterator it = modlist->find(name);
 	if (it == modlist->end())
 		return false;
-	Module* mod = NULL;
+	Module* mod = nullptr;
 
 	ServiceList newservices;
 	if (!defer)
@@ -96,10 +96,10 @@ bool ModuleManager::Load(const std::string& inputname, bool defer)
 	{
 		mod = (*it->second->init)();
 		mod->ModuleSourceFile = name;
-		mod->ModuleDLLManager = NULL;
+		mod->ModuleDLLManager = nullptr;
 		mod->dying = false;
 		Modules[name] = mod;
-		this->NewServices = NULL;
+		this->NewServices = nullptr;
 		if (defer)
 		{
 			ServerInstance->Logs->Log("MODULE", LOG_DEFAULT, "New module introduced: %s", name.c_str());
@@ -117,7 +117,7 @@ bool ModuleManager::Load(const std::string& inputname, bool defer)
 	}
 	catch (CoreException& modexcept)
 	{
-		this->NewServices = NULL;
+		this->NewServices = nullptr;
 
 		if (mod)
 			DoSafeUnload(mod);
@@ -142,7 +142,7 @@ void ModuleManager::LoadCoreModules(std::map<std::string, ServiceList>& servicem
 			Load(modname, true);
 		}
 	}
-	this->NewServices = NULL;
+	this->NewServices = nullptr;
 }
 
 #endif

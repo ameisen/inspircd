@@ -419,7 +419,7 @@ class MyManager : public Manager, public Timer, public EventHandler
 		, unloading(false)
 	{
 		for (unsigned int i = 0; i <= MAX_REQUEST_ID; ++i)
-			requests[i] = NULL;
+			requests[i] = nullptr;
 		ServerInstance->Timers.AddTimer(this);
 	}
 
@@ -512,7 +512,7 @@ class MyManager : public Manager, public Timer, public EventHandler
 	void RemoveRequest(DNS::Request* req) CXX11_OVERRIDE
 	{
 		if (requests[req->id] == req)
-			requests[req->id] = NULL;
+			requests[req->id] = nullptr;
 	}
 
 	std::string GetErrorStr(Error e) CXX11_OVERRIDE
@@ -583,7 +583,7 @@ class MyManager : public Manager, public Timer, public EventHandler
 
 		// recv_packet.id must be filled in here
 		DNS::Request* request = this->requests[recv_packet.id];
-		if (request == NULL)
+		if (request == nullptr)
 		{
 			ServerInstance->Logs->Log(MODNAME, LOG_DEBUG, "Received an answer for something we didn't request");
 			return;

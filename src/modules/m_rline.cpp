@@ -76,7 +76,7 @@ class RLine : public XLine
 		if (ZlineOnMatch)
 		{
 			ZLine* zl = new ZLine(ServerInstance->Time(), duration ? expiry - ServerInstance->Time() : 0, ServerInstance->Config->ServerName.c_str(), reason.c_str(), u->GetIPString());
-			if (ServerInstance->XLines->AddLine(zl, NULL))
+			if (ServerInstance->XLines->AddLine(zl, nullptr))
 			{
 				std::string timestr = InspIRCd::TimeString(zl->expiry);
 				ServerInstance->SNO->WriteToSnoMask('x', "Z-line added due to R-line match on *@%s%s%s: %s",
@@ -146,7 +146,7 @@ class CommandRLine : public Command
 			// Adding - XXX todo make this respect <insane> tag perhaps..
 
 			unsigned long duration = InspIRCd::Duration(parameters[1]);
-			XLine *r = NULL;
+			XLine *r = nullptr;
 
 			try
 			{
@@ -259,7 +259,7 @@ class ModuleRLine : public Module
 		ZlineOnMatch = tag->getBool("zlineonmatch");
 		std::string newrxengine = tag->getString("engine");
 
-		factory = rxfactory ? (rxfactory.operator->()) : NULL;
+		factory = rxfactory ? (rxfactory.operator->()) : nullptr;
 
 		if (newrxengine.empty())
 			rxfactory.SetProvider("regex");

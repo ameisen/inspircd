@@ -193,7 +193,7 @@ void TreeSocket::SendXLines()
 		/* Expired lines are removed in XLineManager::GetAll() */
 		XLineLookup* lookup = ServerInstance->XLines->GetAll(*it);
 
-		/* lookup cannot be NULL in this case but a check won't hurt */
+		/* lookup cannot be nullptr in this case but a check won't hurt */
 		if (lookup)
 		{
 			for (LookupIter i = lookup->begin(); i != lookup->end(); ++i)

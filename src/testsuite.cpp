@@ -122,14 +122,14 @@ TestSuite::TestSuite()
 }
 
 /* Test that x matches y with match() */
-#define WCTEST(x, y) std::cout << "match(\"" << x << "\",\"" << y "\") " << ((passed = (InspIRCd::Match(x, y, NULL))) ? " SUCCESS!\n" : " FAILURE\n")
+#define WCTEST(x, y) std::cout << "match(\"" << x << "\",\"" << y "\") " << ((passed = (InspIRCd::Match(x, y, nullptr))) ? " SUCCESS!\n" : " FAILURE\n")
 /* Test that x does not match y with match() */
-#define WCTESTNOT(x, y) std::cout << "!match(\"" << x << "\",\"" << y "\") " << ((passed = ((!InspIRCd::Match(x, y, NULL)))) ? " SUCCESS!\n" : " FAILURE\n")
+#define WCTESTNOT(x, y) std::cout << "!match(\"" << x << "\",\"" << y "\") " << ((passed = ((!InspIRCd::Match(x, y, nullptr)))) ? " SUCCESS!\n" : " FAILURE\n")
 
 /* Test that x matches y with match() and cidr enabled */
-#define CIDRTEST(x, y) std::cout << "match(\"" << x << "\",\"" << y "\", true) " << ((passed = (InspIRCd::MatchCIDR(x, y, NULL))) ? " SUCCESS!\n" : " FAILURE\n")
+#define CIDRTEST(x, y) std::cout << "match(\"" << x << "\",\"" << y "\", true) " << ((passed = (InspIRCd::MatchCIDR(x, y, nullptr))) ? " SUCCESS!\n" : " FAILURE\n")
 /* Test that x does not match y with match() and cidr enabled */
-#define CIDRTESTNOT(x, y) std::cout << "!match(\"" << x << "\",\"" << y "\", true) " << ((passed = ((!InspIRCd::MatchCIDR(x, y, NULL)))) ? " SUCCESS!\n" : " FAILURE\n")
+#define CIDRTESTNOT(x, y) std::cout << "!match(\"" << x << "\",\"" << y "\", true) " << ((passed = ((!InspIRCd::MatchCIDR(x, y, nullptr)))) ? " SUCCESS!\n" : " FAILURE\n")
 
 bool TestSuite::DoWildTests()
 {
@@ -283,7 +283,7 @@ bool TestSuite::DoSpaceSepStreamTests()
 bool TestSuite::DoThreadTests()
 {
 	std::string anything;
-	ThreadEngine* te = NULL;
+	ThreadEngine* te = nullptr;
 
 	std::cout << "Creating new ThreadEngine class...\n";
 	try

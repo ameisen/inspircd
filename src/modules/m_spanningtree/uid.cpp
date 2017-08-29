@@ -108,10 +108,10 @@ CmdResult CommandUID::HandleServer(TreeServer* remoteserver, std::vector<std::st
 			 * will not change in future versions if you want to make use of this protective behaviour
 			 * yourself.
 			 */
-			mh->OnModeChange(_new, _new, NULL, mp, true);
+			mh->OnModeChange(_new, _new, nullptr, mp, true);
 		}
 		else
-			mh->OnModeChange(_new, _new, NULL, empty, true);
+			mh->OnModeChange(_new, _new, nullptr, empty, true);
 		_new->SetMode(mh, true);
 	}
 

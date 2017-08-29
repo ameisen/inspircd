@@ -436,7 +436,7 @@ class RIProv : public HashProvider
 public:
 	std::string GenerateRaw(const std::string& data)
 	{
-		char* rv = (char*)RMD((byte*)data.data(), data.length(), NULL);
+		char* rv = (char*)RMD((byte*)data.data(), data.length(), nullptr);
 		return std::string(rv, RMDsize / 8);
 	}
 
