@@ -43,12 +43,12 @@ class ServerTracker : public SpanningTreeEventListener
 		}
 	}
 
-	void OnServerLink(const Server* server) CXX11_OVERRIDE
+	void OnServerLink(const Server* server) override
 	{
 		Update(server, true);
 	}
 
-	void OnServerSplit(const Server* server) CXX11_OVERRIDE
+	void OnServerSplit(const Server* server) override
 	{
 		Update(server, false);
 	}
@@ -91,7 +91,7 @@ class SASLCap : public Cap::Capability
 	std::string mechlist;
 	const ServerTracker& servertracker;
 
-	bool OnRequest(LocalUser* user, bool adding) CXX11_OVERRIDE
+	bool OnRequest(LocalUser* user, bool adding) override
 	{
 		// Requesting this cap is allowed anytime
 		if (adding)
@@ -101,12 +101,12 @@ class SASLCap : public Cap::Capability
 		return (user->registered != REG_ALL);
 	}
 
-	bool OnList(LocalUser* user) CXX11_OVERRIDE
+	bool OnList(LocalUser* user) override
 	{
 		return servertracker.IsOnline();
 	}
 
-	const std::string* GetValue(LocalUser* user) const CXX11_OVERRIDE
+	const std::string* GetValue(LocalUser* user) const override
 	{
 		return &mechlist;
 	}
@@ -423,19 +423,19 @@ class ModuleSASL : public Module
 		saslevprov = &sasleventprov;
 	}
 
-	void init() CXX11_OVERRIDE
+	void init() override
 	{
 		if (!ServerInstance->Modules->Find("m_services_account.so") || !ServerInstance->Modules->Find("m_cap.so"))
 			ServerInstance->Logs->Log(MODNAME, LOG_DEFAULT, "WARNING: m_services_account.so and m_cap.so are not loaded! m_sasl.so will NOT function correctly until these two modules are loaded!");
 	}
 
-	void ReadConfig(ConfigStatus& status) CXX11_OVERRIDE
+	void ReadConfig(ConfigStatus& status) override
 	{
 		sasl_target = ServerInstance->Config->ConfValue("sasl")->getString("target", "*");
 		servertracker.Reset();
 	}
 
-	void OnUserConnect(LocalUser *user) CXX11_OVERRIDE
+	void OnUserConnect(LocalUser *user) override
 	{
 		SaslAuthenticator *sasl_ = authExt.get(user);
 		if (sasl_)
@@ -445,13 +445,13 @@ class ModuleSASL : public Module
 		}
 	}
 
-	void OnDecodeMetaData(Extensible* target, const std::string& extname, const std::string& extdata) CXX11_OVERRIDE
+	void OnDecodeMetaData(Extensible* target, const std::string& extname, const std::string& extdata) override
 	{
 		if ((target == nullptr) && (extname == "saslmechlist"))
 			cap.SetMechlist(extdata);
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("Provides support for IRC Authentication Layer (aka: SASL) via AUTHENTICATE.", VF_VENDOR);
 	}

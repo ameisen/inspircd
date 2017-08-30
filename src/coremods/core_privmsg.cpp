@@ -280,7 +280,7 @@ class ModuleCoreMessage : public Module
 	{
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("PRIVMSG, NOTICE", VF_CORE|VF_VENDOR);
 	}

@@ -175,9 +175,9 @@ class CoreExport OperInfo : public refcountbase
 	/** Allowed channel modes from oper classes. */
 	std::bitset<64> AllowedChanModes;
 
-	/** \<oper> block used for this oper-up. May be NULL. */
+	/** \<oper> block used for this oper-up. May be nullptr. */
 	reference<ConfigTag> oper_block;
-	/** \<type> block used for this oper-up. Valid for local users, may be NULL on remote */
+	/** \<type> block used for this oper-up. Valid for local users, may be nullptr on remote */
 	reference<ConfigTag> type_block;
 	/** \<class> blocks referenced from the \<type> block. These define individual permissions */
 	std::vector<reference<ConfigTag> > class_blocks;
@@ -532,7 +532,7 @@ class CoreExport ConfigStatus
  public:
 	User* const srcuser;
 
-	ConfigStatus(User* user = NULL)
+	ConfigStatus(User* user = nullptr)
 		: srcuser(user)
 	{
 	}

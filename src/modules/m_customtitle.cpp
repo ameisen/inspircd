@@ -82,7 +82,7 @@ class ModuleCustomTitle : public Module, public Whois::LineEventListener
 	}
 
 	// :kenny.chatspike.net 320 Brain Azhrarn :is getting paid to play games.
-	ModResult OnWhoisLine(Whois::Context& whois, Numeric::Numeric& numeric) CXX11_OVERRIDE
+	ModResult OnWhoisLine(Whois::Context& whois, Numeric::Numeric& numeric) override
 	{
 		/* We use this and not OnWhois because this triggers for remote, too */
 		if (numeric.GetNumeric() == 312)
@@ -98,7 +98,7 @@ class ModuleCustomTitle : public Module, public Whois::LineEventListener
 		return MOD_RES_PASSTHRU;
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("Custom Title for users", VF_OPTCOMMON | VF_VENDOR);
 	}

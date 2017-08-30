@@ -451,7 +451,7 @@ class CoreExport XLineManager
 
 	/** Add a new XLine
 	 * @param line The line to be added
-	 * @param user The user adding the line or NULL for the local server
+	 * @param user The user adding the line or nullptr for the local server
 	 * @return True if the line was added successfully
 	 */
 	bool AddLine(XLine* line, User* user);
@@ -459,7 +459,7 @@ class CoreExport XLineManager
 	/** Delete an XLine
 	 * @param hostmask The xline-specific string identifying the line, e.g. "*@foo"
 	 * @param type The type of xline
-	 * @param user The user removing the line or NULL if its the local server
+	 * @param user The user removing the line or nullptr if its the local server
 	 * @param simulate If this is true, don't actually remove the line, just return
 	 * @return True if the line was deleted successfully
 	 */
@@ -484,7 +484,7 @@ class CoreExport XLineManager
 	bool UnregisterFactory(XLineFactory* xlf);
 
 	/** Get the XLineFactory for a specific type.
-	 * Returns NULL if there is no known handler for this xline type.
+	 * Returns nullptr if there is no known handler for this xline type.
 	 * @param type The type of XLine you require the XLineFactory for
 	 */
 	XLineFactory* GetFactory(const std::string &type);
@@ -492,14 +492,14 @@ class CoreExport XLineManager
 	/** Check if a user matches an XLine
 	 * @param type The type of line to look up
 	 * @param user The user to match against (what is checked is specific to the xline type)
-	 * @return The reason for the line if there is a match, or NULL if there is no match
+	 * @return The reason for the line if there is a match, or nullptr if there is no match
 	 */
 	XLine* MatchesLine(const std::string &type, User* user);
 
 	/** Check if a pattern matches an XLine
 	 * @param type The type of line to look up
 	 * @param pattern A pattern string specific to the xline type
-	 * @return The matching XLine if there is a match, or NULL if there is no match
+	 * @return The matching XLine if there is a match, or nullptr if there is no match
 	 */
 	XLine* MatchesLine(const std::string &type, const std::string &pattern);
 

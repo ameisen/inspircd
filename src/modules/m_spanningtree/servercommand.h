@@ -40,10 +40,10 @@ class ServerCommand : public CommandBase
 
 	/** Register this object in the ServerCommandManager
 	 */
-	void RegisterService() CXX11_OVERRIDE;
+	void RegisterService() override;
 
 	virtual CmdResult Handle(User* user, std::vector<std::string>& parameters) = 0;
-	virtual RouteDescriptor GetRouting(User* user, const std::vector<std::string>& parameters) CXX11_OVERRIDE;
+	virtual RouteDescriptor GetRouting(User* user, const std::vector<std::string>& parameters) override;
 
 	/**
 	 * Extract the TS from a string.

@@ -155,7 +155,7 @@ class ModuleJumpServer : public Module
 	{
 	}
 
-	ModResult OnUserRegister(LocalUser* user) CXX11_OVERRIDE
+	ModResult OnUserRegister(LocalUser* user) override
 	{
 		if (js.redirect_new_users)
 		{
@@ -167,14 +167,14 @@ class ModuleJumpServer : public Module
 		return MOD_RES_PASSTHRU;
 	}
 
-	void ReadConfig(ConfigStatus& status) CXX11_OVERRIDE
+	void ReadConfig(ConfigStatus& status) override
 	{
 		// Emergency way to unlock
 		if (!status.srcuser)
 			js.redirect_new_users = false;
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("Provides support for the RPL_REDIR numeric and the /JUMPSERVER command.", VF_VENDOR);
 	}

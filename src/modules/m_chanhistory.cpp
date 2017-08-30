@@ -113,7 +113,7 @@ class ModuleChanHistory : public Module
 	{
 	}
 
-	void ReadConfig(ConfigStatus& status) CXX11_OVERRIDE
+	void ReadConfig(ConfigStatus& status) override
 	{
 		ConfigTag* tag = ServerInstance->Config->ConfValue("chanhistory");
 		m.maxlines = tag->getInt("maxlines", 50);
@@ -121,7 +121,7 @@ class ModuleChanHistory : public Module
 		dobots = tag->getBool("bots", true);
 	}
 
-	void OnUserMessage(User* user, void* dest, int target_type, const std::string &text, char status, const CUList&, MessageType msgtype) CXX11_OVERRIDE
+	void OnUserMessage(User* user, void* dest, int target_type, const std::string &text, char status, const CUList&, MessageType msgtype) override
 	{
 		if ((target_type == TYPE_CHANNEL) && (status == 0) && (msgtype == MSG_PRIVMSG))
 		{
@@ -137,7 +137,7 @@ class ModuleChanHistory : public Module
 		}
 	}
 
-	void OnPostJoin(Membership* memb) CXX11_OVERRIDE
+	void OnPostJoin(Membership* memb) override
 	{
 		if (IS_REMOTE(memb->user))
 			return;
@@ -164,7 +164,7 @@ class ModuleChanHistory : public Module
 		}
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("Provides channel history replayed on join", VF_VENDOR);
 	}

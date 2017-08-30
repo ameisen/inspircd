@@ -32,7 +32,7 @@ class ModuleDenyChannels : public Module
 	{
 	}
 
-	void ReadConfig(ConfigStatus& status) CXX11_OVERRIDE
+	void ReadConfig(ConfigStatus& status) override
 	{
 		/* check for redirect validity and loops/chains */
 		ConfigTagList tags = ServerInstance->Config->ConfTags("badchan");
@@ -76,13 +76,13 @@ class ModuleDenyChannels : public Module
 		}
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("Implements config tags which allow blocking of joins to channels", VF_VENDOR);
 	}
 
 
-	ModResult OnUserPreJoin(LocalUser* user, Channel* chan, const std::string& cname, std::string& privs, const std::string& keygiven) CXX11_OVERRIDE
+	ModResult OnUserPreJoin(LocalUser* user, Channel* chan, const std::string& cname, std::string& privs, const std::string& keygiven) override
 	{
 		ConfigTagList tags = ServerInstance->Config->ConfTags("badchan");
 		for (ConfigIter j = tags.first; j != tags.second; ++j)

@@ -265,7 +265,7 @@ class ModuleSHA256 : public Module
 	{
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("Implements SHA-256 hashing", VF_VENDOR);
 	}

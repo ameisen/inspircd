@@ -83,7 +83,7 @@ public:
 	{
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("Provides support for the CHGIDENT command", VF_OPTCOMMON | VF_VENDOR);
 	}

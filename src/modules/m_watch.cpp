@@ -221,18 +221,18 @@ class ModuleWatch : public Module
 	{
 	}
 
-	void ReadConfig(ConfigStatus& status) CXX11_OVERRIDE
+	void ReadConfig(ConfigStatus& status) override
 	{
 		ConfigTag* tag = ServerInstance->Config->ConfValue("watch");
 		cmd.maxwatch = tag->getInt("maxwatch", 30, 1);
 	}
 
-	void OnPostConnect(User* user) CXX11_OVERRIDE
+	void OnPostConnect(User* user) override
 	{
 		Online(user);
 	}
 
-	void OnUserPostNick(User* user, const std::string& oldnick) CXX11_OVERRIDE
+	void OnUserPostNick(User* user, const std::string& oldnick) override
 	{
 		// Detect and ignore nickname case change
 		if (ServerInstance->FindNickOnly(oldnick) == user)
@@ -242,7 +242,7 @@ class ModuleWatch : public Module
 		Online(user);
 	}
 
-	void OnUserQuit(User* user, const std::string& message, const std::string& oper_message) CXX11_OVERRIDE
+	void OnUserQuit(User* user, const std::string& message, const std::string& oper_message) override
 	{
 		LocalUser* localuser = IS_LOCAL(user);
 		if (localuser)
@@ -250,7 +250,7 @@ class ModuleWatch : public Module
 		Offline(user, user->nick);
 	}
 
-	ModResult OnSetAway(User* user, const std::string& awaymsg) CXX11_OVERRIDE
+	ModResult OnSetAway(User* user, const std::string& awaymsg) override
 	{
 		if (awaymsg.empty())
 			SendAlert(user, user->nick, RPL_NOTAWAY, "is no longer away", ServerInstance->Time());
@@ -260,12 +260,12 @@ class ModuleWatch : public Module
 		return MOD_RES_PASSTHRU;
 	}
 
-	void On005Numeric(std::map<std::string, std::string>& tokens) CXX11_OVERRIDE
+	void On005Numeric(std::map<std::string, std::string>& tokens) override
 	{
 		tokens["WATCH"] = ConvToStr(cmd.maxwatch);
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("Provides WATCH support", VF_VENDOR);
 	}

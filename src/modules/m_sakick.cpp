@@ -88,7 +88,7 @@ class ModuleSakick : public Module
 	{
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("Provides a SAKICK command", VF_OPTCOMMON|VF_VENDOR);
 	}

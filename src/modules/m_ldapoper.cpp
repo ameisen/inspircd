@@ -64,7 +64,7 @@ class LDAPOperBase : public LDAPInterface
 	{
 	}
 
-	void OnError(const LDAPResult& err) CXX11_OVERRIDE
+	void OnError(const LDAPResult& err) override
 	{
 		ServerInstance->SNO->WriteToSnoMask('a', "Error searching LDAP server: %s", err.getError().c_str());
 		Fallback();
@@ -80,7 +80,7 @@ class BindInterface : public LDAPOperBase
 	{
 	}
 
-	void OnResult(const LDAPResult& r) CXX11_OVERRIDE
+	void OnResult(const LDAPResult& r) override
 	{
 		User* user = ServerInstance->FindUUID(uid);
 		ServerConfig::OperIndex::const_iterator iter = ServerInstance->Config->oper_blocks.find(opername);
@@ -132,7 +132,7 @@ class SearchInterface : public LDAPOperBase
 	{
 	}
 
-	void OnResult(const LDAPResult& result) CXX11_OVERRIDE
+	void OnResult(const LDAPResult& result) override
 	{
 		if (!HandleResult(result))
 			Fallback();
@@ -155,7 +155,7 @@ class AdminBindInterface : public LDAPInterface
 	{
 	}
 
-	void OnResult(const LDAPResult& r) CXX11_OVERRIDE
+	void OnResult(const LDAPResult& r) override
 	{
 		dynamic_reference<LDAPProvider> LDAP(me, provider);
 		if (LDAP)
@@ -172,7 +172,7 @@ class AdminBindInterface : public LDAPInterface
 		delete this;
 	}
 
-	void OnError(const LDAPResult& err) CXX11_OVERRIDE
+	void OnError(const LDAPResult& err) override
 	{
 		ServerInstance->SNO->WriteToSnoMask('a', "Error binding as manager to LDAP server: " + err.getError());
 		delete this;
@@ -192,7 +192,7 @@ class ModuleLDAPAuth : public Module
 		me = this;
 	}
 
-	void ReadConfig(ConfigStatus& status) CXX11_OVERRIDE
+	void ReadConfig(ConfigStatus& status) override
 	{
 		ConfigTag* tag = ServerInstance->Config->ConfValue("ldapoper");
 
@@ -201,7 +201,7 @@ class ModuleLDAPAuth : public Module
 		attribute = tag->getString("attribute");
 	}
 
-	ModResult OnPreCommand(std::string& command, std::vector<std::string>& parameters, LocalUser* user, bool validated, const std::string& original_line) CXX11_OVERRIDE
+	ModResult OnPreCommand(std::string& command, std::vector<std::string>& parameters, LocalUser* user, bool validated, const std::string& original_line) override
 	{
 		if (validated && command == "OPER" && parameters.size() >= 2)
 		{
@@ -239,7 +239,7 @@ class ModuleLDAPAuth : public Module
 		return MOD_RES_PASSTHRU;
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("Adds the ability to authenticate opers via LDAP", VF_VENDOR);
 	}

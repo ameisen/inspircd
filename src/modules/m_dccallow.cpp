@@ -275,7 +275,7 @@ class ModuleDCCAllow : public Module
 	{
 	}
 
-	void OnUserQuit(User* user, const std::string &reason, const std::string &oper_message) CXX11_OVERRIDE
+	void OnUserQuit(User* user, const std::string &reason, const std::string &oper_message) override
 	{
 		dccallowlist* udl = ext.get(user);
 
@@ -288,12 +288,12 @@ class ModuleDCCAllow : public Module
 		RemoveNick(user);
 	}
 
-	void OnUserPostNick(User* user, const std::string &oldnick) CXX11_OVERRIDE
+	void OnUserPostNick(User* user, const std::string &oldnick) override
 	{
 		RemoveNick(user);
 	}
 
-	ModResult OnUserPreMessage(User* user, void* dest, int target_type, std::string& text, char status, CUList& exempt_list, MessageType msgtype) CXX11_OVERRIDE
+	ModResult OnUserPreMessage(User* user, void* dest, int target_type, std::string& text, char status, CUList& exempt_list, MessageType msgtype) override
 	{
 		if (!IS_LOCAL(user))
 			return MOD_RES_PASSTHRU;
@@ -478,7 +478,7 @@ class ModuleDCCAllow : public Module
 		}
 	}
 
-	void ReadConfig(ConfigStatus& status) CXX11_OVERRIDE
+	void ReadConfig(ConfigStatus& status) override
 	{
 		ConfigTag* tag = ServerInstance->Config->ConfValue("dccallow");
 		cmd.maxentries = tag->getInt("maxentries", 20);
@@ -494,7 +494,7 @@ class ModuleDCCAllow : public Module
 		}
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("Provides support for the /DCCALLOW command", VF_COMMON | VF_VENDOR);
 	}

@@ -33,7 +33,7 @@ class ModuleRegOnlyCreate : public Module
 	{
 	}
 
-	ModResult OnUserPreJoin(LocalUser* user, Channel* chan, const std::string& cname, std::string& privs, const std::string& keygiven) CXX11_OVERRIDE
+	ModResult OnUserPreJoin(LocalUser* user, Channel* chan, const std::string& cname, std::string& privs, const std::string& keygiven) override
 	{
 		if (chan)
 			return MOD_RES_PASSTHRU;
@@ -53,7 +53,7 @@ class ModuleRegOnlyCreate : public Module
 		return MOD_RES_DENY;
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("Prevents users whose nicks are not registered from creating new channels", VF_VENDOR);
 	}

@@ -127,7 +127,7 @@ class TreeSocket : public BufferedSocket
 	 * changes and kills) must be processed even if their claimed source doesn't exist. If the given command is
 	 * such a command and the source does not exist, the function returns a valid FakeUser that can be used to
 	 * to process the command with.
-	 * @return The command source to use when processing the command or NULL if the source wasn't found.
+	 * @return The command source to use when processing the command or nullptr if the source wasn't found.
 	 * Note that the direction of the returned source is not verified.
 	 */
 	User* FindSource(const std::string& prefix, const std::string& command);
@@ -147,7 +147,7 @@ class TreeSocket : public BufferedSocket
 	 * an appropriate snotice is generated, an ERROR message is sent and the connection is closed.
 	 * Failing to find a matching link block counts as an error.
 	 * @param params Parameters they sent in the SERVER command
-	 * @return Link block for the remote server, or NULL if an error occurred
+	 * @return Link block for the remote server, or nullptr if an error occurred
 	 */
 	Link* AuthRemote(const parameterlist& params);
 
@@ -200,7 +200,7 @@ class TreeSocket : public BufferedSocket
 	 */
 	void CleanNegotiationInfo();
 
-	CullResult cull() CXX11_OVERRIDE;
+	CullResult cull() override;
 	/** Destructor
 	 */
 	~TreeSocket();
@@ -216,11 +216,11 @@ class TreeSocket : public BufferedSocket
 	 * to server docs on the inspircd.org site, the other side
 	 * will then send back its own server string.
 	 */
-	void OnConnected() CXX11_OVERRIDE;
+	void OnConnected() override;
 
 	/** Handle socket error event
 	 */
-	void OnError(BufferedSocketError e) CXX11_OVERRIDE;
+	void OnError(BufferedSocketError e) override;
 
 	/** Sends an error to the remote server, and displays it locally to show
 	 * that it was sent.
@@ -270,7 +270,7 @@ class TreeSocket : public BufferedSocket
 	/** This function is called when we receive data from a remote
 	 * server.
 	 */
-	void OnDataReady() CXX11_OVERRIDE;
+	void OnDataReady() override;
 
 	/** Send one or more complete lines down the socket
 	 */
@@ -299,10 +299,10 @@ class TreeSocket : public BufferedSocket
 
 	/** Handle socket timeout from connect()
 	 */
-	void OnTimeout() CXX11_OVERRIDE;
+	void OnTimeout() override;
 	/** Handle server quit on close
 	 */
-	void Close() CXX11_OVERRIDE;
+	void Close() override;
 
 	/** Fixes messages coming from old servers so the new command handlers understand them
 	 */

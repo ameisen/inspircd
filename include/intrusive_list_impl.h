@@ -29,7 +29,7 @@ class INSPIRCD_INTRUSIVE_LIST_NAME
 		T* curr;
 
 	 public:
-		iterator(T* i = NULL)
+		iterator(T* i = nullptr)
 			: curr(i)
 		{
 		}
@@ -68,9 +68,9 @@ class INSPIRCD_INTRUSIVE_LIST_NAME
 	typedef iterator const_iterator;
 
 	INSPIRCD_INTRUSIVE_LIST_NAME()
-		: listhead(NULL)
+		: listhead(nullptr)
 #ifdef INSPIRCD_INTRUSIVE_LIST_HAS_TAIL
-		, listtail(NULL)
+		, listtail(nullptr)
 #endif
 		, listsize(0)
 	{

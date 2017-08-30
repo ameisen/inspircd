@@ -67,7 +67,7 @@ class ModuleSATopic : public Module
 	{
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("Provides a SATOPIC command", VF_VENDOR);
 	}

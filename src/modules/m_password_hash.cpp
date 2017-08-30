@@ -87,7 +87,7 @@ class ModuleOperHash : public Module
 	{
 	}
 
-	ModResult OnPassCompare(Extensible* ex, const std::string &data, const std::string &input, const std::string &hashtype) CXX11_OVERRIDE
+	ModResult OnPassCompare(Extensible* ex, const std::string &data, const std::string &input, const std::string &hashtype) override
 	{
 		if (!hashtype.compare(0, 5, "hmac-", 5))
 		{
@@ -131,7 +131,7 @@ class ModuleOperHash : public Module
 		return MOD_RES_PASSTHRU;
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("Allows for hashed oper passwords",VF_VENDOR);
 	}

@@ -115,9 +115,9 @@ class CoreExport UserManager : public fakederef<UserManager>
 	 * When this method returns the user provided will be quit, but the User object will continue to be valid and will be deleted at the end of the current main loop iteration.
 	 * @param user The user to remove
 	 * @param quitreason The quit reason to show to normal users
-	 * @param operreason The quit reason to show to opers, can be NULL if same as quitreason
+	 * @param operreason The quit reason to show to opers, can be nullptr if same as quitreason
 	 */
-	void QuitUser(User* user, const std::string& quitreason, const std::string* operreason = NULL);
+	void QuitUser(User* user, const std::string& quitreason, const std::string* operreason = nullptr);
 
 	/** Add a user to the clone map
 	 * @param user The user to add

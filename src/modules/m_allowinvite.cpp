@@ -34,12 +34,12 @@ class ModuleAllowInvite : public Module
 	{
 	}
 
-	void On005Numeric(std::map<std::string, std::string>& tokens) CXX11_OVERRIDE
+	void On005Numeric(std::map<std::string, std::string>& tokens) override
 	{
 		tokens["EXTBAN"].push_back('A');
 	}
 
-	ModResult OnUserPreInvite(User* user,User* dest,Channel* channel, time_t timeout) CXX11_OVERRIDE
+	ModResult OnUserPreInvite(User* user,User* dest,Channel* channel, time_t timeout) override
 	{
 		if (IS_LOCAL(user))
 		{
@@ -60,7 +60,7 @@ class ModuleAllowInvite : public Module
 		return MOD_RES_PASSTHRU;
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("Provides support for channel mode +A, allowing /invite freely on a channel and extban A to deny specific users it",VF_VENDOR);
 	}

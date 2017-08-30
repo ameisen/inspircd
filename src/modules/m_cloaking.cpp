@@ -271,7 +271,7 @@ class ModuleCloaking : public Module
 		return rv;
 	}
 
-	ModResult OnCheckBan(User* user, Channel* chan, const std::string& mask) CXX11_OVERRIDE
+	ModResult OnCheckBan(User* user, Channel* chan, const std::string& mask) override
 	{
 		LocalUser* lu = IS_LOCAL(user);
 		if (!lu)
@@ -289,7 +289,7 @@ class ModuleCloaking : public Module
 		return MOD_RES_PASSTHRU;
 	}
 
-	void Prioritize() CXX11_OVERRIDE
+	void Prioritize() override
 	{
 		/* Needs to be after m_banexception etc. */
 		ServerInstance->Modules->SetPriority(this, I_OnCheckBan, PRIORITY_LAST);
@@ -297,7 +297,7 @@ class ModuleCloaking : public Module
 
 	// this unsets umode +x on every host change. If we are actually doing a +x
 	// mode change, we will call SetMode back to true AFTER the host change is done.
-	void OnChangeHost(User* u, const std::string& host) CXX11_OVERRIDE
+	void OnChangeHost(User* u, const std::string& host) override
 	{
 		if (u->IsModeSet(cu))
 		{
@@ -306,7 +306,7 @@ class ModuleCloaking : public Module
 		}
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		std::string testcloak = "broken";
 		if (Hash)
@@ -323,7 +323,7 @@ class ModuleCloaking : public Module
 		return Version("Provides masking of user hostnames", VF_COMMON|VF_VENDOR, testcloak);
 	}
 
-	void ReadConfig(ConfigStatus& status) CXX11_OVERRIDE
+	void ReadConfig(ConfigStatus& status) override
 	{
 		ConfigTag* tag = ServerInstance->Config->ConfValue("cloak");
 		prefix = tag->getString("prefix");
@@ -366,7 +366,7 @@ class ModuleCloaking : public Module
 		return chost;
 	}
 
-	void OnUserConnect(LocalUser* dest) CXX11_OVERRIDE
+	void OnUserConnect(LocalUser* dest) override
 	{
 		std::string* cloak = cu.ext.get(dest);
 		if (cloak)

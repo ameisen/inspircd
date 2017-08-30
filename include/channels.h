@@ -140,9 +140,9 @@ class CoreExport Channel : public Extensible
 	 * @param topic The topic to set it to.
 	 * @param topicts Timestamp of the new topic.
 	 * @param setter Setter string, may be used when the original setter is no longer online.
-	 * If omitted or NULL, the setter string is obtained from the user.
+	 * If omitted or nullptr, the setter string is obtained from the user.
 	 */
-	void SetTopic(User* user, const std::string& topic, time_t topicts, const std::string* setter = NULL);
+	void SetTopic(User* user, const std::string& topic, time_t topicts, const std::string* setter = nullptr);
 
 	/** Obtain the channel "user counter"
 	 * This returns the number of users on this channel
@@ -205,7 +205,7 @@ class CoreExport Channel : public Extensible
 	}
 
 	/** Part a user from this channel with the given reason.
-	 * If the reason field is NULL, no reason will be sent.
+	 * If the reason field is nullptr, no reason will be sent.
 	 * @param user The user who is parting (must be on this channel)
 	 * @param reason The part reason
 	 * @return True if the user was on the channel and left, false if they weren't and nothing happened
@@ -219,18 +219,18 @@ class CoreExport Channel : public Extensible
 	 * @param override If true, override all join restrictions such as +bkil
 	 * @return A pointer to the Channel the user was joined to. A new Channel may have
 	 * been created if the channel did not exist before the user was joined to it.
-	 * If the user could not be joined to a channel, the return value is NULL.
+	 * If the user could not be joined to a channel, the return value is nullptr.
 	 */
 	static Channel* JoinUser(LocalUser* user, std::string channame, bool override = false, const std::string& key = "");
 
 	/** Join a user to an existing channel, without doing any permission checks
 	 * @param user The user to join to the channel
-	 * @param privs Priviliges (prefix mode letters) to give to this user, may be NULL
+	 * @param privs Priviliges (prefix mode letters) to give to this user, may be nullptr
 	 * @param bursting True if this join is the result of a netburst (passed to modules in the OnUserJoin hook)
 	 * @param created_by_local True if this channel was just created by a local user (passed to modules in the OnUserJoin hook)
-	 * @return A newly created Membership object, or NULL if the user was already inside the channel or if the user is a server user
+	 * @return A newly created Membership object, or nullptr if the user was already inside the channel or if the user is a server user
 	 */
-	Membership* ForceJoin(User* user, const std::string* privs = NULL, bool bursting = false, bool created_by_local = false);
+	Membership* ForceJoin(User* user, const std::string* privs = nullptr, bool bursting = false, bool created_by_local = false);
 
 	/** Write to a channel, from a user, using va_args for text
 	 * @param user User whos details to prefix the line with

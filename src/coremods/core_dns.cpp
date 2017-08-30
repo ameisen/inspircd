@@ -442,7 +442,7 @@ class MyManager : public Manager, public Timer, public EventHandler
 		}
 	}
 
-	void Process(DNS::Request* req) CXX11_OVERRIDE
+	void Process(DNS::Request* req) override
 	{
 		if ((unloading) || (req->creator->dying))
 			throw Exception("Module is being unloaded");
@@ -509,13 +509,13 @@ class MyManager : public Manager, public Timer, public EventHandler
 		ServerInstance->Timers.AddTimer(req);
 	}
 
-	void RemoveRequest(DNS::Request* req) CXX11_OVERRIDE
+	void RemoveRequest(DNS::Request* req) override
 	{
 		if (requests[req->id] == req)
 			requests[req->id] = nullptr;
 	}
 
-	std::string GetErrorStr(Error e) CXX11_OVERRIDE
+	std::string GetErrorStr(Error e) override
 	{
 		switch (e)
 		{
@@ -543,12 +543,12 @@ class MyManager : public Manager, public Timer, public EventHandler
 		}
 	}
 
-	void OnEventHandlerError(int errcode) CXX11_OVERRIDE
+	void OnEventHandlerError(int errcode) override
 	{
 		ServerInstance->Logs->Log(MODNAME, LOG_DEBUG, "UDP socket got an error event");
 	}
 
-	void OnEventHandlerRead() CXX11_OVERRIDE
+	void OnEventHandlerRead() override
 	{
 		unsigned char buffer[524];
 		irc::sockets::sockaddrs from;
@@ -664,7 +664,7 @@ class MyManager : public Manager, public Timer, public EventHandler
 		delete request;
 	}
 
-	bool Tick(time_t now) CXX11_OVERRIDE
+	bool Tick(time_t now) override
 	{
 		ServerInstance->Logs->Log(MODNAME, LOG_DEBUG, "cache: purging DNS cache");
 
@@ -808,7 +808,7 @@ class ModuleDNS : public Module
 	{
 	}
 
-	void ReadConfig(ConfigStatus& status) CXX11_OVERRIDE
+	void ReadConfig(ConfigStatus& status) override
 	{
 		std::string oldserver = DNSServer;
 		const std::string oldip = SourceIP;
@@ -826,7 +826,7 @@ class ModuleDNS : public Module
 			this->manager.Rehash(DNSServer, SourceIP, SourcePort);
 	}
 
-	void OnUnloadModule(Module* mod) CXX11_OVERRIDE
+	void OnUnloadModule(Module* mod) override
 	{
 		for (unsigned int i = 0; i <= MAX_REQUEST_ID; ++i)
 		{
@@ -845,7 +845,7 @@ class ModuleDNS : public Module
 		}
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("DNS support", VF_CORE|VF_VENDOR);
 	}

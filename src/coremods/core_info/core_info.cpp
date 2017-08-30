@@ -44,7 +44,7 @@ class CoreModInfo : public Module
 	{
 	}
 
-	void ReadConfig(ConfigStatus& status) CXX11_OVERRIDE
+	void ReadConfig(ConfigStatus& status) override
 	{
 		ConfigTag* tag = ServerInstance->Config->ConfValue("admin");
 		cmdadmin.AdminName = tag->getString("name");
@@ -52,7 +52,7 @@ class CoreModInfo : public Module
 		cmdadmin.AdminNick = tag->getString("nick", "admin");
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("Provides the ADMIN, COMMANDS, INFO, MODULES, MOTD, TIME and VERSION commands", VF_VENDOR|VF_CORE);
 	}

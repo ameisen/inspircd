@@ -69,7 +69,7 @@ class CoreExport ExtensionItem : public ServiceProvider, public usecountbase
 
 	/** Register this object in the ExtensionManager
 	 */
-	void RegisterService() CXX11_OVERRIDE;
+	void RegisterService() override;
 
  protected:
 	/** Get the item from the internal map */
@@ -111,7 +111,7 @@ class CoreExport Extensible : public classbase
 	inline const ExtensibleStore& GetExtList() const { return extensions; }
 
 	Extensible();
-	virtual CullResult cull() CXX11_OVERRIDE;
+	virtual CullResult cull() override;
 	virtual ~Extensible();
 	void doUnhookExtensions(const std::vector<reference<ExtensionItem> >& toRemove);
 

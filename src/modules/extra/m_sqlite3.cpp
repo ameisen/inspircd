@@ -234,7 +234,7 @@ class ModuleSQLite3 : public Module
 		conns.clear();
 	}
 
-	void ReadConfig(ConfigStatus& status) CXX11_OVERRIDE
+	void ReadConfig(ConfigStatus& status) override
 	{
 		ClearConns();
 		ConfigTagList tags = ServerInstance->Config->ConfTags("database");
@@ -248,7 +248,7 @@ class ModuleSQLite3 : public Module
 		}
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("sqlite3 provider", VF_VENDOR);
 	}

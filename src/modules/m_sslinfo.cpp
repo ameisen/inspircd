@@ -133,7 +133,7 @@ class UserCertificateAPIImpl : public UserCertificateAPIBase
 	{
 	}
 
- 	ssl_cert* GetCertificate(User* user) CXX11_OVERRIDE
+ 	ssl_cert* GetCertificate(User* user) override
  	{
  		return ext.get(user);
  	}
@@ -152,12 +152,12 @@ class ModuleSSLInfo : public Module, public Whois::EventListener
 	{
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("SSL Certificate Utilities", VF_VENDOR);
 	}
 
-	void OnWhois(Whois::Context& whois) CXX11_OVERRIDE
+	void OnWhois(Whois::Context& whois) override
 	{
 		ssl_cert* cert = cmd.CertExt.get(whois.GetTarget());
 		if (cert)
@@ -169,7 +169,7 @@ class ModuleSSLInfo : public Module, public Whois::EventListener
 		}
 	}
 
-	ModResult OnPreCommand(std::string &command, std::vector<std::string> &parameters, LocalUser *user, bool validated, const std::string &original_line) CXX11_OVERRIDE
+	ModResult OnPreCommand(std::string &command, std::vector<std::string> &parameters, LocalUser *user, bool validated, const std::string &original_line) override
 	{
 		if ((command == "OPER") && (validated))
 		{
@@ -200,14 +200,14 @@ class ModuleSSLInfo : public Module, public Whois::EventListener
 		return MOD_RES_PASSTHRU;
 	}
 
-	void OnUserConnect(LocalUser* user) CXX11_OVERRIDE
+	void OnUserConnect(LocalUser* user) override
 	{
 		ssl_cert* cert = SSLClientCert::GetCertificate(&user->eh);
 		if (cert)
 			cmd.CertExt.set(user, cert);
 	}
 
-	void OnPostConnect(User* user) CXX11_OVERRIDE
+	void OnPostConnect(User* user) override
 	{
 		LocalUser* const localuser = IS_LOCAL(user);
 		if (!localuser)
@@ -240,7 +240,7 @@ class ModuleSSLInfo : public Module, public Whois::EventListener
 		}
 	}
 
-	ModResult OnSetConnectClass(LocalUser* user, ConnectClass* myclass) CXX11_OVERRIDE
+	ModResult OnSetConnectClass(LocalUser* user, ConnectClass* myclass) override
 	{
 		ssl_cert* cert = SSLClientCert::GetCertificate(&user->eh);
 		bool ok = true;

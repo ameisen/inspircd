@@ -51,12 +51,12 @@ public:
 	{
 	}
 
-	void On005Numeric(std::map<std::string, std::string>& tokens) CXX11_OVERRIDE
+	void On005Numeric(std::map<std::string, std::string>& tokens) override
 	{
 		tokens["INVEX"] = "I";
 	}
 
-	ModResult OnCheckInvite(User* user, Channel* chan) CXX11_OVERRIDE
+	ModResult OnCheckInvite(User* user, Channel* chan) override
 	{
 		ListModeBase::ModeList* list = ie.GetList(chan);
 		if (list)
@@ -73,20 +73,20 @@ public:
 		return MOD_RES_PASSTHRU;
 	}
 
-	ModResult OnCheckKey(User* user, Channel* chan, const std::string& key) CXX11_OVERRIDE
+	ModResult OnCheckKey(User* user, Channel* chan, const std::string& key) override
 	{
 		if (invite_bypass_key)
 			return OnCheckInvite(user, chan);
 		return MOD_RES_PASSTHRU;
 	}
 
-	void ReadConfig(ConfigStatus& status) CXX11_OVERRIDE
+	void ReadConfig(ConfigStatus& status) override
 	{
 		invite_bypass_key = ServerInstance->Config->ConfValue("inviteexception")->getBool("bypasskey", true);
 		ie.DoRehash();
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("Provides support for the +I channel mode", VF_VENDOR);
 	}

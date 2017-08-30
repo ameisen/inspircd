@@ -159,7 +159,7 @@ class SQLConn : public SQLProvider, public EventHandler
 		}
 	}
 
-	CullResult cull() CXX11_OVERRIDE
+	CullResult cull() override
 	{
 		this->SQLProvider::cull();
 		ServerInstance->Modules->DelService(*this);
@@ -182,17 +182,17 @@ class SQLConn : public SQLProvider, public EventHandler
 		}
 	}
 
-	void OnEventHandlerRead() CXX11_OVERRIDE
+	void OnEventHandlerRead() override
 	{
 		DoEvent();
 	}
 
-	void OnEventHandlerWrite() CXX11_OVERRIDE
+	void OnEventHandlerWrite() override
 	{
 		DoEvent();
 	}
 
-	void OnEventHandlerError(int errornum) CXX11_OVERRIDE
+	void OnEventHandlerError(int errornum) override
 	{
 		DelayReconnect();
 	}
@@ -389,7 +389,7 @@ restart:
 		}
 	}
 
-	void submit(SQLQuery *req, const std::string& q) CXX11_OVERRIDE
+	void submit(SQLQuery *req, const std::string& q) override
 	{
 		if (qinprog.q.empty())
 		{
@@ -402,7 +402,7 @@ restart:
 		}
 	}
 
-	void submit(SQLQuery *req, const std::string& q, const ParamL& p) CXX11_OVERRIDE
+	void submit(SQLQuery *req, const std::string& q, const ParamL& p) override
 	{
 		std::string res;
 		unsigned int param = 0;
@@ -427,7 +427,7 @@ restart:
 		submit(req, res);
 	}
 
-	void submit(SQLQuery *req, const std::string& q, const ParamM& p) CXX11_OVERRIDE
+	void submit(SQLQuery *req, const std::string& q, const ParamM& p) override
 	{
 		std::string res;
 		for(std::string::size_type i = 0; i < q.length(); i++)
@@ -510,7 +510,7 @@ class ModulePgSQL : public Module
 		ClearAllConnections();
 	}
 
-	void ReadConfig(ConfigStatus& status) CXX11_OVERRIDE
+	void ReadConfig(ConfigStatus& status) override
 	{
 		ReadConf();
 	}
@@ -551,7 +551,7 @@ class ModulePgSQL : public Module
 		connections.clear();
 	}
 
-	void OnUnloadModule(Module* mod) CXX11_OVERRIDE
+	void OnUnloadModule(Module* mod) override
 	{
 		SQLerror err(SQL_BAD_DBID);
 		for(ConnMap::iterator i = connections.begin(); i != connections.end(); i++)
@@ -579,7 +579,7 @@ class ModulePgSQL : public Module
 		}
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("PostgreSQL Service Provider module for all other m_sql* modules, uses v2 of the SQL API", VF_VENDOR);
 	}

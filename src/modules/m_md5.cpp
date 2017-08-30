@@ -253,7 +253,7 @@ class ModuleMD5 : public Module
 	{
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("Implements MD5 hashing",VF_VENDOR);
 	}

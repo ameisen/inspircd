@@ -642,12 +642,12 @@ class OpenSSLIOHook : public SSLIOHook
 		Handshake(sock);
 	}
 
-	void OnStreamSocketClose(StreamSocket* user) CXX11_OVERRIDE
+	void OnStreamSocketClose(StreamSocket* user) override
 	{
 		CloseSession();
 	}
 
-	int OnStreamSocketRead(StreamSocket* user, std::string& recvq) CXX11_OVERRIDE
+	int OnStreamSocketRead(StreamSocket* user, std::string& recvq) override
 	{
 		// Finish handshake if needed
 		int prepret = PrepareIO(user);
@@ -707,7 +707,7 @@ class OpenSSLIOHook : public SSLIOHook
 		}
 	}
 
-	int OnStreamSocketWrite(StreamSocket* user, StreamSocket::SendQueue& sendq) CXX11_OVERRIDE
+	int OnStreamSocketWrite(StreamSocket* user, StreamSocket::SendQueue& sendq) override
 	{
 		// Finish handshake if needed
 		int prepret = PrepareIO(user);
@@ -770,7 +770,7 @@ class OpenSSLIOHook : public SSLIOHook
 		return 1;
 	}
 
-	void GetCiphersuite(std::string& out) const CXX11_OVERRIDE
+	void GetCiphersuite(std::string& out) const override
 	{
 		if (!IsHandshakeDone())
 			return;
@@ -850,12 +850,12 @@ class OpenSSLIOHookProvider : public refcountbase, public IOHookProvider
 		ServerInstance->Modules->DelService(*this);
 	}
 
-	void OnAccept(StreamSocket* sock, irc::sockets::sockaddrs* client, irc::sockets::sockaddrs* server) CXX11_OVERRIDE
+	void OnAccept(StreamSocket* sock, irc::sockets::sockaddrs* client, irc::sockets::sockaddrs* server) override
 	{
 		new OpenSSLIOHook(this, sock, profile->CreateServerSession(), profile);
 	}
 
-	void OnConnect(StreamSocket* sock) CXX11_OVERRIDE
+	void OnConnect(StreamSocket* sock) override
 	{
 		new OpenSSLIOHook(this, sock, profile->CreateClientSession(), profile);
 	}
@@ -934,7 +934,7 @@ class ModuleSSLOpenSSL : public Module
 #endif
 	}
 
-	void init() CXX11_OVERRIDE
+	void init() override
 	{
 		ServerInstance->Logs->Log(MODNAME, LOG_DEFAULT, "OpenSSL lib version \"%s\" module was compiled for \"" OPENSSL_VERSION_TEXT "\"", SSLeay_version(SSLEAY_VERSION));
 
@@ -947,7 +947,7 @@ class ModuleSSLOpenSSL : public Module
 		ReadProfiles();
 	}
 
-	void OnModuleRehash(User* user, const std::string &param) CXX11_OVERRIDE
+	void OnModuleRehash(User* user, const std::string &param) override
 	{
 		if (param != "ssl")
 			return;
@@ -962,7 +962,7 @@ class ModuleSSLOpenSSL : public Module
 		}
 	}
 
-	void OnCleanup(int target_type, void* item) CXX11_OVERRIDE
+	void OnCleanup(int target_type, void* item) override
 	{
 		if (target_type == TYPE_USER)
 		{
@@ -977,7 +977,7 @@ class ModuleSSLOpenSSL : public Module
 		}
 	}
 
-	ModResult OnCheckReady(LocalUser* user) CXX11_OVERRIDE
+	ModResult OnCheckReady(LocalUser* user) override
 	{
 		const OpenSSLIOHook* const iohook = static_cast<OpenSSLIOHook*>(user->eh.GetModHook(this));
 		if ((iohook) && (!iohook->IsHandshakeDone()))
@@ -985,7 +985,7 @@ class ModuleSSLOpenSSL : public Module
 		return MOD_RES_PASSTHRU;
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("Provides SSL support for clients", VF_VENDOR);
 	}

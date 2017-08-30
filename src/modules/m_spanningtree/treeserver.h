@@ -27,9 +27,9 @@
 /** Each server in the tree is represented by one class of
  * type TreeServer. A locally connected TreeServer can
  * have a class of type TreeSocket associated with it, for
- * remote servers, the TreeSocket entry will be NULL.
+ * remote servers, the TreeSocket entry will be nullptr.
  * Each server also maintains a pointer to its parent
- * (NULL if this server is ours, at the top of the tree)
+ * (nullptr if this server is ours, at the top of the tree)
  * and a pointer to its "Route" (see the comments in the
  * constructors below), and also a dynamic list of pointers
  * to its children which can be iterated recursively
@@ -124,7 +124,7 @@ class TreeServer : public Server
 
 	/** Returns true if this server is the tree root (i.e.: us)
 	 */
-	bool IsRoot() const { return (this->Parent == NULL); }
+	bool IsRoot() const { return (this->Parent == nullptr); }
 
 	/** Returns true if this server is locally connected
 	 */
@@ -157,12 +157,12 @@ class TreeServer : public Server
 	bool Hidden;
 
 	/** Get the TreeSocket pointer for local servers.
-	 * For remote servers, this returns NULL.
+	 * For remote servers, this returns nullptr.
 	 */
 	TreeSocket* GetSocket() const { return Socket; }
 
 	/** Get the parent server.
-	 * For the root node, this returns NULL.
+	 * For the root node, this returns nullptr.
 	 */
 	TreeServer* GetParent() const { return Parent; }
 
@@ -219,7 +219,7 @@ class TreeServer : public Server
 	 */
 	void OnPong() { pingtimer.OnPong(); }
 
-	CullResult cull() CXX11_OVERRIDE;
+	CullResult cull() override;
 
 	/** Destructor, deletes ServerUser unless IsRoot()
 	 */

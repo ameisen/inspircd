@@ -28,7 +28,7 @@
 #include "inspircd.h"
 #include <fstream>
 
-class lwbNickHandler : public HandlerBase1<bool, const std::string&>
+class lwbNickHandler : public Handler<bool, const std::string&>
 {
  public:
 	bool Call(const std::string&);
@@ -220,7 +220,7 @@ class ModuleNationalChars : public Module
 	lwbNickHandler myhandler;
 	std::string charset, casemapping;
 	unsigned char m_additional[256], m_additionalUp[256], m_lower[256], m_upper[256];
-	caller1<bool, const std::string&> rememberer;
+	Caller<bool, const std::string&> rememberer;
 	bool forcequit;
 	const unsigned char * lowermap_rememberer;
 	unsigned char prev_map[256];
@@ -254,7 +254,7 @@ class ModuleNationalChars : public Module
 		memcpy(prev_map, national_case_insensitive_map, sizeof(prev_map));
 	}
 
-	void init() CXX11_OVERRIDE
+	void init() override
 	{
 		memcpy(m_lower, rfc_case_insensitive_map, 256);
 		national_case_insensitive_map = m_lower;
@@ -262,12 +262,12 @@ class ModuleNationalChars : public Module
 		ServerInstance->IsNick = &myhandler;
 	}
 
-	void On005Numeric(std::map<std::string, std::string>& tokens) CXX11_OVERRIDE
+	void On005Numeric(std::map<std::string, std::string>& tokens) override
 	{
 		tokens["CASEMAPPING"] = casemapping;
 	}
 
-	void ReadConfig(ConfigStatus& status) CXX11_OVERRIDE
+	void ReadConfig(ConfigStatus& status) override
 	{
 		ConfigTag* tag = ServerInstance->Config->ConfValue("nationalchars");
 		charset = tag->getString("file");
@@ -314,7 +314,7 @@ class ModuleNationalChars : public Module
 		CheckRehash();
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("Provides an ability to have non-RFC1459 nicks & support for national CASEMAPPING", VF_VENDOR | VF_COMMON, charset);
 	}

@@ -55,7 +55,7 @@ class Events::ModuleEventProvider : public ServiceProvider, private dynamic_refe
 	friend class ModuleEventListener;
 
  private:
-	void OnCapture() CXX11_OVERRIDE
+	void OnCapture() override
 	{
 		// If someone else holds the list from now on, clear mine. See below for more info.
 		if (*prov != this)
@@ -80,13 +80,13 @@ class Events::ModuleEventProvider : public ServiceProvider, private dynamic_refe
  */
 class Events::ModuleEventListener : private dynamic_reference_base::CaptureHook
 {
-	/** Reference to the provider, can be NULL if none of the provider modules are loaded
+	/** Reference to the provider, can be nullptr if none of the provider modules are loaded
 	 */
 	dynamic_reference_nocheck<ModuleEventProvider> prov;
 
 	/** Called by the dynref when the event provider becomes available
 	 */
-	void OnCapture() CXX11_OVERRIDE
+	void OnCapture() override
 	{
 		prov->subscribers.push_back(this);
 	}

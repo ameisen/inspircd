@@ -76,8 +76,8 @@ class CommandMode : public Command
 
 	/** Show the current modes of a channel or a user to a user.
 	 * @param user User to show the modes to.
-	 * @param targetuser User whose modes to show. NULL if showing the modes of a channel.
-	 * @param targetchannel Channel whose modes to show. NULL if showing the modes of a user.
+	 * @param targetuser User whose modes to show. nullptr if showing the modes of a channel.
+	 * @param targetchannel Channel whose modes to show. nullptr if showing the modes of a user.
 	 */
 	void DisplayCurrentModes(User* user, User* targetuser, Channel* targetchannel);
 

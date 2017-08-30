@@ -84,7 +84,7 @@ class ModuleShowwhois : public Module, public Whois::EventListener
 	{
 	}
 
-	void ReadConfig(ConfigStatus& status) CXX11_OVERRIDE
+	void ReadConfig(ConfigStatus& status) override
 	{
 		ConfigTag* tag = ServerInstance->Config->ConfValue("showwhois");
 
@@ -92,12 +92,12 @@ class ModuleShowwhois : public Module, public Whois::EventListener
 		ShowWhoisFromOpers = tag->getBool("showfromopers", true);
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("Allows opers to set +W to see when a user uses WHOIS on them",VF_OPTCOMMON|VF_VENDOR);
 	}
 
-	void OnWhois(Whois::Context& whois) CXX11_OVERRIDE
+	void OnWhois(Whois::Context& whois) override
 	{
 		User* const source = whois.GetSource();
 		User* const dest = whois.GetTarget();

@@ -33,7 +33,7 @@ class WhoisContextImpl : public Whois::Context
 	}
 
 	using Whois::Context::SendLine;
-	void SendLine(Numeric::Numeric& numeric) CXX11_OVERRIDE;
+	void SendLine(Numeric::Numeric& numeric) override;
 };
 
 void WhoisContextImpl::SendLine(Numeric::Numeric& numeric)

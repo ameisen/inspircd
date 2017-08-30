@@ -95,7 +95,7 @@ class ModuleKnock : public Module
 	{
 	}
 
-	void ReadConfig(ConfigStatus& status) CXX11_OVERRIDE
+	void ReadConfig(ConfigStatus& status) override
 	{
 		std::string knocknotify = ServerInstance->Config->ConfValue("knock")->getString("notify");
 		if (stdalgo::string::equalsci(knocknotify, "numeric"))
@@ -115,7 +115,7 @@ class ModuleKnock : public Module
 		}
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("Provides support for /KNOCK and channel mode +K", VF_OPTCOMMON | VF_VENDOR);
 	}

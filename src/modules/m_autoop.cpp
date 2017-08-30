@@ -79,7 +79,7 @@ class ModuleAutoOp : public Module
 	{
 	}
 
-	void OnPostJoin(Membership *memb) CXX11_OVERRIDE
+	void OnPostJoin(Membership *memb) override
 	{
 		if (!IS_LOCAL(memb->user))
 			return;
@@ -104,12 +104,12 @@ class ModuleAutoOp : public Module
 		}
 	}
 
-	void ReadConfig(ConfigStatus& status) CXX11_OVERRIDE
+	void ReadConfig(ConfigStatus& status) override
 	{
 		mh.DoRehash();
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("Provides support for the +w channel mode", VF_VENDOR);
 	}

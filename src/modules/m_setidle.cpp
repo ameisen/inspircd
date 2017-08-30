@@ -60,7 +60,7 @@ class ModuleSetIdle : public Module
 	{
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("Allows opers to set their idle time", VF_VENDOR);
 	}

@@ -88,7 +88,7 @@ class ExemptHandler : public CheckExemption::EventListener
 		return mh ? mh->IsPrefixMode() : nullptr;
 	}
 
-	ModResult OnCheckExemption(User* user, Channel* chan, const std::string& restriction) CXX11_OVERRIDE
+	ModResult OnCheckExemption(User* user, Channel* chan, const std::string& restriction) override
 	{
 		unsigned int mypfx = chan->GetPrefixValue(user);
 		std::string minmode;
@@ -126,12 +126,12 @@ class ModuleExemptChanOps : public Module
 	{
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("Provides the ability to allow channel operators to be exempt from certain modes.",VF_VENDOR);
 	}
 
-	void ReadConfig(ConfigStatus& status) CXX11_OVERRIDE
+	void ReadConfig(ConfigStatus& status) override
 	{
 		eh.ec.DoRehash();
 	}

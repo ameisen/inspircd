@@ -29,7 +29,7 @@ class IRCv3::WriteNeighborsWithCap : public User::ForEachNeighborHandler
 	const Cap::Capability& cap;
 	const std::string& msg;
 
-	void Execute(LocalUser* user) CXX11_OVERRIDE
+	void Execute(LocalUser* user) override
 	{
 		if (cap.get(user))
 			user->Write(msg);

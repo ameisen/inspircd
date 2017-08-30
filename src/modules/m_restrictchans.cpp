@@ -27,7 +27,7 @@ class ModuleRestrictChans : public Module
 	insp::flat_set<std::string, irc::insensitive_swo> allowchans;
 
  public:
-	void ReadConfig(ConfigStatus& status) CXX11_OVERRIDE
+	void ReadConfig(ConfigStatus& status) override
 	{
 		allowchans.clear();
 		ConfigTagList tags = ServerInstance->Config->ConfTags("allowchannel");
@@ -39,7 +39,7 @@ class ModuleRestrictChans : public Module
 		}
 	}
 
-	ModResult OnUserPreJoin(LocalUser* user, Channel* chan, const std::string& cname, std::string& privs, const std::string& keygiven) CXX11_OVERRIDE
+	ModResult OnUserPreJoin(LocalUser* user, Channel* chan, const std::string& cname, std::string& privs, const std::string& keygiven) override
 	{
 		// channel does not yet exist (record is null, about to be created IF we were to allow it)
 		if (!chan)
@@ -54,7 +54,7 @@ class ModuleRestrictChans : public Module
 		return MOD_RES_PASSTHRU;
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("Only opers may create new channels if this module is loaded",VF_VENDOR);
 	}

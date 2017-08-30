@@ -82,7 +82,7 @@ struct RouteDescriptor
 	/** Create a RouteDescriptor
 	 */
 	RouteDescriptor(RouteType t, const std::string &d)
-		: type(t), serverdest(d), server(NULL) { }
+		: type(t), serverdest(d), server(nullptr) { }
 
 	RouteDescriptor(RouteType t, Server* srv)
 		: type(t), server(srv) { }
@@ -220,7 +220,7 @@ class CoreExport Command : public CommandBase
 
 	/** Register this object in the CommandParser
 	 */
-	void RegisterService() CXX11_OVERRIDE;
+	void RegisterService() override;
 
 	/** Destructor
 	 * Removes this command from the command parser

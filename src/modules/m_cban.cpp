@@ -150,7 +150,7 @@ class ModuleCBan : public Module
 	{
 	}
 
-	void init() CXX11_OVERRIDE
+	void init() override
 	{
 		ServerInstance->XLines->RegisterFactory(&f);
 	}
@@ -161,7 +161,7 @@ class ModuleCBan : public Module
 		ServerInstance->XLines->UnregisterFactory(&f);
 	}
 
-	ModResult OnStats(Stats::Context& stats) CXX11_OVERRIDE
+	ModResult OnStats(Stats::Context& stats) override
 	{
 		if (stats.GetSymbol() != 'C')
 			return MOD_RES_PASSTHRU;
@@ -170,7 +170,7 @@ class ModuleCBan : public Module
 		return MOD_RES_DENY;
 	}
 
-	ModResult OnUserPreJoin(LocalUser* user, Channel* chan, const std::string& cname, std::string& privs, const std::string& keygiven) CXX11_OVERRIDE
+	ModResult OnUserPreJoin(LocalUser* user, Channel* chan, const std::string& cname, std::string& privs, const std::string& keygiven) override
 	{
 		XLine *rl = ServerInstance->XLines->MatchesLine("CBAN", cname);
 
@@ -186,7 +186,7 @@ class ModuleCBan : public Module
 		return MOD_RES_PASSTHRU;
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("Gives /cban, aka C:lines. Think Q:lines, for channels.", VF_COMMON | VF_VENDOR);
 	}

@@ -54,7 +54,7 @@ class CoreExport Thread
 		return ExitFlag;
 	}
  public:
-	/** Set Creator to NULL at this point
+	/** Set Creator to nullptr at this point
 	 */
 	Thread() : ExitFlag(false)
 	{

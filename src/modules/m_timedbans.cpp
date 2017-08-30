@@ -187,7 +187,7 @@ class ModuleTimedBans : public Module
 	{
 	}
 
-	void OnBackgroundTimer(time_t curtime) CXX11_OVERRIDE
+	void OnBackgroundTimer(time_t curtime) override
 	{
 		timedbans expired;
 		for (timedbans::iterator i = TimedBanList.begin(); i != TimedBanList.end();)
@@ -218,13 +218,13 @@ class ModuleTimedBans : public Module
 		}
 	}
 
-	void OnChannelDelete(Channel* chan) CXX11_OVERRIDE
+	void OnChannelDelete(Channel* chan) override
 	{
 		// Remove all timed bans affecting the channel from internal bookkeeping
 		TimedBanList.erase(std::remove_if(TimedBanList.begin(), TimedBanList.end(), ChannelMatcher(chan)), TimedBanList.end());
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("Adds timed bans", VF_COMMON | VF_VENDOR);
 	}

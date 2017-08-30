@@ -221,7 +221,7 @@ class ModuleRLine : public Module
 	{
 	}
 
-	void init() CXX11_OVERRIDE
+	void init() override
 	{
 		ServerInstance->XLines->RegisterFactory(&f);
 	}
@@ -232,12 +232,12 @@ class ModuleRLine : public Module
 		ServerInstance->XLines->UnregisterFactory(&f);
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("RLINE: Regexp user banning.", VF_COMMON | VF_VENDOR, rxfactory ? rxfactory->name : "");
 	}
 
-	ModResult OnUserRegister(LocalUser* user) CXX11_OVERRIDE
+	ModResult OnUserRegister(LocalUser* user) override
 	{
 		// Apply lines on user connect
 		XLine *rl = ServerInstance->XLines->MatchesLine("R", user);
@@ -251,7 +251,7 @@ class ModuleRLine : public Module
 		return MOD_RES_PASSTHRU;
 	}
 
-	void ReadConfig(ConfigStatus& status) CXX11_OVERRIDE
+	void ReadConfig(ConfigStatus& status) override
 	{
 		ConfigTag* tag = ServerInstance->Config->ConfValue("rline");
 
@@ -284,7 +284,7 @@ class ModuleRLine : public Module
 		initing = false;
 	}
 
-	ModResult OnStats(Stats::Context& stats) CXX11_OVERRIDE
+	ModResult OnStats(Stats::Context& stats) override
 	{
 		if (stats.GetSymbol() != 'R')
 			return MOD_RES_PASSTHRU;
@@ -293,7 +293,7 @@ class ModuleRLine : public Module
 		return MOD_RES_DENY;
 	}
 
-	void OnUserPostNick(User *user, const std::string &oldnick) CXX11_OVERRIDE
+	void OnUserPostNick(User *user, const std::string &oldnick) override
 	{
 		if (!IS_LOCAL(user))
 			return;
@@ -310,7 +310,7 @@ class ModuleRLine : public Module
 		}
 	}
 
-	void OnBackgroundTimer(time_t curtime) CXX11_OVERRIDE
+	void OnBackgroundTimer(time_t curtime) override
 	{
 		if (added_zline)
 		{
@@ -319,7 +319,7 @@ class ModuleRLine : public Module
 		}
 	}
 
-	void OnUnloadModule(Module* mod) CXX11_OVERRIDE
+	void OnUnloadModule(Module* mod) override
 	{
 		// If the regex engine became unavailable or has changed, remove all rlines
 		if (!rxfactory)
@@ -333,7 +333,7 @@ class ModuleRLine : public Module
 		}
 	}
 
-	void Prioritize() CXX11_OVERRIDE
+	void Prioritize() override
 	{
 		Module* mod = ServerInstance->Modules->Find("m_cgiirc.so");
 		ServerInstance->Modules->SetPriority(this, I_OnUserRegister, PRIORITY_AFTER, mod);

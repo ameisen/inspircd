@@ -180,7 +180,7 @@ class ModuleShun : public Module
 	{
 	}
 
-	void init() CXX11_OVERRIDE
+	void init() override
 	{
 		ServerInstance->XLines->RegisterFactory(&f);
 	}
@@ -191,13 +191,13 @@ class ModuleShun : public Module
 		ServerInstance->XLines->UnregisterFactory(&f);
 	}
 
-	void Prioritize() CXX11_OVERRIDE
+	void Prioritize() override
 	{
 		Module* alias = ServerInstance->Modules->Find("m_alias.so");
 		ServerInstance->Modules->SetPriority(this, I_OnPreCommand, PRIORITY_BEFORE, alias);
 	}
 
-	ModResult OnStats(Stats::Context& stats) CXX11_OVERRIDE
+	ModResult OnStats(Stats::Context& stats) override
 	{
 		if (stats.GetSymbol() != 'H')
 			return MOD_RES_PASSTHRU;
@@ -206,7 +206,7 @@ class ModuleShun : public Module
 		return MOD_RES_DENY;
 	}
 
-	void ReadConfig(ConfigStatus& status) CXX11_OVERRIDE
+	void ReadConfig(ConfigStatus& status) override
 	{
 		ConfigTag* tag = ServerInstance->Config->ConfValue("shun");
 		std::string cmds = tag->getString("enabledcommands");
@@ -229,7 +229,7 @@ class ModuleShun : public Module
 		affectopers = tag->getBool("affectopers", false);
 	}
 
-	ModResult OnPreCommand(std::string &command, std::vector<std::string>& parameters, LocalUser* user, bool validated, const std::string &original_line) CXX11_OVERRIDE
+	ModResult OnPreCommand(std::string &command, std::vector<std::string>& parameters, LocalUser* user, bool validated, const std::string &original_line) override
 	{
 		if (validated)
 			return MOD_RES_PASSTHRU;
@@ -268,7 +268,7 @@ class ModuleShun : public Module
 		return MOD_RES_PASSTHRU;
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("Provides the /SHUN command, which stops a user from executing all except configured commands.",VF_VENDOR|VF_COMMON);
 	}

@@ -665,12 +665,12 @@ class mbedTLSIOHook : public SSLIOHook
 		Handshake(sock);
 	}
 
-	void OnStreamSocketClose(StreamSocket* sock) CXX11_OVERRIDE
+	void OnStreamSocketClose(StreamSocket* sock) override
 	{
 		CloseSession();
 	}
 
-	int OnStreamSocketRead(StreamSocket* sock, std::string& recvq) CXX11_OVERRIDE
+	int OnStreamSocketRead(StreamSocket* sock, std::string& recvq) override
 	{
 		// Finish handshake if needed
 		int prepret = PrepareIO(sock);
@@ -714,7 +714,7 @@ class mbedTLSIOHook : public SSLIOHook
 		}
 	}
 
-	int OnStreamSocketWrite(StreamSocket* sock, StreamSocket::SendQueue& sendq) CXX11_OVERRIDE
+	int OnStreamSocketWrite(StreamSocket* sock, StreamSocket::SendQueue& sendq) override
 	{
 		// Finish handshake if needed
 		int prepret = PrepareIO(sock);
@@ -766,7 +766,7 @@ class mbedTLSIOHook : public SSLIOHook
 		return 1;
 	}
 
-	void GetCiphersuite(std::string& out) const CXX11_OVERRIDE
+	void GetCiphersuite(std::string& out) const override
 	{
 		if (!IsHandshakeDone())
 			return;
@@ -801,12 +801,12 @@ class mbedTLSIOHookProvider : public refcountbase, public IOHookProvider
 		ServerInstance->Modules->DelService(*this);
 	}
 
-	void OnAccept(StreamSocket* sock, irc::sockets::sockaddrs* client, irc::sockets::sockaddrs* server) CXX11_OVERRIDE
+	void OnAccept(StreamSocket* sock, irc::sockets::sockaddrs* client, irc::sockets::sockaddrs* server) override
 	{
 		new mbedTLSIOHook(this, sock, true, profile);
 	}
 
-	void OnConnect(StreamSocket* sock) CXX11_OVERRIDE
+	void OnConnect(StreamSocket* sock) override
 	{
 		new mbedTLSIOHook(this, sock, false, profile);
 	}
@@ -878,7 +878,7 @@ class ModuleSSLmbedTLS : public Module
 	}
 
  public:
-	void init() CXX11_OVERRIDE
+	void init() override
 	{
 		char verbuf[16]; // Should be at least 9 bytes in size
 		mbedtls_version_get_string(verbuf);
@@ -889,7 +889,7 @@ class ModuleSSLmbedTLS : public Module
 		ReadProfiles();
 	}
 
-	void OnModuleRehash(User* user, const std::string &param) CXX11_OVERRIDE
+	void OnModuleRehash(User* user, const std::string &param) override
 	{
 		if (param != "ssl")
 			return;
@@ -904,7 +904,7 @@ class ModuleSSLmbedTLS : public Module
 		}
 	}
 
-	void OnCleanup(int target_type, void* item) CXX11_OVERRIDE
+	void OnCleanup(int target_type, void* item) override
 	{
 		if (target_type != TYPE_USER)
 			return;
@@ -918,7 +918,7 @@ class ModuleSSLmbedTLS : public Module
 		}
 	}
 
-	ModResult OnCheckReady(LocalUser* user) CXX11_OVERRIDE
+	ModResult OnCheckReady(LocalUser* user) override
 	{
 		const mbedTLSIOHook* const iohook = static_cast<mbedTLSIOHook*>(user->eh.GetModHook(this));
 		if ((iohook) && (!iohook->IsHandshakeDone()))
@@ -926,7 +926,7 @@ class ModuleSSLmbedTLS : public Module
 		return MOD_RES_PASSTHRU;
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("Provides SSL support via mbedTLS (PolarSSL)", VF_VENDOR);
 	}

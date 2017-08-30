@@ -79,18 +79,18 @@ class ModuleOpermotd : public Module
 	{
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("Shows a message to opers after oper-up, adds /opermotd", VF_VENDOR | VF_OPTCOMMON);
 	}
 
-	void OnOper(User* user, const std::string &opertype) CXX11_OVERRIDE
+	void OnOper(User* user, const std::string &opertype) override
 	{
 		if (onoper && IS_LOCAL(user))
 			cmd.ShowOperMOTD(user);
 	}
 
-	void ReadConfig(ConfigStatus& status) CXX11_OVERRIDE
+	void ReadConfig(ConfigStatus& status) override
 	{
 		cmd.opermotd.clear();
 		ConfigTag* conf = ServerInstance->Config->ConfValue("opermotd");

@@ -158,14 +158,14 @@ class ModuleServicesAccount : public Module, public Whois::EventListener
 	{
 	}
 
-	void On005Numeric(std::map<std::string, std::string>& tokens) CXX11_OVERRIDE
+	void On005Numeric(std::map<std::string, std::string>& tokens) override
 	{
 		tokens["EXTBAN"].push_back('R');
 		tokens["EXTBAN"].push_back('U');
 	}
 
 	/* <- :twisted.oscnet.org 330 w00t2 w00t2 w00t :is logged in as */
-	void OnWhois(Whois::Context& whois) CXX11_OVERRIDE
+	void OnWhois(Whois::Context& whois) override
 	{
 		std::string* account = accountname.get(whois.GetTarget());
 
@@ -181,14 +181,14 @@ class ModuleServicesAccount : public Module, public Whois::EventListener
 		}
 	}
 
-	void OnUserPostNick(User* user, const std::string &oldnick) CXX11_OVERRIDE
+	void OnUserPostNick(User* user, const std::string &oldnick) override
 	{
 		/* On nickchange, if they have +r, remove it */
 		if ((user->IsModeSet(m5)) && (ServerInstance->FindNickOnly(oldnick) != user))
 			m5.RemoveMode(user);
 	}
 
-	ModResult OnUserPreMessage(User* user, void* dest, int target_type, std::string& text, char status, CUList& exempt_list, MessageType msgtype) CXX11_OVERRIDE
+	ModResult OnUserPreMessage(User* user, void* dest, int target_type, std::string& text, char status, CUList& exempt_list, MessageType msgtype) override
 	{
 		if (!IS_LOCAL(user))
 			return MOD_RES_PASSTHRU;
@@ -223,7 +223,7 @@ class ModuleServicesAccount : public Module, public Whois::EventListener
 		return MOD_RES_PASSTHRU;
 	}
 
-	ModResult OnCheckBan(User* user, Channel* chan, const std::string& mask) CXX11_OVERRIDE
+	ModResult OnCheckBan(User* user, Channel* chan, const std::string& mask) override
 	{
 		if (checking_ban)
 			return MOD_RES_PASSTHRU;
@@ -259,7 +259,7 @@ class ModuleServicesAccount : public Module, public Whois::EventListener
 		return MOD_RES_PASSTHRU;
 	}
 
-	ModResult OnUserPreJoin(LocalUser* user, Channel* chan, const std::string& cname, std::string& privs, const std::string& keygiven) CXX11_OVERRIDE
+	ModResult OnUserPreJoin(LocalUser* user, Channel* chan, const std::string& cname, std::string& privs, const std::string& keygiven) override
 	{
 		std::string *account = accountname.get(user);
 		bool is_registered = account && !account->empty();
@@ -279,14 +279,14 @@ class ModuleServicesAccount : public Module, public Whois::EventListener
 		return MOD_RES_PASSTHRU;
 	}
 
-	ModResult OnSetConnectClass(LocalUser* user, ConnectClass* myclass) CXX11_OVERRIDE
+	ModResult OnSetConnectClass(LocalUser* user, ConnectClass* myclass) override
 	{
 		if (myclass->config->getBool("requireaccount") && !accountname.get(user))
 			return MOD_RES_DENY;
 		return MOD_RES_PASSTHRU;
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("Provides support for ircu-style services accounts, including chmode +R, etc.",VF_OPTCOMMON|VF_VENDOR);
 	}

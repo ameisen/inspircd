@@ -133,7 +133,7 @@ class IOHookMiddle : public IOHook
 	 */
 	IOHookMiddle(IOHookProvider* provider)
 		: IOHook(provider)
-		, nexthook(NULL)
+		, nexthook(nullptr)
 	{
 	}
 
@@ -143,7 +143,7 @@ class IOHookMiddle : public IOHook
 	const StreamSocket::SendQueue& GetSendQ() const { return sendq; }
 
 	/** Get the next IOHook in the chain
-	 * @return Next hook in the chain or NULL if this is the last hook
+	 * @return Next hook in the chain or nullptr if this is the last hook
 	 */
 	IOHook* GetNextHook() const { return nexthook; }
 
@@ -154,13 +154,13 @@ class IOHookMiddle : public IOHook
 
 	/** Check if a hook is capable of being the non-last hook in a hook chain and if so, cast it to an IOHookMiddle object.
 	 * @param hook IOHook to check
-	 * @return IOHookMiddle referring to the same hook or NULL
+	 * @return IOHookMiddle referring to the same hook or nullptr
 	 */
 	static IOHookMiddle* ToMiddleHook(IOHook* hook)
 	{
 		if (hook->prov->IsMiddle())
 			return static_cast<IOHookMiddle*>(hook);
-		return NULL;
+		return nullptr;
 	}
 
 	friend class StreamSocket;

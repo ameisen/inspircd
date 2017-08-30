@@ -298,7 +298,7 @@ class ModuleSilence : public Module
 	{
 	}
 
-	void ReadConfig(ConfigStatus& status) CXX11_OVERRIDE
+	void ReadConfig(ConfigStatus& status) override
 	{
 		ConfigTag* tag = ServerInstance->Config->ConfValue("silence");
 
@@ -309,7 +309,7 @@ class ModuleSilence : public Module
 		ExemptULine = tag->getBool("exemptuline", true);
 	}
 
-	void On005Numeric(std::map<std::string, std::string>& tokens) CXX11_OVERRIDE
+	void On005Numeric(std::map<std::string, std::string>& tokens) override
 	{
 		tokens["ESILENCE"];
 		tokens["SILENCE"] = ConvToStr(maxsilence);
@@ -332,7 +332,7 @@ class ModuleSilence : public Module
 		}
 	}
 
-	ModResult OnUserPreMessage(User* user, void* dest, int target_type, std::string& text, char status, CUList& exempt_list, MessageType msgtype) CXX11_OVERRIDE
+	ModResult OnUserPreMessage(User* user, void* dest, int target_type, std::string& text, char status, CUList& exempt_list, MessageType msgtype) override
 	{
 		if (target_type == TYPE_USER && IS_LOCAL(((User*)dest)))
 		{
@@ -346,7 +346,7 @@ class ModuleSilence : public Module
 		return MOD_RES_PASSTHRU;
 	}
 
-	ModResult OnUserPreInvite(User* source,User* dest,Channel* channel, time_t timeout) CXX11_OVERRIDE
+	ModResult OnUserPreInvite(User* source,User* dest,Channel* channel, time_t timeout) override
 	{
 		return MatchPattern(dest, source, SILENCE_INVITE);
 	}
@@ -368,7 +368,7 @@ class ModuleSilence : public Module
 		return MOD_RES_PASSTHRU;
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("Provides support for the /SILENCE command", VF_OPTCOMMON | VF_VENDOR);
 	}

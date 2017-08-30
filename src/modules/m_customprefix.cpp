@@ -49,7 +49,7 @@ class ModuleCustomPrefix : public Module
 {
 	std::vector<CustomPrefixMode*> modes;
  public:
-	void init() CXX11_OVERRIDE
+	void init() override
 	{
 		ConfigTagList tags = ServerInstance->Config->ConfTags("customprefix");
 		while (tags.first != tags.second)
@@ -78,7 +78,7 @@ class ModuleCustomPrefix : public Module
 		stdalgo::delete_all(modes);
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("Provides custom prefix channel modes", VF_VENDOR);
 	}

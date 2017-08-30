@@ -59,7 +59,7 @@ class DNSBLResolver : public DNS::Request
 	}
 
 	/* Note: This may be called multiple times for multiple A record results */
-	void OnLookupComplete(const DNS::Query *r) CXX11_OVERRIDE
+	void OnLookupComplete(const DNS::Query *r) override
 	{
 		/* Check the user still exists */
 		LocalUser* them = (LocalUser*)ServerInstance->FindUUID(theiruid);
@@ -205,7 +205,7 @@ class DNSBLResolver : public DNS::Request
 			ConfEntry->stats_misses++;
 	}
 
-	void OnError(const DNS::Query *q) CXX11_OVERRIDE
+	void OnError(const DNS::Query *q) override
 	{
 		LocalUser* them = (LocalUser*)ServerInstance->FindUUID(theiruid);
 		if (!them)
@@ -253,14 +253,14 @@ class ModuleDNSBL : public Module
 	{
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("Provides handling of DNS blacklists", VF_VENDOR);
 	}
 
 	/** Fill our conf vector with data
 	 */
-	void ReadConfig(ConfigStatus& status) CXX11_OVERRIDE
+	void ReadConfig(ConfigStatus& status) override
 	{
 		DNSBLConfEntries.clear();
 
@@ -332,7 +332,7 @@ class ModuleDNSBL : public Module
 		}
 	}
 
-	void OnSetUserIP(LocalUser* user) CXX11_OVERRIDE
+	void OnSetUserIP(LocalUser* user) override
 	{
 		if ((user->exempt) || !DNS)
 			return;
@@ -397,7 +397,7 @@ class ModuleDNSBL : public Module
 		}
 	}
 
-	ModResult OnSetConnectClass(LocalUser* user, ConnectClass* myclass) CXX11_OVERRIDE
+	ModResult OnSetConnectClass(LocalUser* user, ConnectClass* myclass) override
 	{
 		std::string dnsbl;
 		if (!myclass->config->readString("dnsbl", dnsbl))
@@ -409,14 +409,14 @@ class ModuleDNSBL : public Module
 		return MOD_RES_DENY;
 	}
 
-	ModResult OnCheckReady(LocalUser *user) CXX11_OVERRIDE
+	ModResult OnCheckReady(LocalUser *user) override
 	{
 		if (countExt.get(user))
 			return MOD_RES_DENY;
 		return MOD_RES_PASSTHRU;
 	}
 
-	ModResult OnStats(Stats::Context& stats) CXX11_OVERRIDE
+	ModResult OnStats(Stats::Context& stats) override
 	{
 		if (stats.GetSymbol() != 'd')
 			return MOD_RES_PASSTHRU;

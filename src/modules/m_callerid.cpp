@@ -368,17 +368,17 @@ public:
 	{
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("Implementation of callerid, usermode +g, /accept", VF_COMMON | VF_VENDOR);
 	}
 
-	void On005Numeric(std::map<std::string, std::string>& tokens) CXX11_OVERRIDE
+	void On005Numeric(std::map<std::string, std::string>& tokens) override
 	{
 		tokens["CALLERID"] = "g";
 	}
 
-	ModResult OnUserPreMessage(User* user, void* voiddest, int target_type, std::string& text, char status, CUList& exempt_list, MessageType msgtype) CXX11_OVERRIDE
+	ModResult OnUserPreMessage(User* user, void* voiddest, int target_type, std::string& text, char status, CUList& exempt_list, MessageType msgtype) override
 	{
 		if (!IS_LOCAL(user) || target_type != TYPE_USER)
 			return MOD_RES_PASSTHRU;
@@ -408,18 +408,18 @@ public:
 		return MOD_RES_PASSTHRU;
 	}
 
-	void OnUserPostNick(User* user, const std::string& oldnick) CXX11_OVERRIDE
+	void OnUserPostNick(User* user, const std::string& oldnick) override
 	{
 		if (!tracknick)
 			RemoveFromAllAccepts(user);
 	}
 
-	void OnUserQuit(User* user, const std::string& message, const std::string& oper_message) CXX11_OVERRIDE
+	void OnUserQuit(User* user, const std::string& message, const std::string& oper_message) override
 	{
 		RemoveFromAllAccepts(user);
 	}
 
-	void ReadConfig(ConfigStatus& status) CXX11_OVERRIDE
+	void ReadConfig(ConfigStatus& status) override
 	{
 		ConfigTag* tag = ServerInstance->Config->ConfValue("callerid");
 		cmd.maxaccepts = tag->getInt("maxaccepts", 16);
@@ -428,7 +428,7 @@ public:
 		notify_cooldown = tag->getInt("cooldown", 60);
 	}
 
-	void Prioritize() CXX11_OVERRIDE
+	void Prioritize() override
 	{
 		// Want to be after modules like silence or services_account
 		ServerInstance->Modules->SetPriority(this, I_OnUserPreMessage, PRIORITY_LAST);

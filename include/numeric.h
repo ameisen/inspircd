@@ -36,7 +36,7 @@ class Numeric::Numeric
 	 */
 	std::vector<std::string> params;
 
-	/** Source server of the numeric, if NULL (the default) then it is the local server
+	/** Source server of the numeric, if nullptr (the default) then it is the local server
 	 */
 	Server* sourceserver;
 
@@ -46,7 +46,7 @@ class Numeric::Numeric
 	 */
 	Numeric(unsigned int num)
 		: numeric(num)
-		, sourceserver(NULL)
+		, sourceserver(nullptr)
 	{
 	}
 
@@ -66,7 +66,7 @@ class Numeric::Numeric
 	void SetServer(Server* server) { sourceserver = server; }
 
 	/** Get the source server of the numeric
-	 * @return Source server or NULL if the source is the local server
+	 * @return Source server or nullptr if the source is the local server
 	 */
 	Server* GetServer() const { return sourceserver; }
 

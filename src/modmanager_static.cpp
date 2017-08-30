@@ -72,7 +72,7 @@ class AllModule : public Module
 		stdalgo::delete_all(cmds);
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("All commands", VF_VENDOR|VF_CORE);
 	}

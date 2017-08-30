@@ -22,15 +22,13 @@
  */
 
 
-#ifdef _WIN32
-#define _CRT_RAND_S
-#include <stdlib.h>
-#endif
-
 #include "inspircd.h"
 #include "xline.h"
 #include "exitcodes.h"
 #include <iostream>
+#include <random>
+#include <limits>
+#include <mutex>
 
 /* Find a user record by nickname and return a pointer to it */
 User* InspIRCd::FindNick(const std::string &nick)
@@ -414,19 +412,75 @@ unsigned long InspIRCd::GenRandomInt(unsigned long max)
 	return rv % max;
 }
 
+class xorshift1024star_generator
+{
+	class seed_generator
+	{
+		std::random_device m_Rand;
+		std::mt19937_64 m_Engine{m_Rand()};
+		std::mutex m_Lock;
+
+	public: uint64_t operator ()()
+		{
+			std::unique_lock<std::mutex> _lock{ m_Lock };
+			return m_Engine();
+		}
+	} static m_SeedGen;
+	
+	std::array<uint64_t, 16> m_State;
+	unsigned m_Idx;
+
+public:
+	using result_type = uint64_t;
+	static constexpr result_type min() { return 0; }
+	static constexpr result_type max() {
+		return std::numeric_limits<result_type>::max();
+	}
+
+	xorshift1024star_generator()
+	{
+		for (auto &value : m_State)
+		{
+			value = m_SeedGen();
+		}
+		m_Idx = unsigned(m_SeedGen() & 0xF);
+	}
+
+	result_type operator ()()
+	{
+		const uint64_t s0 = m_State[m_Idx];
+		uint64_t s1 = m_State[m_Idx = (m_Idx + 1) & 15];
+		s1 ^= s1 << 31;
+		m_State[m_Idx] = s1 ^ s0 ^ (s1 >> 11) ^ (s0 >> 30);
+		return m_State[m_Idx] * 1181783497276652981ull;
+	}
+
+	void discard(unsigned long long z)
+	{
+		auto idx = m_Idx;
+		for (auto i = 0ull; i < z; ++i)
+		{
+			const uint64_t s0 = m_State[idx];
+			uint64_t s1 = m_State[idx = (idx + 1) & 15];
+			s1 ^= s1 << 31;
+			m_State[idx] = s1 ^ s0 ^ (s1 >> 11) ^ (s0 >> 30);
+		}
+		m_Idx = idx;
+	}
+};
+xorshift1024star_generator::seed_generator xorshift1024star_generator::m_SeedGen;
+
 // This is overridden by a higher-quality algorithm when SSL support is loaded
 void GenRandomHandler::Call(char *output, size_t max)
 {
-	for(unsigned int i=0; i < max; i++)
-#ifdef _WIN32
+	using output_type = std::remove_reference<decltype(*output)>::type;
+	static thread_local xorshift1024star_generator global_rand_generator;
+
+	std::uniform_int_distribution<int> distribution{
+		std::numeric_limits<output_type>::min(), std::numeric_limits<output_type>::max()
+	};
+	for (size_t i = 0; i < max; ++i)
 	{
-		unsigned int uTemp;
-		if(rand_s(&uTemp) != 0)
-			output[i] = rand();
-		else
-			output[i] = uTemp;
+		output[i] = static_cast<output_type>(distribution(global_rand_generator));
 	}
-#else
-		output[i] = random();
-#endif
 }

@@ -112,10 +112,18 @@ endif(MSVC)
 
 file(GLOB INSPIRCD_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
 "${INSPIRCD_BASE}/win/inspircd_win32wrapper.cpp"
-"${INSPIRCD_BASE}/win/win32service.cpp" "${INSPIRCD_BASE}/src/*.cpp"
+"${INSPIRCD_BASE}/win/win32service.cpp"
+"${INSPIRCD_BASE}/src/*.cpp"
 "${INSPIRCD_BASE}/src/modes/*.cpp"
 "${INSPIRCD_BASE}/src/socketengines/socketengine_select.cpp"
-"${INSPIRCD_BASE}/src/threadengines/threadengine_win32.cpp")
+"${INSPIRCD_BASE}/src/threadengines/threadengine_win32.cpp"
+"${INSPIRCD_BASE}/win/inspircd_win32wrapper.h"
+"${INSPIRCD_BASE}/win/win32service.h"
+"${INSPIRCD_BASE}/include/*.h"
+"${INSPIRCD_BASE}/include/threadengines/threadengine_win32.h"
+)
+#file(GLOB_RECURSE INSPIRCD_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+#"${INSPIRCD_BASE}/include/*.h")
 list(SORT INSPIRCD_SOURCES)
 
 include_directories("${INSPIRCD_BASE}/win" "${INSPIRCD_BASE}/include")

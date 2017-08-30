@@ -126,7 +126,7 @@ class ModuleTopicLock : public Module
 	{
 	}
 
-	ModResult OnPreTopicChange(User* user, Channel* chan, const std::string &topic) CXX11_OVERRIDE
+	ModResult OnPreTopicChange(User* user, Channel* chan, const std::string &topic) override
 	{
 		// Only fired for local users currently, but added a check anyway
 		if ((IS_LOCAL(user)) && (topiclock.get(chan)))
@@ -138,7 +138,7 @@ class ModuleTopicLock : public Module
 		return MOD_RES_PASSTHRU;
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("Implements server-side topic locks and the server-to-server command SVSTOPIC", VF_COMMON | VF_VENDOR);
 	}

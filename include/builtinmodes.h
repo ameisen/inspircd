@@ -30,7 +30,7 @@ class ModeChannelBan : public ListModeBase
 {
  public:
 	ModeChannelBan()
-		: ListModeBase(NULL, "ban", 'b', "End of channel ban list", 367, 368, true, "maxbans")
+		: ListModeBase(nullptr, "ban", 'b', "End of channel ban list", 367, 368, true, "maxbans")
 	{
 	}
 };
@@ -64,7 +64,7 @@ class ModeChannelOp : public PrefixMode
 {
  public:
 	ModeChannelOp()
-		: PrefixMode(NULL, "op", 'o', OP_VALUE, '@')
+		: PrefixMode(nullptr, "op", 'o', OP_VALUE, '@')
 	{
 		levelrequired = OP_VALUE;
 	}
@@ -76,7 +76,7 @@ class ModeChannelVoice : public PrefixMode
 {
  public:
 	ModeChannelVoice()
-		: PrefixMode(NULL, "voice", 'v', VOICE_VALUE, '+')
+		: PrefixMode(nullptr, "voice", 'v', VOICE_VALUE, '+')
 	{
 		levelrequired = HALFOP_VALUE;
 	}
@@ -97,14 +97,14 @@ class ModeUserServerNoticeMask : public ModeHandler
 
  public:
 	ModeUserServerNoticeMask();
-	ModeAction OnModeChange(User* source, User* dest, Channel* channel, std::string &parameter, bool adding) CXX11_OVERRIDE;
-	void OnParameterMissing(User* user, User* dest, Channel* channel) CXX11_OVERRIDE;
+	ModeAction OnModeChange(User* source, User* dest, Channel* channel, std::string &parameter, bool adding) override;
+	void OnParameterMissing(User* user, User* dest, Channel* channel) override;
 
 	/** Create a displayable mode string of the snomasks set on a given user
 	 * @param user The user whose notice masks to format
 	 * @return The notice mask character sequence
 	 */
-	std::string GetUserParameter(const User* user) const CXX11_OVERRIDE;
+	std::string GetUserParameter(const User* user) const override;
 };
 
 /** User mode +o

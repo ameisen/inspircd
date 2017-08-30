@@ -195,7 +195,7 @@ class ModuleHostnameLookup : public Module
 		ph = &ptrHosts;
 	}
 
-	void OnUserInit(LocalUser *user) CXX11_OVERRIDE
+	void OnUserInit(LocalUser *user) override
 	{
 		if (!DNS || !user->MyClass->resolvehostnames)
 		{
@@ -222,12 +222,12 @@ class ModuleHostnameLookup : public Module
 		}
 	}
 
-	ModResult OnCheckReady(LocalUser* user) CXX11_OVERRIDE
+	ModResult OnCheckReady(LocalUser* user) override
 	{
 		return this->dnsLookup.get(user) ? MOD_RES_DENY : MOD_RES_PASSTHRU;
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("Provides support for DNS lookups on connecting clients", VF_CORE|VF_VENDOR);
 	}

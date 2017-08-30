@@ -215,7 +215,7 @@ class CoreExport StreamSocket : public EventHandler
 	};
 
  private:
-	/** The IOHook that handles raw I/O for this socket, or NULL */
+	/** The IOHook that handles raw I/O for this socket, or nullptr */
 	IOHook* iohook;
 
 	/** Send queue of the socket
@@ -247,9 +247,9 @@ class CoreExport StreamSocket : public EventHandler
 	int ReadToRecvQ(std::string& rq);
 
 	/** Read data from a hook chain recursively, starting at 'hook'.
-	 * If 'hook' is NULL, the recvq is filled with data from SocketEngine::Recv(), otherwise it is filled with data from the
+	 * If 'hook' is nullptr, the recvq is filled with data from SocketEngine::Recv(), otherwise it is filled with data from the
 	 * next hook in the chain.
-	 * @param hook Next IOHook in the chain, can be NULL
+	 * @param hook Next IOHook in the chain, can be nullptr
 	 * @param rq Receive queue to put incoming data into
 	 * @return < 0 on error or close, 0 if no new data is ready (but the socket is still connected), > 0 if data was read from
 	 the socket and put into the recvq
@@ -259,7 +259,7 @@ class CoreExport StreamSocket : public EventHandler
  protected:
 	std::string recvq;
  public:
-	StreamSocket() : iohook(NULL) { }
+	StreamSocket() : iohook(nullptr) { }
 	IOHook* GetIOHook() const;
 	void AddIOHook(IOHook* hook);
 	void DelIOHook();
@@ -270,16 +270,16 @@ class CoreExport StreamSocket : public EventHandler
 
 	/** Called by the socket engine on a read event
 	 */
-	void OnEventHandlerRead() CXX11_OVERRIDE;
+	void OnEventHandlerRead() override;
 
 	/** Called by the socket engine on a write event
 	 */
-	void OnEventHandlerWrite() CXX11_OVERRIDE;
+	void OnEventHandlerWrite() override;
 
 	/** Called by the socket engine on error
 	 * @param errcode Error
 	 */
-	void OnEventHandlerError(int errcode) CXX11_OVERRIDE;
+	void OnEventHandlerError(int errcode) override;
 
 	/** Sets the error message for this socket. Once set, the socket is dead. */
 	void SetError(const std::string& err) { if (error.empty()) error = err; }
@@ -311,11 +311,11 @@ class CoreExport StreamSocket : public EventHandler
 	 */
 	virtual void Close();
 	/** This ensures that close is called prior to destructor */
-	virtual CullResult cull() CXX11_OVERRIDE;
+	virtual CullResult cull() override;
 
 	/** Get the IOHook of a module attached to this socket
 	 * @param mod Module whose IOHook to return
-	 * @return IOHook belonging to the module or NULL if the module haven't attached an IOHook to this socket
+	 * @return IOHook belonging to the module or nullptr if the module haven't attached an IOHook to this socket
 	 */
 	IOHook* GetModHook(Module* mod) const;
 };
@@ -331,7 +331,7 @@ class CoreExport StreamSocket : public EventHandler
 class CoreExport BufferedSocket : public StreamSocket
 {
  public:
-	/** Timeout object or NULL
+	/** Timeout object or nullptr
 	 */
 	SocketTimeout* Timeout;
 
@@ -359,7 +359,7 @@ class CoreExport BufferedSocket : public StreamSocket
 	 * @param ipaddr Address to connect to
 	 * @param aport Port to connect on
 	 * @param maxtime Time to wait for connection
-	 * @param connectbindip Address to bind to (if NULL, no bind will be done)
+	 * @param connectbindip Address to bind to (if nullptr, no bind will be done)
 	 */
 	void DoConnect(const std::string &ipaddr, int aport, unsigned long maxtime, const std::string &connectbindip);
 
@@ -371,7 +371,7 @@ class CoreExport BufferedSocket : public StreamSocket
 	/** When there is data waiting to be read on a socket, the OnDataReady()
 	 * method is called.
 	 */
-	virtual void OnDataReady() CXX11_OVERRIDE = 0;
+	virtual void OnDataReady() override = 0;
 
 	/**
 	 * When an outbound connection fails, and the attempt times out, you
@@ -386,10 +386,10 @@ class CoreExport BufferedSocket : public StreamSocket
 
 	virtual ~BufferedSocket();
  protected:
-	void OnEventHandlerWrite() CXX11_OVERRIDE;
+	void OnEventHandlerWrite() override;
 	BufferedSocketError BeginConnect(const irc::sockets::sockaddrs& dest, const irc::sockets::sockaddrs& bind, unsigned long timeout);
 	BufferedSocketError BeginConnect(const std::string &ipaddr, int aport, unsigned long maxtime, const std::string &connectbindip);
 };
 
 inline IOHook* StreamSocket::GetIOHook() const { return iohook; }
-inline void StreamSocket::DelIOHook() { iohook = NULL; }
+inline void StreamSocket::DelIOHook() { iohook = nullptr; }

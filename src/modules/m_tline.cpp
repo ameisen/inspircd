@@ -77,7 +77,7 @@ class ModuleTLine : public Module
 	{
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("Provides /tline command used to test who a mask matches", VF_VENDOR);
 	}

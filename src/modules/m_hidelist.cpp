@@ -56,7 +56,7 @@ class ModuleHideList : public Module
 	std::vector<ListWatcher*> watchers;
 
  public:
-	void ReadConfig(ConfigStatus& status) CXX11_OVERRIDE
+	void ReadConfig(ConfigStatus& status) override
 	{
 		stdalgo::delete_all(watchers);
 		watchers.clear();
@@ -78,7 +78,7 @@ class ModuleHideList : public Module
 		stdalgo::delete_all(watchers);
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("Provides support for hiding the list of listmodes", VF_VENDOR);
 	}

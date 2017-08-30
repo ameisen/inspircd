@@ -157,7 +157,7 @@ class reference
 		return *this;
 	}
 
-	inline operator bool() const { return (value != NULL); }
+	inline operator bool() const { return (value != nullptr); }
 	inline operator T*() const { return value; }
 	inline T* operator->() const { return value; }
 	inline T& operator*() const { return *value; }
@@ -220,7 +220,7 @@ class CoreExport ModuleException : public CoreException
  public:
 	/** This constructor can be used to specify an error message before throwing.
 	 */
-	ModuleException(const std::string &message, Module* me = NULL);
+	ModuleException(const std::string &message, Module* me = nullptr);
 };
 
 typedef const reference<Module> ModuleRef;

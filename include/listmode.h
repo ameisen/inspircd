@@ -132,7 +132,7 @@ class CoreExport ListModeBase : public ModeHandler
 
 	/** Retrieves the list of all modes set on the given channel
 	 * @param channel Channel to get the list from
-	 * @return A list with all modes of this type set on the given channel, can be NULL
+	 * @return A list with all modes of this type set on the given channel, can be nullptr
 	 */
 	ModeList* GetList(Channel* channel);
 
@@ -207,7 +207,7 @@ inline ListModeBase::ModeList* ListModeBase::GetList(Channel* channel)
 {
 	ChanData* cd = extItem.get(channel);
 	if (!cd)
-		return NULL;
+		return nullptr;
 
 	return &cd->list;
 }

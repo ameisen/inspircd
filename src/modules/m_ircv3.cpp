@@ -38,7 +38,7 @@ class ModuleIRCv3 : public Module, public AccountEventListener
 	{
 	}
 
-	void ReadConfig(ConfigStatus& status) CXX11_OVERRIDE
+	void ReadConfig(ConfigStatus& status) override
 	{
 		ConfigTag* conf = ServerInstance->Config->ConfValue("ircv3");
 		cap_accountnotify.SetActive(conf->getBool("accountnotify", true));
@@ -46,7 +46,7 @@ class ModuleIRCv3 : public Module, public AccountEventListener
 		cap_extendedjoin.SetActive(conf->getBool("extendedjoin", true));
 	}
 
-	void OnAccountChange(User* user, const std::string& newaccount) CXX11_OVERRIDE
+	void OnAccountChange(User* user, const std::string& newaccount) override
 	{
 		// :nick!user@host ACCOUNT account
 		// or
@@ -60,7 +60,7 @@ class ModuleIRCv3 : public Module, public AccountEventListener
 		IRCv3::WriteNeighborsWithCap(user, line, cap_accountnotify);
 	}
 
-	void OnUserJoin(Membership* memb, bool sync, bool created, CUList& excepts) CXX11_OVERRIDE
+	void OnUserJoin(Membership* memb, bool sync, bool created, CUList& excepts) override
 	{
 		// Remember who is not going to see the JOIN because of other modules
 		if ((cap_awaynotify.IsActive()) && (memb->user->IsAway()))
@@ -133,7 +133,7 @@ class ModuleIRCv3 : public Module, public AccountEventListener
 		}
 	}
 
-	ModResult OnSetAway(User* user, const std::string &awaymsg) CXX11_OVERRIDE
+	ModResult OnSetAway(User* user, const std::string &awaymsg) override
 	{
 		if (cap_awaynotify.IsActive())
 		{
@@ -148,7 +148,7 @@ class ModuleIRCv3 : public Module, public AccountEventListener
 		return MOD_RES_PASSTHRU;
 	}
 
-	void OnPostJoin(Membership *memb) CXX11_OVERRIDE
+	void OnPostJoin(Membership *memb) override
 	{
 		if ((!cap_awaynotify.IsActive()) || (!memb->user->IsAway()))
 			return;
@@ -169,12 +169,12 @@ class ModuleIRCv3 : public Module, public AccountEventListener
 		last_excepts.clear();
 	}
 
-	void Prioritize() CXX11_OVERRIDE
+	void Prioritize() override
 	{
 		ServerInstance->Modules->SetPriority(this, I_OnUserJoin, PRIORITY_LAST);
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("Provides support for extended-join, away-notify and account-notify CAP capabilities", VF_VENDOR);
 	}

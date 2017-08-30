@@ -33,7 +33,7 @@ class ModuleIRCv3EchoMessage : public Module
 	{
 	}
 
-	void OnUserMessage(User* user, void* dest, int target_type, const std::string& text, char status, const CUList& exempt_list, MessageType msgtype) CXX11_OVERRIDE
+	void OnUserMessage(User* user, void* dest, int target_type, const std::string& text, char status, const CUList& exempt_list, MessageType msgtype) override
 	{
 		if (!cap.get(user))
 			return;
@@ -61,7 +61,7 @@ class ModuleIRCv3EchoMessage : public Module
 		user->WriteFrom(user, msg);
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("Provides the echo-message IRCv3.2 extension", VF_VENDOR);
 	}

@@ -91,7 +91,7 @@ class ModuleStartTLS : public Module
 	{
 	}
 
-	void ReadConfig(ConfigStatus& status) CXX11_OVERRIDE
+	void ReadConfig(ConfigStatus& status) override
 	{
 		ConfigTag* conf = ServerInstance->Config->ConfValue("starttls");
 
@@ -102,7 +102,7 @@ class ModuleStartTLS : public Module
 			ssl.SetProvider("ssl/" + newprovider);
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("Provides support for the STARTTLS command", VF_VENDOR);
 	}

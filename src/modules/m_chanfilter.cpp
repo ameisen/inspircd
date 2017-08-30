@@ -75,13 +75,13 @@ class ModuleChanFilter : public Module
 	{
 	}
 
-	void ReadConfig(ConfigStatus& status) CXX11_OVERRIDE
+	void ReadConfig(ConfigStatus& status) override
 	{
 		hidemask = ServerInstance->Config->ConfValue("chanfilter")->getBool("hidemask");
 		cf.DoRehash();
 	}
 
-	ModResult OnUserPreMessage(User* user, void* dest, int target_type, std::string& text, char status, CUList& exempt_list, MessageType msgtype) CXX11_OVERRIDE
+	ModResult OnUserPreMessage(User* user, void* dest, int target_type, std::string& text, char status, CUList& exempt_list, MessageType msgtype) override
 	{
 		if (target_type != TYPE_CHANNEL)
 			return MOD_RES_PASSTHRU;
@@ -113,7 +113,7 @@ class ModuleChanFilter : public Module
 		return MOD_RES_PASSTHRU;
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("Provides channel-specific censor lists (like mode +G but varies from channel to channel)", VF_VENDOR);
 	}

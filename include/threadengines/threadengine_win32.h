@@ -105,8 +105,8 @@ class ThreadQueueData : public Mutex
  public:
 	ThreadQueueData()
 	{
-		event = CreateEvent(NULL, false, false, NULL);
-		if (event == NULL)
+		event = CreateEvent(nullptr, false, false, nullptr);
+		if (event == nullptr)
 			throw CoreException("CreateEvent() failed in ThreadQueueData::ThreadQueueData()!");
 	}
 

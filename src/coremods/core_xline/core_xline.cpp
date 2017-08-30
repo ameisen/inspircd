@@ -64,7 +64,7 @@ class CoreModXLine : public Module
 	{
 	}
 
-	ModResult OnUserPreNick(LocalUser* user, const std::string& newnick) CXX11_OVERRIDE
+	ModResult OnUserPreNick(LocalUser* user, const std::string& newnick) override
 	{
 		// Check Q-Lines (for local nick changes only, remote servers have our Q-Lines to enforce themselves)
 
@@ -84,7 +84,7 @@ class CoreModXLine : public Module
 		return MOD_RES_DENY;
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("Provides the ELINE, GLINE, KLINE, QLINE, and ZLINE commands", VF_VENDOR|VF_CORE);
 	}

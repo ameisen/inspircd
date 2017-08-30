@@ -165,10 +165,10 @@ class serverstats
 	}
 };
 
-DEFINE_HANDLER1(IsNickHandler, bool, const std::string&);
-DEFINE_HANDLER2(GenRandomHandler, void, char*, size_t);
-DEFINE_HANDLER1(IsIdentHandler, bool, const std::string&);
-DEFINE_HANDLER1(IsChannelHandler, bool, const std::string&);
+DEFINE_HANDLER(IsNickHandler, bool, const std::string&);
+DEFINE_HANDLER(GenRandomHandler, void, char*, size_t);
+DEFINE_HANDLER(IsIdentHandler, bool, const std::string&);
+DEFINE_HANDLER(IsChannelHandler, bool, const std::string&);
 
 /** The main class of the irc server.
  * This class contains instances of all the other classes in this software.
@@ -231,7 +231,7 @@ class CoreExport InspIRCd
 
 	/** Find a user in the UUID hash
 	 * @param uid The UUID to find
-	 * @return A pointer to the user, or NULL if the user does not exist
+	 * @return A pointer to the user, or nullptr if the user does not exist
 	 */
 	User* FindUUID(const std::string &uid);
 
@@ -350,7 +350,7 @@ class CoreExport InspIRCd
 	unsigned long GenRandomInt(unsigned long max);
 
 	/** Fill a buffer with random bits */
-	caller2<void, char*, size_t> GenRandom;
+	Caller<void, char*, size_t> GenRandom;
 
 	/** Bind all ports specified in the configuration file.
 	 * @return The number of ports bound without error
@@ -360,7 +360,7 @@ class CoreExport InspIRCd
 	/** Find a user in the nick hash.
 	 * If the user cant be found in the nick hash check the uuid hash
 	 * @param nick The nickname to find
-	 * @return A pointer to the user, or NULL if the user does not exist
+	 * @return A pointer to the user, or nullptr if the user does not exist
 	 */
 	User* FindNick(const std::string &nick);
 
@@ -370,7 +370,7 @@ class CoreExport InspIRCd
 
 	/** Find a channel in the channels hash
 	 * @param chan The channel to find
-	 * @return A pointer to the channel, or NULL if the channel does not exist
+	 * @return A pointer to the channel, or nullptr if the channel does not exist
 	 */
 	Channel* FindChan(const std::string &chan);
 
@@ -383,7 +383,7 @@ class CoreExport InspIRCd
 	 * @param chname A channel name to verify
 	 * @return True if the name is valid
 	 */
-	caller1<bool, const std::string&> IsChannel;
+	Caller<bool, const std::string&> IsChannel;
 
 	/** Return true if str looks like a server ID
 	 * @param sid string to check against
@@ -425,32 +425,32 @@ class CoreExport InspIRCd
 	 * @param n A nickname to verify
 	 * @return True if the nick is valid
 	 */
-	caller1<bool, const std::string&> IsNick;
+	Caller<bool, const std::string&> IsNick;
 
 	/** Return true if an ident is valid
 	 * @param An ident to verify
 	 * @return True if the ident is valid
 	 */
-	caller1<bool, const std::string&> IsIdent;
+	Caller<bool, const std::string&> IsIdent;
 
 	/** Match two strings using pattern matching, optionally, with a map
-	 * to check case against (may be NULL). If map is null, match will be case insensitive.
+	 * to check case against (may be nullptr). If map is null, match will be case insensitive.
 	 * @param str The literal string to match against
 	 * @param mask The glob pattern to match against.
 	 * @param map The character map to use when matching.
 	 */
-	static bool Match(const std::string& str, const std::string& mask, unsigned const char* map = NULL);
-	static bool Match(const char* str, const char* mask, unsigned const char* map = NULL);
+	static bool Match(const std::string& str, const std::string& mask, unsigned const char* map = nullptr);
+	static bool Match(const char* str, const char* mask, unsigned const char* map = nullptr);
 
 	/** Match two strings using pattern matching, optionally, with a map
-	 * to check case against (may be NULL). If map is null, match will be case insensitive.
+	 * to check case against (may be nullptr). If map is null, match will be case insensitive.
 	 * Supports CIDR patterns as well as globs.
 	 * @param str The literal string to match against
 	 * @param mask The glob or CIDR pattern to match against.
 	 * @param map The character map to use when matching.
 	 */
-	static bool MatchCIDR(const std::string& str, const std::string& mask, unsigned const char* map = NULL);
-	static bool MatchCIDR(const char* str, const char* mask, unsigned const char* map = NULL);
+	static bool MatchCIDR(const std::string& str, const std::string& mask, unsigned const char* map = nullptr);
+	static bool MatchCIDR(const char* str, const char* mask, unsigned const char* map = nullptr);
 
 	/** Matches a hostname and IP against a space delimited list of hostmasks.
 	 * @param masks The space delimited masks to match against.
@@ -527,12 +527,12 @@ class CoreExport InspIRCd
 
 	/** Return a time_t as a human-readable string.
 	 * @param format The format to retrieve the date/time in. See `man 3 strftime`
-	 * for more information. If NULL, "%a %b %d %T %Y" is assumed.
+	 * for more information. If nullptr, "%a %b %d %T %Y" is assumed.
 	 * @param curtime The timestamp to convert to a human-readable string.
 	 * @param utc True to convert the time to string as-is, false to convert it to local time first.
 	 * @return A string representing the given date/time.
 	 */
-	static std::string TimeString(time_t curtime, const char* format = NULL, bool utc = false);
+	static std::string TimeString(time_t curtime, const char* format = nullptr, bool utc = false);
 
 	/** Compare two strings in a timing-safe way. If the lengths of the strings differ, the function
 	 * returns false immediately (leaking information about the length), otherwise it compares each

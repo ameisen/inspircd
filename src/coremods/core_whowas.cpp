@@ -259,18 +259,18 @@ class ModuleWhoWas : public Module
 	{
 	}
 
-	void OnGarbageCollect() CXX11_OVERRIDE
+	void OnGarbageCollect() override
 	{
 		// Remove all entries older than MaxKeep
 		cmd.manager.Maintain();
 	}
 
-	void OnUserQuit(User* user, const std::string& message, const std::string& oper_message) CXX11_OVERRIDE
+	void OnUserQuit(User* user, const std::string& message, const std::string& oper_message) override
 	{
 		cmd.manager.Add(user);
 	}
 
-	ModResult OnStats(Stats::Context& stats) CXX11_OVERRIDE
+	ModResult OnStats(Stats::Context& stats) override
 	{
 		if (stats.GetSymbol() == 'z')
 			stats.AddRow(249, "Whowas entries: "+ConvToStr(cmd.manager.GetStats().entrycount));
@@ -278,7 +278,7 @@ class ModuleWhoWas : public Module
 		return MOD_RES_PASSTHRU;
 	}
 
-	void ReadConfig(ConfigStatus& status) CXX11_OVERRIDE
+	void ReadConfig(ConfigStatus& status) override
 	{
 		ConfigTag* tag = ServerInstance->Config->ConfValue("whowas");
 		unsigned int NewGroupSize = tag->getInt("groupsize", 10, 0, 10000);
@@ -288,7 +288,7 @@ class ModuleWhoWas : public Module
 		cmd.manager.UpdateConfig(NewGroupSize, NewMaxGroups, NewMaxKeep);
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("WHOWAS", VF_VENDOR);
 	}

@@ -101,7 +101,7 @@ class ModuleRMode : public Module
  public:
 	ModuleRMode() : cmd(this) { }
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("Allows glob-based removal of list modes", VF_VENDOR);
 	}

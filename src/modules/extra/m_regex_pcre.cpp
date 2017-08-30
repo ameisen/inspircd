@@ -55,7 +55,7 @@ class PCRERegex : public Regex
 		pcre_free(regex);
 	}
 
-	bool Matches(const std::string& text) CXX11_OVERRIDE
+	bool Matches(const std::string& text) override
 	{
 		return (pcre_exec(regex, NULL, text.c_str(), text.length(), 0, 0, NULL, 0) >= 0);
 	}
@@ -65,7 +65,7 @@ class PCREFactory : public RegexFactory
 {
  public:
 	PCREFactory(Module* m) : RegexFactory(m, "regex/pcre") {}
-	Regex* Create(const std::string& expr) CXX11_OVERRIDE
+	Regex* Create(const std::string& expr) override
 	{
 		return new PCRERegex(expr);
 	}
@@ -79,7 +79,7 @@ class ModuleRegexPCRE : public Module
 	{
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("Regex Provider Module for PCRE", VF_VENDOR);
 	}

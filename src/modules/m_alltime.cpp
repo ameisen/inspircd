@@ -56,7 +56,7 @@ class Modulealltime : public Module
 	{
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("Display timestamps from all servers connected to the network", VF_OPTCOMMON | VF_VENDOR);
 	}

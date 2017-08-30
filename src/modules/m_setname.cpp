@@ -59,7 +59,7 @@ class ModuleSetName : public Module
 	{
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("Provides support for the SETNAME command", VF_VENDOR);
 	}

@@ -74,7 +74,7 @@ class ModuleClose : public Module
 	{
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("Provides /CLOSE functionality", VF_VENDOR);
 	}

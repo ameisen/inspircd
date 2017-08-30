@@ -42,7 +42,7 @@ class CommandShowFile : public Command
 	{
 	}
 
-	CmdResult Handle(const std::vector<std::string>& parameters, User* user) CXX11_OVERRIDE
+	CmdResult Handle(const std::vector<std::string>& parameters, User* user) override
 	{
 		if (method == SF_NUMERIC)
 		{
@@ -129,7 +129,7 @@ class ModuleShowFile : public Module
 	}
 
  public:
-	void ReadConfig(ConfigStatus& status) CXX11_OVERRIDE
+	void ReadConfig(ConfigStatus& status) override
 	{
 		std::vector<CommandShowFile*> newcmds;
 
@@ -161,7 +161,7 @@ class ModuleShowFile : public Module
 		stdalgo::delete_all(cmds);
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("Provides support for showing text files to users", VF_VENDOR);
 	}

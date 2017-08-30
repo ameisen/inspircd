@@ -60,18 +60,18 @@ class ModuleHideOper : public Module, public Whois::LineEventListener
 	{
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("Provides support for hiding oper status with user mode +H", VF_VENDOR);
 	}
 
-	void OnUserQuit(User* user, const std::string&, const std::string&) CXX11_OVERRIDE
+	void OnUserQuit(User* user, const std::string&, const std::string&) override
 	{
 		if (user->IsModeSet(hm))
 			hm.opercount--;
 	}
 
-	ModResult OnNumeric(User* user, const Numeric::Numeric& numeric) CXX11_OVERRIDE
+	ModResult OnNumeric(User* user, const Numeric::Numeric& numeric) override
 	{
 		if (numeric.GetNumeric() != RPL_LUSEROP || active || user->HasPrivPermission("users/auspex"))
 			return MOD_RES_PASSTHRU;
@@ -87,7 +87,7 @@ class ModuleHideOper : public Module, public Whois::LineEventListener
 		return MOD_RES_DENY;
 	}
 
-	ModResult OnWhoisLine(Whois::Context& whois, Numeric::Numeric& numeric) CXX11_OVERRIDE
+	ModResult OnWhoisLine(Whois::Context& whois, Numeric::Numeric& numeric) override
 	{
 		/* Dont display numeric 313 (RPL_WHOISOPER) if they have +H set and the
 		 * person doing the WHOIS is not an oper
@@ -104,7 +104,7 @@ class ModuleHideOper : public Module, public Whois::LineEventListener
 		return MOD_RES_PASSTHRU;
 	}
 
-	ModResult OnSendWhoLine(User* source, const std::vector<std::string>& params, User* user, Membership* memb, Numeric::Numeric& numeric) CXX11_OVERRIDE
+	ModResult OnSendWhoLine(User* source, const std::vector<std::string>& params, User* user, Membership* memb, Numeric::Numeric& numeric) override
 	{
 		if (user->IsModeSet(hm) && !source->HasPrivPermission("users/auspex"))
 		{
@@ -125,7 +125,7 @@ class ModuleHideOper : public Module, public Whois::LineEventListener
 		return MOD_RES_PASSTHRU;
 	}
 
-	ModResult OnStats(Stats::Context& stats) CXX11_OVERRIDE
+	ModResult OnStats(Stats::Context& stats) override
 	{
 		if (stats.GetSymbol() != 'P')
 			return MOD_RES_PASSTHRU;

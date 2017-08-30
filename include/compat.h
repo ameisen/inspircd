@@ -49,62 +49,6 @@
 #endif
 
 /**
- * These macros enable the use of the C++11 override control keywords in
- * compilers which support them.
- */
-#if __cplusplus >= 201103L
-# define HAS_CXX11_FINAL_OVERRIDE
-#elif defined __clang__
-# if __has_feature(cxx_override_control)
-#  define HAS_CXX11_FINAL_OVERRIDE
-# endif
-#elif (__GNUC__ > 4) || (__GNUC__ == 4 && __GNUC_MINOR__ >= 7)
-# if defined __GXX_EXPERIMENTAL_CXX0X__
-#  define HAS_CXX11_FINAL_OVERRIDE
-# endif
-#elif _MSC_VER >= 1700
-# define HAS_CXX11_FINAL_OVERRIDE
-#endif
-
-#if defined HAS_CXX11_FINAL_OVERRIDE
-# define CXX11_FINAL final
-# define CXX11_OVERRIDE override
-#else
-# define CXX11_FINAL
-# define CXX11_OVERRIDE
-#endif
-
-/**
- * These macros enable the detection of the C++11 variadic templates in
- * compilers which support them.
- */
-#if __cplusplus >= 201103L
-# define HAS_CXX11_VARIADIC_TEMPLATES
-#elif defined __clang__
-# if __has_feature(cxx_variadic_templates)
-#  define HAS_CXX11_VARIADIC_TEMPLATES
-# endif
-#elif (__GNUC__ > 4) || (__GNUC__ == 4 && __GNUC_MINOR__ >= 4)
-# if defined __GXX_EXPERIMENTAL_CXX0X__
-#  define HAS_CXX11_VARIADIC_TEMPLATES
-# endif
-#elif _MSC_FULL_VER >= 170051025
-# define HAS_CXX11_VARIADIC_TEMPLATES
-#endif
-
-/**
- * This macro allows methods to be marked as deprecated. To use this, wrap the
- * method declaration in the header file with the macro.
- */
-#if defined __clang__ || defined __GNUC__
-# define DEPRECATED_METHOD(function) function __attribute__((deprecated))
-#elif defined _MSC_VER
-# define DEPRECATED_METHOD(function) __declspec(deprecated) function
-#else
-# define DEPRECATED_METHOD(function) function
-#endif
-
-/**
  * Windows is very different to UNIX so we have to wrap certain features in
  * order to build on Windows correctly.
  */

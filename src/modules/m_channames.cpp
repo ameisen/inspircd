@@ -21,7 +21,7 @@
 
 static std::bitset<256> allowedmap;
 
-class NewIsChannelHandler : public HandlerBase1<bool, const std::string&>
+class NewIsChannelHandler : public Handler<bool, const std::string&>
 {
  public:
 	bool Call(const std::string&);
@@ -45,7 +45,7 @@ bool NewIsChannelHandler::Call(const std::string& channame)
 class ModuleChannelNames : public Module
 {
 	NewIsChannelHandler myhandler;
-	caller1<bool, const std::string&> rememberer;
+	Caller<bool, const std::string&> rememberer;
 	bool badchan;
 	ChanModeReference permchannelmode;
 
@@ -57,7 +57,7 @@ class ModuleChannelNames : public Module
 	{
 	}
 
-	void init() CXX11_OVERRIDE
+	void init() override
 	{
 		ServerInstance->IsChannel = &myhandler;
 	}
@@ -99,7 +99,7 @@ class ModuleChannelNames : public Module
 		badchan = false;
 	}
 
-	void ReadConfig(ConfigStatus& status) CXX11_OVERRIDE
+	void ReadConfig(ConfigStatus& status) override
 	{
 		ConfigTag* tag = ServerInstance->Config->ConfValue("channames");
 		std::string denyToken = tag->getString("denyrange");
@@ -129,7 +129,7 @@ class ModuleChannelNames : public Module
 		ValidateChans();
 	}
 
-	void OnUserKick(User* source, Membership* memb, const std::string &reason, CUList& except_list) CXX11_OVERRIDE
+	void OnUserKick(User* source, Membership* memb, const std::string &reason, CUList& except_list) override
 	{
 		if (badchan)
 		{
@@ -140,14 +140,14 @@ class ModuleChannelNames : public Module
 		}
 	}
 
-	CullResult cull() CXX11_OVERRIDE
+	CullResult cull() override
 	{
 		ServerInstance->IsChannel = rememberer;
 		ValidateChans();
 		return Module::cull();
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("Implements config tags which allow changing characters allowed in channel names", VF_VENDOR);
 	}

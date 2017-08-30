@@ -31,7 +31,7 @@ namespace
 		std::string line;
 		std::string operline;
 
-		void Execute(LocalUser* user) CXX11_OVERRIDE
+		void Execute(LocalUser* user) override
 		{
 			user->Write(user->IsOper() ? operline : line);
 		}

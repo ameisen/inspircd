@@ -75,7 +75,7 @@ class ModuleAlias : public Module
 	UserModeReference botmode;
 
  public:
-	void ReadConfig(ConfigStatus& status) CXX11_OVERRIDE
+	void ReadConfig(ConfigStatus& status) override
 	{
 		ConfigTag* fantasy = ServerInstance->Config->ConfValue("fantasy");
 		AllowBots = fantasy->getBool("allowbots", false);
@@ -106,7 +106,7 @@ class ModuleAlias : public Module
 	{
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("Provides aliases of commands.", VF_VENDOR);
 	}
@@ -136,7 +136,7 @@ class ModuleAlias : public Module
 		return word;
 	}
 
-	ModResult OnPreCommand(std::string &command, std::vector<std::string> &parameters, LocalUser *user, bool validated, const std::string &original_line) CXX11_OVERRIDE
+	ModResult OnPreCommand(std::string &command, std::vector<std::string> &parameters, LocalUser *user, bool validated, const std::string &original_line) override
 	{
 		/* If theyre not registered yet, we dont want
 		 * to know.
@@ -169,7 +169,7 @@ class ModuleAlias : public Module
 		return MOD_RES_PASSTHRU;
 	}
 
-	void OnUserMessage(User *user, void *dest, int target_type, const std::string &text, char status, const CUList &exempt_list, MessageType msgtype) CXX11_OVERRIDE
+	void OnUserMessage(User *user, void *dest, int target_type, const std::string &text, char status, const CUList &exempt_list, MessageType msgtype) override
 	{
 		if ((target_type != TYPE_CHANNEL) || (msgtype != MSG_PRIVMSG))
 		{
@@ -346,7 +346,7 @@ class ModuleAlias : public Module
 		ServerInstance->Parser.CallHandler(command, pars, user);
 	}
 
-	void Prioritize() CXX11_OVERRIDE
+	void Prioritize() override
 	{
 		// Prioritise after spanningtree so that channel aliases show the alias before the effects.
 		Module* linkmod = ServerInstance->Modules->Find("m_spanningtree.so");

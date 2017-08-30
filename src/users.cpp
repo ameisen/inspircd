@@ -867,7 +867,7 @@ namespace
 	{
 		const std::string& msg;
 
-		void Execute(LocalUser* user) CXX11_OVERRIDE
+		void Execute(LocalUser* user) override
 		{
 			user->Write(msg);
 		}

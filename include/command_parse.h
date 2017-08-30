@@ -57,7 +57,7 @@ class CoreExport CommandParser
 	 * @param commandname The command to find. This should be in uppercase.
 	 * @param parameters Parameter list
 	 * @param user The user to call the handler on behalf of
-	 * @param cmd If non-NULL and the command was executed it is set to the command handler,
+	 * @param cmd If non-nullptr and the command was executed it is set to the command handler,
 	 * otherwise it isn't written to.
 	 * @return This method will return CMD_SUCCESS if the command handler was found and called,
 	 * and the command completeld successfully. It will return CMD_FAILURE if the command handler was found
@@ -65,11 +65,11 @@ class CoreExport CommandParser
 	 * command simply did not exist at all or the wrong number of parameters were given, or the user
 	 * was not privilaged enough to execute the command.
 	 */
-	CmdResult CallHandler(const std::string& commandname, const std::vector<std::string>& parameters, User* user, Command** cmd = NULL);
+	CmdResult CallHandler(const std::string& commandname, const std::vector<std::string>& parameters, User* user, Command** cmd = nullptr);
 
 	/** Get the handler function for a command.
 	 * @param commandname The command required. Always use uppercase for this parameter.
-	 * @return a pointer to the command handler, or NULL
+	 * @return a pointer to the command handler, or nullptr
 	 */
 	Command* GetHandler(const std::string &commandname);
 
@@ -132,19 +132,19 @@ class CoreExport CommandParser
 	 * @param to The translation type to use for the process
 	 * @param item The input string
 	 * @param dest The output string. The translation result will be appended to this string
-	 * @param custom_translator Used to translate the parameter if the translation type is TR_CUSTOM, if NULL, TR_CUSTOM will act like TR_TEXT
+	 * @param custom_translator Used to translate the parameter if the translation type is TR_CUSTOM, if nullptr, TR_CUSTOM will act like TR_TEXT
 	 * @param paramnumber The index of the parameter we are translating.
 	 */
-	static void TranslateSingleParam(TranslateType to, const std::string& item, std::string& dest, CommandBase* custom_translator = NULL, unsigned int paramnumber = 0);
+	static void TranslateSingleParam(TranslateType to, const std::string& item, std::string& dest, CommandBase* custom_translator = nullptr, unsigned int paramnumber = 0);
 
 	/** Translate nicknames in a list of strings into UIDs, based on the TranslateTypes given.
 	 * @param to The translation types to use for the process. If this list is too short, TR_TEXT is assumed for the rest.
 	 * @param source The strings to translate
 	 * @param prefix_final True if the final source argument should have a colon prepended (if it could contain a space)
-	 * @param custom_translator Used to translate the parameter if the translation type is TR_CUSTOM, if NULL, TR_CUSTOM will act like TR_TEXT
+	 * @param custom_translator Used to translate the parameter if the translation type is TR_CUSTOM, if nullptr, TR_CUSTOM will act like TR_TEXT
 	 * @return dest The output string
 	 */
-	static std::string TranslateUIDs(const std::vector<TranslateType>& to, const std::vector<std::string>& source, bool prefix_final = false, CommandBase* custom_translator = NULL);
+	static std::string TranslateUIDs(const std::vector<TranslateType>& to, const std::vector<std::string>& source, bool prefix_final = false, CommandBase* custom_translator = nullptr);
 };
 
 /** A lookup table of values for multiplier characters used by

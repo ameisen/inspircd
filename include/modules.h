@@ -276,7 +276,7 @@ class CoreExport Module : public classbase, public usecountbase
 	/** Clean up prior to destruction
 	 * If you override, you must call this AFTER your module's cleanup
 	 */
-	virtual CullResult cull() CXX11_OVERRIDE;
+	virtual CullResult cull() override;
 
 	/** Default destructor.
 	 * destroys a module class
@@ -368,7 +368,7 @@ class CoreExport Module : public classbase, public usecountbase
 	 * rehash because it is directed at a remote server.
 	 *
 	 * @param user The user performing the rehash, if any. If this is server initiated, the value of
-	 * this variable will be NULL.
+	 * this variable will be nullptr.
 	 * @param parameter The (optional) parameter given to REHASH from the user. Empty when server
 	 * initiated.
 	 */
@@ -402,11 +402,11 @@ class CoreExport Module : public classbase, public usecountbase
 	 * IMPORTANT NOTE!
 	 *
 	 * If the user joins a NEW channel which does not exist yet, OnUserPreJoin will be called BEFORE the channel
-	 * record is created. This will cause Channel* chan to be NULL. There is very little you can do in form of
+	 * record is created. This will cause Channel* chan to be nullptr. There is very little you can do in form of
 	 * processing on the actual channel record at this point, however the channel NAME will still be passed in
 	 * char* cname, so that you could for example implement a channel blacklist or whitelist, etc.
 	 * @param user The user joining the channel
-	 * @param chan If the  channel is a new channel, this will be NULL, otherwise it will be a pointer to the channel being joined
+	 * @param chan If the  channel is a new channel, this will be nullptr, otherwise it will be a pointer to the channel being joined
 	 * @param cname The channel name being joined. For new channels this is valid where chan is not.
 	 * @param privs A string containing the users privilages when joining the channel. For new channels this will contain "o".
 	 * You may alter this string to alter the user's modes on the channel.
@@ -559,11 +559,11 @@ class CoreExport Module : public classbase, public usecountbase
 
 	/** Called after every MODE command sent from a user
 	 * Either the usertarget or the chantarget variable contains the target of the modes,
-	 * the actual target will have a non-NULL pointer.
+	 * the actual target will have a non-nullptr pointer.
 	 * All changed modes are available in the changelist object.
 	 * @param user The user sending the MODEs
-	 * @param usertarget The target user of the modes, NULL if the target is a channel
-	 * @param chantarget The target channel of the modes, NULL if the target is a user
+	 * @param usertarget The target user of the modes, nullptr if the target is a channel
+	 * @param chantarget The target channel of the modes, nullptr if the target is a user
 	 * @param changelist The changed modes.
 	 * @param processflags Flags passed to ModeParser::Process(), see ModeParser::ModeProcessFlags
 	 * for the possible flags.
@@ -631,14 +631,14 @@ class CoreExport Module : public classbase, public usecountbase
 
 	/** Called whenever an xline is added by a local user.
 	 * This method is triggered after the line is added.
-	 * @param source The sender of the line or NULL for local server
+	 * @param source The sender of the line or nullptr for local server
 	 * @param line The xline being added
 	 */
 	virtual void OnAddLine(User* source, XLine* line);
 
 	/** Called whenever an xline is deleted MANUALLY. See OnExpireLine for expiry.
 	 * This method is triggered after the line is deleted.
-	 * @param source The user removing the line or NULL for local server
+	 * @param source The user removing the line or nullptr for local server
 	 * @param line the line being deleted
 	 */
 	virtual void OnDelLine(User* source, XLine* line);
@@ -678,7 +678,7 @@ class CoreExport Module : public classbase, public usecountbase
 	 * OnRawMode for each individual mode
 	 *
 	 * @param source the user making the mode change
-	 * @param dest the user destination of the umode change (NULL if a channel mode)
+	 * @param dest the user destination of the umode change (nullptr if a channel mode)
 	 * @param channel the channel destination of the mode change
 	 * @param modes Modes being changed, can be edited
 	 */
@@ -692,7 +692,7 @@ class CoreExport Module : public classbase, public usecountbase
 
 	/** Called when a client is disconnected by KILL.
 	 * If a client is killed by a server, e.g. a nickname collision or protocol error,
-	 * source is NULL.
+	 * source is nullptr.
 	 * Return 1 from this function to prevent the kill, and 0 from this function to allow
 	 * it as normal. If you prevent the kill no output will be sent to the client, it is
 	 * down to your module to generate this information.
@@ -812,7 +812,7 @@ class CoreExport Module : public classbase, public usecountbase
 	/** Called whenever a mode character is processed.
 	 * Return 1 from this function to block the mode character from being processed entirely.
 	 * @param user The user who is sending the mode
-	 * @param chan The channel the mode is being sent to (or NULL if a usermode)
+	 * @param chan The channel the mode is being sent to (or nullptr if a usermode)
 	 * @param mh The mode handler for the mode being changed
 	 * @param param The parameter for the mode or an empty string
 	 * @param adding true of the mode is being added, false if it is being removed
@@ -987,7 +987,7 @@ class CoreExport Module : public classbase, public usecountbase
 	 * @param source The user running the /WHO query
 	 * @param params The parameters to the /WHO query
 	 * @param user The user that this line of the query is about
-	 * @param memb The member shown in this line, NULL if no channel is in this line
+	 * @param memb The member shown in this line, nullptr if no channel is in this line
 	 * @param numeric Numeric to send; modifiable.
 	 * @return MOD_RES_PASSTHRU to allow the line to be displayed, MOD_RES_DENY to hide it
 	 */
@@ -1055,8 +1055,8 @@ class CoreExport ModuleManager : public fakederef<ModuleManager>
 	std::multimap<std::string, ServiceProvider*> DataProviders;
 
 	/** A list of ServiceProviders waiting to be registered.
-	 * Non-NULL when constructing a Module, NULL otherwise.
-	 * When non-NULL ServiceProviders add themselves to this list on creation and the core
+	 * Non-nullptr when constructing a Module, nullptr otherwise.
+	 * When non-nullptr ServiceProviders add themselves to this list on creation and the core
 	 * automatically registers them (that is, call AddService()) after the Module is constructed,
 	 * and before Module::init() is called.
 	 * If a service is created after the construction of the Module (for example in init()) it
@@ -1095,7 +1095,7 @@ class CoreExport ModuleManager : public fakederef<ModuleManager>
 	 * then this contains a the module that your module must be placed before
 	 * or after.
 	 */
-	bool SetPriority(Module* mod, Implementation i, Priority s, Module* which = NULL);
+	bool SetPriority(Module* mod, Implementation i, Priority s, Module* which = nullptr);
 
 	/** Change the priority of all events in a module.
 	 * @param mod The module to set the priority of
@@ -1177,7 +1177,7 @@ class CoreExport ModuleManager : public fakederef<ModuleManager>
 	/** Find a module by name, and return a Module* to it.
 	 * This is preferred over iterating the module lists yourself.
 	 * @param name The module name to look up
-	 * @return A pointer to the module, or NULL if the module cannot be found
+	 * @return A pointer to the module, or nullptr if the module cannot be found
 	 */
 	Module* Find(const std::string &name);
 

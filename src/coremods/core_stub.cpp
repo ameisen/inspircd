@@ -147,7 +147,7 @@ class CoreModStub : public Module
 	{
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("Provides the stub commands CONNECT, LINKS, SERVER and SQUIT", VF_VENDOR|VF_CORE);
 	}

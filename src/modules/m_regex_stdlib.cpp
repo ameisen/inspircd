@@ -28,7 +28,7 @@ class StdRegex : public Regex
 	std::regex regexcl;
 
  public:
-	StdRegex(const std::string& rx, std::regex::flag_type fltype) : Regex(rx)
+	StdRegex(const std::string & rx, std::regex::flag_type fltype) : Regex(rx)
 	{
 		try{
 			regexcl.assign(rx, fltype | std::regex::optimize);
@@ -39,7 +39,7 @@ class StdRegex : public Regex
 		}
 	}
 
-	bool Matches(const std::string& text) override
+	bool Matches(const std::string & text) override
 	{
 		return std::regex_search(text, regexcl);
 	}
@@ -50,7 +50,7 @@ class StdRegexFactory : public RegexFactory
  public:
 	std::regex::flag_type regextype;
 	StdRegexFactory(Module* m) : RegexFactory(m, "regex/stdregex") {}
-	Regex* Create(const std::string& expr) override
+	Regex* Create(const std::string & expr) override
 	{
 		return new StdRegex(expr, regextype);
 	}
@@ -87,7 +87,7 @@ public:
 		else
 		{
 			if(regextype != "ecmascript")
-				ServerInstance->SNO->WriteToSnoMask('a', "WARNING: Non-existent regex engine '%s' specified. Falling back to ECMAScript.", regextype.c_str());
+				ServerInstance->SNO->WriteToSnoMask('a', "WARNING: Non-existent regex engine '%s' specified. Falling back to ECMAScript.", regextype.data());
 			ref.regextype = std::regex::ECMAScript;
 		}
 	}

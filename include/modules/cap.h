@@ -134,7 +134,7 @@ namespace Cap
 		 */
 		dynamic_reference<Manager> manager;
 
-		void OnCapture() CXX11_OVERRIDE
+		void OnCapture() override
 		{
 			if (active)
 				SetActive(true);
@@ -181,7 +181,7 @@ namespace Cap
 			SetActive(false);
 		}
 
-		void RegisterService() CXX11_OVERRIDE
+		void RegisterService() override
 		{
 			manager.SetCaptureHook(this);
 			SetActive(true);

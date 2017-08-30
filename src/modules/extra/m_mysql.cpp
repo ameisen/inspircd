@@ -113,11 +113,11 @@ class ModuleSQL : public Module
 	ConnMap connections; // main thread only
 
 	ModuleSQL();
-	void init() CXX11_OVERRIDE;
+	void init() override;
 	~ModuleSQL();
-	void ReadConfig(ConfigStatus& status) CXX11_OVERRIDE;
-	void OnUnloadModule(Module* mod) CXX11_OVERRIDE;
-	Version GetVersion() CXX11_OVERRIDE;
+	void ReadConfig(ConfigStatus& status) override;
+	void OnUnloadModule(Module* mod) override;
+	Version GetVersion() override;
 };
 
 class DispatcherThread : public SocketThread

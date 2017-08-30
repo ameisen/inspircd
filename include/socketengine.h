@@ -372,9 +372,9 @@ public:
 	static bool HasFd(int fd);
 
 	/** Returns the EventHandler attached to a specific fd.
-	 * If the fd isnt in the socketengine, returns NULL.
+	 * If the fd isnt in the socketengine, returns nullptr.
 	 * @param fd The event handler to look for
-	 * @return A pointer to the event handler, or NULL
+	 * @return A pointer to the event handler, or nullptr
 	 */
 	static EventHandler* GetRef(int fd);
 

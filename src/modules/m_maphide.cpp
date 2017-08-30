@@ -23,12 +23,12 @@ class ModuleMapHide : public Module
 {
 	std::string url;
  public:
-	void ReadConfig(ConfigStatus& status) CXX11_OVERRIDE
+	void ReadConfig(ConfigStatus& status) override
 	{
 		url = ServerInstance->Config->ConfValue("security")->getString("maphide");
 	}
 
-	ModResult OnPreCommand(std::string &command, std::vector<std::string> &parameters, LocalUser *user, bool validated, const std::string &original_line) CXX11_OVERRIDE
+	ModResult OnPreCommand(std::string &command, std::vector<std::string> &parameters, LocalUser *user, bool validated, const std::string &original_line) override
 	{
 		if (validated && !user->IsOper() && !url.empty() && (command == "MAP" || command == "LINKS"))
 		{
@@ -39,7 +39,7 @@ class ModuleMapHide : public Module
 			return MOD_RES_PASSTHRU;
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("Hide /MAP and /LINKS in the same form as ircu (mostly useless)", VF_VENDOR);
 	}

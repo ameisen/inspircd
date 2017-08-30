@@ -61,22 +61,22 @@ class CoreExport ProtocolInterface
 	 * @param targetmask The target server mask (can contain wildcards)
 	 * @param cmd The ENCAP subcommand
 	 * @param params List of string parameters which are dependant on the subcommand
-	 * @param source The source of the message (prefix), must be a local user or NULL which means use local server
+	 * @param source The source of the message (prefix), must be a local user or nullptr which means use local server
 	 * @return Always true if the target mask contains wildcards; otherwise true if the server name was found,
 	 * and the message was sent, false if it was not found.
 	 * ENCAP (should) be used instead of creating new protocol messages for easier third party application support.
 	 */
-	virtual bool SendEncapsulatedData(const std::string& targetmask, const std::string& cmd, const parameterlist& params, User* source = NULL) { return false; }
+	virtual bool SendEncapsulatedData(const std::string& targetmask, const std::string& cmd, const parameterlist& params, User* source = nullptr) { return false; }
 
 	/** Send an ENCAP message to all servers.
 	 * See the protocol documentation for the purpose of ENCAP.
 	 * @param cmd The ENCAP subcommand
 	 * @param params List of string parameters which are dependant on the subcommand
 	 * @param source The source of the message (prefix), must be a local user or a user behind 'omit'
-	 * or NULL which is equivalent to the local server
-	 * @param omit If non-NULL the message won't be sent in the direction of this server, useful for forwarding messages
+	 * or nullptr which is equivalent to the local server
+	 * @param omit If non-nullptr the message won't be sent in the direction of this server, useful for forwarding messages
 	 */
-	virtual void BroadcastEncap(const std::string& cmd, const parameterlist& params, User* source = NULL, User* omit = NULL) { }
+	virtual void BroadcastEncap(const std::string& cmd, const parameterlist& params, User* source = nullptr, User* omit = nullptr) { }
 
 	/** Send metadata for a channel to other linked servers.
 	 * @param chan The channel to send metadata for

@@ -56,7 +56,7 @@ class ModuleDeVoice : public Module
 	{
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("Provides voiced users with the ability to devoice themselves.", VF_VENDOR);
 	}

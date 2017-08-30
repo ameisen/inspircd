@@ -53,12 +53,12 @@ class ModuleServProtectMode : public Module, public Whois::EventListener, public
 	{
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("Provides usermode +k to protect services from kicks, kills, and mode changes.", VF_VENDOR);
 	}
 
-	void OnWhois(Whois::Context& whois) CXX11_OVERRIDE
+	void OnWhois(Whois::Context& whois) override
 	{
 		if (whois.GetTarget()->IsModeSet(bm))
 		{
@@ -66,7 +66,7 @@ class ModuleServProtectMode : public Module, public Whois::EventListener, public
 		}
 	}
 
-	ModResult OnRawMode(User* user, Channel* chan, ModeHandler* mh, const std::string& param, bool adding) CXX11_OVERRIDE
+	ModResult OnRawMode(User* user, Channel* chan, ModeHandler* mh, const std::string& param, bool adding) override
 	{
 		/* Check that the mode is not a server mode, it is being removed, the user making the change is local, there is a parameter,
 		 * and the user making the change is not a uline
@@ -99,7 +99,7 @@ class ModuleServProtectMode : public Module, public Whois::EventListener, public
 		return MOD_RES_PASSTHRU;
 	}
 
-	ModResult OnKill(User* src, User* dst, const std::string &reason) CXX11_OVERRIDE
+	ModResult OnKill(User* src, User* dst, const std::string &reason) override
 	{
 		if (src == nullptr)
 			return MOD_RES_PASSTHRU;
@@ -113,7 +113,7 @@ class ModuleServProtectMode : public Module, public Whois::EventListener, public
 		return MOD_RES_PASSTHRU;
 	}
 
-	ModResult OnUserPreKick(User *src, Membership* memb, const std::string &reason) CXX11_OVERRIDE
+	ModResult OnUserPreKick(User *src, Membership* memb, const std::string &reason) override
 	{
 		if (memb->user->IsModeSet(bm))
 		{
@@ -124,7 +124,7 @@ class ModuleServProtectMode : public Module, public Whois::EventListener, public
 		return MOD_RES_PASSTHRU;
 	}
 
-	ModResult OnWhoisLine(Whois::Context& whois, Numeric::Numeric& numeric) CXX11_OVERRIDE
+	ModResult OnWhoisLine(Whois::Context& whois, Numeric::Numeric& numeric) override
 	{
 		return ((numeric.GetNumeric() == 319) && whois.GetTarget()->IsModeSet(bm)) ? MOD_RES_DENY : MOD_RES_PASSTHRU;
 	}

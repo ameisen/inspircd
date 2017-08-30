@@ -34,16 +34,16 @@
 	} while (false);
 
 /** Compose a hex string from raw data.
- * @param raw The raw data to compose hex from (can be NULL if rawsize is 0)
+ * @param raw The raw data to compose hex from (can be nullptr if rawsize is 0)
  * @param rawsize The size of the raw data buffer
  * @return The hex string
  */
 CoreExport std::string BinToHex(const void* raw, size_t rawsize);
 
 /** Base64 encode */
-CoreExport std::string BinToBase64(const std::string& data, const char* table = NULL, char pad = 0);
+CoreExport std::string BinToBase64(const std::string& data, const char* table = nullptr, char pad = 0);
 /** Base64 decode */
-CoreExport std::string Base64ToBin(const std::string& data, const char* table = NULL);
+CoreExport std::string Base64ToBin(const std::string& data, const char* table = nullptr);
 
 /** Compose a hex string from the data in a std::string.
  * @param data The data to compose hex from

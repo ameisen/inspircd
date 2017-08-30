@@ -155,13 +155,13 @@ class CoreModUser : public Module
 	{
 	}
 
-	void ReadConfig(ConfigStatus& status) CXX11_OVERRIDE
+	void ReadConfig(ConfigStatus& status) override
 	{
 		cmdpart.msgwrap.ReadConfig("prefixpart", "suffixpart", "fixedpart");
 		cmdquit.msgwrap.ReadConfig("prefixquit", "suffixquit", "fixedquit");
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("Provides the AWAY, MODE, NICK, PART, PASS, PING, PONG, QUIT and USER commands", VF_VENDOR|VF_CORE);
 	}

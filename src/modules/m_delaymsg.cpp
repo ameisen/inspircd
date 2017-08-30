@@ -53,10 +53,10 @@ class ModuleDelayMsg : public Module
 	{
 	}
 
-	Version GetVersion() CXX11_OVERRIDE;
-	void OnUserJoin(Membership* memb, bool sync, bool created, CUList&) CXX11_OVERRIDE;
-	ModResult OnUserPreMessage(User* user, void* dest, int target_type, std::string& text, char status, CUList& exempt_list, MessageType msgtype) CXX11_OVERRIDE;
-	void ReadConfig(ConfigStatus& status) CXX11_OVERRIDE;
+	Version GetVersion() override;
+	void OnUserJoin(Membership* memb, bool sync, bool created, CUList&) override;
+	ModResult OnUserPreMessage(User* user, void* dest, int target_type, std::string& text, char status, CUList& exempt_list, MessageType msgtype) override;
+	void ReadConfig(ConfigStatus& status) override;
 };
 
 ModeAction DelayMsgMode::OnSet(User* source, Channel* chan, std::string& parameter)

@@ -47,7 +47,7 @@ class ModuleAuditorium : public Module
 	{
 	}
 
-	void ReadConfig(ConfigStatus& status) CXX11_OVERRIDE
+	void ReadConfig(ConfigStatus& status) override
 	{
 		ConfigTag* tag = ServerInstance->Config->ConfValue("auditorium");
 		OpsVisible = tag->getBool("opvisible");
@@ -55,7 +55,7 @@ class ModuleAuditorium : public Module
 		OperCanSee = tag->getBool("opercansee", true);
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("Allows for auditorium channels (+u) where nobody can see others joining and parting or the nick list", VF_VENDOR);
 	}
@@ -91,7 +91,7 @@ class ModuleAuditorium : public Module
 		return false;
 	}
 
-	ModResult OnNamesListItem(User* issuer, Membership* memb, std::string& prefixes, std::string& nick) CXX11_OVERRIDE
+	ModResult OnNamesListItem(User* issuer, Membership* memb, std::string& prefixes, std::string& nick) override
 	{
 		if (IsVisible(memb))
 			return MOD_RES_PASSTHRU;
@@ -117,22 +117,22 @@ class ModuleAuditorium : public Module
 		}
 	}
 
-	void OnUserJoin(Membership* memb, bool sync, bool created, CUList& excepts) CXX11_OVERRIDE
+	void OnUserJoin(Membership* memb, bool sync, bool created, CUList& excepts) override
 	{
 		BuildExcept(memb, excepts);
 	}
 
-	void OnUserPart(Membership* memb, std::string &partmessage, CUList& excepts) CXX11_OVERRIDE
+	void OnUserPart(Membership* memb, std::string &partmessage, CUList& excepts) override
 	{
 		BuildExcept(memb, excepts);
 	}
 
-	void OnUserKick(User* source, Membership* memb, const std::string &reason, CUList& excepts) CXX11_OVERRIDE
+	void OnUserKick(User* source, Membership* memb, const std::string &reason, CUList& excepts) override
 	{
 		BuildExcept(memb, excepts);
 	}
 
-	void OnBuildNeighborList(User* source, IncludeChanList& include, std::map<User*, bool>& exception) CXX11_OVERRIDE
+	void OnBuildNeighborList(User* source, IncludeChanList& include, std::map<User*, bool>& exception) override
 	{
 		for (IncludeChanList::iterator i = include.begin(); i != include.end(); )
 		{
@@ -155,7 +155,7 @@ class ModuleAuditorium : public Module
 		}
 	}
 
-	ModResult OnSendWhoLine(User* source, const std::vector<std::string>& params, User* user, Membership* memb, Numeric::Numeric& numeric) CXX11_OVERRIDE
+	ModResult OnSendWhoLine(User* source, const std::vector<std::string>& params, User* user, Membership* memb, Numeric::Numeric& numeric) override
 	{
 		if (!memb)
 			return MOD_RES_PASSTHRU;

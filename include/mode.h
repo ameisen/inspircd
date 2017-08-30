@@ -166,12 +166,12 @@ class CoreExport ModeHandler : public ServiceProvider
 	 * @param mclass The object type of this mode handler, one of ModeHandler::Class
 	 */
 	ModeHandler(Module* me, const std::string& name, char modeletter, ParamSpec params, ModeType type, Class mclass = MC_OTHER);
-	virtual CullResult cull() CXX11_OVERRIDE;
+	virtual CullResult cull() override;
 	virtual ~ModeHandler();
 
 	/** Register this object in the ModeParser
 	 */
-	void RegisterService() CXX11_OVERRIDE;
+	void RegisterService() override;
 
 	/**
 	 * Returns true if the mode is a list mode
@@ -180,37 +180,37 @@ class CoreExport ModeHandler : public ServiceProvider
 
 	/**
 	 * Check whether this mode is a prefix mode
-	 * @return non-NULL if this mode is a prefix mode, NULL otherwise
+	 * @return non-nullptr if this mode is a prefix mode, nullptr otherwise
 	 */
 	PrefixMode* IsPrefixMode();
 
 	/**
 	 * Check whether this mode is a prefix mode
-	 * @return non-NULL if this mode is a prefix mode, NULL otherwise
+	 * @return non-nullptr if this mode is a prefix mode, nullptr otherwise
 	 */
 	const PrefixMode* IsPrefixMode() const;
 
 	/**
 	 * Check whether this mode handler inherits from ListModeBase
-	 * @return non-NULL if this mode handler inherits from ListModeBase, NULL otherwise
+	 * @return non-nullptr if this mode handler inherits from ListModeBase, nullptr otherwise
 	 */
 	ListModeBase* IsListModeBase();
 
 	/**
 	 * Check whether this mode handler inherits from ListModeBase
-	 * @return non-NULL if this mode handler inherits from ListModeBase, NULL otherwise
+	 * @return non-nullptr if this mode handler inherits from ListModeBase, nullptr otherwise
 	 */
 	const ListModeBase* IsListModeBase() const;
 
 	/**
 	 * Check whether this mode handler inherits from ParamModeBase
-	 * @return non-NULL if this mode handler inherits from ParamModeBase, NULL otherwise
+	 * @return non-nullptr if this mode handler inherits from ParamModeBase, nullptr otherwise
 	 */
 	ParamModeBase* IsParameterMode();
 
 	/**
 	 * Check whether this mode handler inherits from ParamModeBase
-	 * @return non-NULL if this mode handler inherits from ParamModeBase, NULL otherwise
+	 * @return non-nullptr if this mode handler inherits from ParamModeBase, nullptr otherwise
 	 */
 	const ParamModeBase* IsParameterMode() const;
 
@@ -277,8 +277,8 @@ class CoreExport ModeHandler : public ServiceProvider
 	/** In the event that the mode should be given a parameter, and no parameter was provided, this method is called.
 	 * This allows you to give special information to the user, or handle this any way you like.
 	 * @param user The user issuing the mode change
-	 * @param dest For user mode changes, the target of the mode. For channel mode changes, NULL.
-	 * @param channel For channel mode changes, the target of the mode. For user mode changes, NULL.
+	 * @param dest For user mode changes, the target of the mode. For channel mode changes, nullptr.
+	 * @param channel For channel mode changes, the target of the mode. For user mode changes, nullptr.
 	 */
 	virtual void OnParameterMissing(User* user, User* dest, Channel* channel);
 
@@ -686,8 +686,8 @@ class CoreExport ModeParser : public fakederef<ModeParser>
 	/** Process a list of mode changes entirely. If the mode changes do not fit into one MODE line
 	 * then multiple MODE lines are generated.
 	 * @param user The source of the mode change, can be a server user.
-	 * @param targetchannel Channel to apply the mode change on. NULL if changing modes on a channel.
-	 * @param targetuser User to apply the mode change on. NULL if changing modes on a user.
+	 * @param targetchannel Channel to apply the mode change on. nullptr if changing modes on a channel.
+	 * @param targetuser User to apply the mode change on. nullptr if changing modes on a user.
 	 * @param changelist Modes to change in form of a Modes::ChangeList.
 	 * @param flags Optional flags controlling how the mode change is processed,
 	 * defaults to MODE_NONE.
@@ -697,8 +697,8 @@ class CoreExport ModeParser : public fakederef<ModeParser>
 	/** Process a single MODE line's worth of mode changes, taking max modes and line length limits
 	 * into consideration. Return value indicates how many modes were processed.
 	 * @param user The source of the mode change, can be a server user.
-	 * @param targetchannel Channel to apply the mode change on. NULL if changing modes on a channel.
-	 * @param targetuser User to apply the mode change on. NULL if changing modes on a user.
+	 * @param targetchannel Channel to apply the mode change on. nullptr if changing modes on a channel.
+	 * @param targetuser User to apply the mode change on. nullptr if changing modes on a user.
  	 * @param changelist Modes to change in form of a Modes::ChangeList. May not process
 	 * the entire list due to MODE line length and max modes limitations.
 	 * @param flags Optional flags controlling how the mode change is processed,
@@ -729,27 +729,27 @@ class CoreExport ModeParser : public fakederef<ModeParser>
 	/** Find the mode handler for a given mode name and type.
 	 * @param modename The mode name to search for.
 	 * @param mt Type of mode to search for, user or channel.
-	 * @return A pointer to a ModeHandler class, or NULL of there isn't a handler for the given mode name.
+	 * @return A pointer to a ModeHandler class, or nullptr of there isn't a handler for the given mode name.
 	 */
 	ModeHandler* FindMode(const std::string& modename, ModeType mt);
 
 	/** Find the mode handler for a given mode and type.
 	 * @param modeletter mode letter to search for
 	 * @param mt type of mode to search for, user or channel
-	 * @returns a pointer to a ModeHandler class, or NULL of there isnt a handler for the given mode
+	 * @returns a pointer to a ModeHandler class, or nullptr of there isnt a handler for the given mode
 	 */
 	ModeHandler* FindMode(unsigned const char modeletter, ModeType mt);
 
 	/** Find the mode handler for the given prefix mode
 	 * @param modeletter The mode letter to search for
-	 * @return A pointer to the PrefixMode or NULL if the mode wasn't found or it isn't a prefix mode
+	 * @return A pointer to the PrefixMode or nullptr if the mode wasn't found or it isn't a prefix mode
 	 */
 	PrefixMode* FindPrefixMode(unsigned char modeletter);
 
 	/** Find a mode handler by its prefix.
-	 * If there is no mode handler with the given prefix, NULL will be returned.
+	 * If there is no mode handler with the given prefix, nullptr will be returned.
 	 * @param pfxletter The prefix to find, e.g. '@'
-	 * @return The mode handler which handles this prefix, or NULL if there is none.
+	 * @return The mode handler which handles this prefix, or nullptr if there is none.
 	 */
 	PrefixMode* FindPrefix(unsigned const char pfxletter);
 
@@ -805,30 +805,30 @@ inline const std::string& ModeParser::GetModeListFor004Numeric()
 
 inline PrefixMode* ModeHandler::IsPrefixMode()
 {
-	return (this->type_id == MC_PREFIX ? static_cast<PrefixMode*>(this) : NULL);
+	return (this->type_id == MC_PREFIX ? static_cast<PrefixMode*>(this) : nullptr);
 }
 
 inline const PrefixMode* ModeHandler::IsPrefixMode() const
 {
-	return (this->type_id == MC_PREFIX ? static_cast<const PrefixMode*>(this) : NULL);
+	return (this->type_id == MC_PREFIX ? static_cast<const PrefixMode*>(this) : nullptr);
 }
 
 inline ListModeBase* ModeHandler::IsListModeBase()
 {
-	return (this->type_id == MC_LIST ? reinterpret_cast<ListModeBase*>(this) : NULL);
+	return (this->type_id == MC_LIST ? reinterpret_cast<ListModeBase*>(this) : nullptr);
 }
 
 inline const ListModeBase* ModeHandler::IsListModeBase() const
 {
-	return (this->type_id == MC_LIST ? reinterpret_cast<const ListModeBase*>(this) : NULL);
+	return (this->type_id == MC_LIST ? reinterpret_cast<const ListModeBase*>(this) : nullptr);
 }
 
 inline ParamModeBase* ModeHandler::IsParameterMode()
 {
-	return (this->type_id == MC_PARAM ? reinterpret_cast<ParamModeBase*>(this) : NULL);
+	return (this->type_id == MC_PARAM ? reinterpret_cast<ParamModeBase*>(this) : nullptr);
 }
 
 inline const ParamModeBase* ModeHandler::IsParameterMode() const
 {
-	return (this->type_id == MC_PARAM ? reinterpret_cast<const ParamModeBase*>(this) : NULL);
+	return (this->type_id == MC_PARAM ? reinterpret_cast<const ParamModeBase*>(this) : nullptr);
 }

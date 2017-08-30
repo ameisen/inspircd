@@ -108,7 +108,7 @@ class SpanningTreeUtilities : public classbase
 
 	/** Prepare for class destruction
 	 */
-	CullResult cull() CXX11_OVERRIDE;
+	CullResult cull() override;
 
 	/** Destroy class and free listeners etc
 	 */
@@ -167,10 +167,10 @@ class SpanningTreeUtilities : public classbase
 
 	/** Sends a PRIVMSG or a NOTICE to a channel obeying an exempt list and an optional prefix
 	 */
-	void SendChannelMessage(const std::string& prefix, Channel* target, const std::string& text, char status, const CUList& exempt_list, const char* message_type, TreeSocket* omit = NULL);
+	void SendChannelMessage(const std::string& prefix, Channel* target, const std::string& text, char status, const CUList& exempt_list, const char* message_type, TreeSocket* omit = nullptr);
 };
 
 inline void SpanningTreeUtilities::DoOneToMany(const CmdBuilder& params)
 {
-	DoOneToAllButSender(params, NULL);
+	DoOneToAllButSender(params, nullptr);
 }

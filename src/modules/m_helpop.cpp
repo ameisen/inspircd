@@ -107,7 +107,7 @@ class ModuleHelpop : public Module, public Whois::EventListener
 		{
 		}
 
-		void ReadConfig(ConfigStatus& status) CXX11_OVERRIDE
+		void ReadConfig(ConfigStatus& status) override
 		{
 			HelpopMap help;
 
@@ -141,7 +141,7 @@ class ModuleHelpop : public Module, public Whois::EventListener
 			helpop_map.swap(help);
 		}
 
-		void OnWhois(Whois::Context& whois) CXX11_OVERRIDE
+		void OnWhois(Whois::Context& whois) override
 		{
 			if (whois.GetTarget()->IsModeSet(ho))
 			{
@@ -149,7 +149,7 @@ class ModuleHelpop : public Module, public Whois::EventListener
 			}
 		}
 
-		Version GetVersion() CXX11_OVERRIDE
+		Version GetVersion() override
 		{
 			return Version("Provides the /HELPOP command for useful information", VF_VENDOR);
 		}

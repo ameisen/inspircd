@@ -38,12 +38,12 @@ class ModuleNoKicks : public Module
 	{
 	}
 
-	void On005Numeric(std::map<std::string, std::string>& tokens) CXX11_OVERRIDE
+	void On005Numeric(std::map<std::string, std::string>& tokens) override
 	{
 		tokens["EXTBAN"].push_back('Q');
 	}
 
-	ModResult OnUserPreKick(User* source, Membership* memb, const std::string &reason) CXX11_OVERRIDE
+	ModResult OnUserPreKick(User* source, Membership* memb, const std::string &reason) override
 	{
 		if (!memb->chan->GetExtBanStatus(source, 'Q').check(!memb->chan->IsModeSet(nk)))
 		{
@@ -54,7 +54,7 @@ class ModuleNoKicks : public Module
 		return MOD_RES_PASSTHRU;
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("Provides channel mode +Q to prevent kicks on the channel.", VF_VENDOR);
 	}

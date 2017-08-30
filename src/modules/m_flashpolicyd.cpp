@@ -34,7 +34,7 @@ class FlashPDSocket : public BufferedSocket, public Timer, public insp::intrusiv
 	 */
 	bool waitingcull;
 
-	bool Tick(time_t currtime) CXX11_OVERRIDE
+	bool Tick(time_t currtime) override
 	{
 		AddToCull();
 		return false;
@@ -54,12 +54,12 @@ class FlashPDSocket : public BufferedSocket, public Timer, public insp::intrusiv
 		sockets.erase(this);
 	}
 
-	void OnError(BufferedSocketError) CXX11_OVERRIDE
+	void OnError(BufferedSocketError) override
 	{
 		AddToCull();
 	}
 
-	void OnDataReady() CXX11_OVERRIDE
+	void OnDataReady() override
 	{
 		if (recvq == expected_request)
 			WriteData(policy_reply);
@@ -82,7 +82,7 @@ class ModuleFlashPD : public Module
 	unsigned int timeout;
 
  public:
-	ModResult OnAcceptConnection(int nfd, ListenSocket* from, irc::sockets::sockaddrs* client, irc::sockets::sockaddrs* server) CXX11_OVERRIDE
+	ModResult OnAcceptConnection(int nfd, ListenSocket* from, irc::sockets::sockaddrs* client, irc::sockets::sockaddrs* server) override
 	{
 		if (from->bind_tag->getString("type") != "flashpolicyd")
 			return MOD_RES_PASSTHRU;
@@ -94,7 +94,7 @@ class ModuleFlashPD : public Module
 		return MOD_RES_ALLOW;
 	}
 
-	void ReadConfig(ConfigStatus& status) CXX11_OVERRIDE
+	void ReadConfig(ConfigStatus& status) override
 	{
 		ConfigTag* tag = ServerInstance->Config->ConfValue("flashpolicyd");
 		timeout = tag->getInt("timeout", 5, 1);
@@ -146,7 +146,7 @@ class ModuleFlashPD : public Module
 </cross-domain-policy>";
 	}
 
-	CullResult cull() CXX11_OVERRIDE
+	CullResult cull() override
 	{
 		for (insp::intrusive_list<FlashPDSocket>::const_iterator i = sockets.begin(); i != sockets.end(); ++i)
 		{
@@ -156,7 +156,7 @@ class ModuleFlashPD : public Module
 		return Module::cull();
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("Flash Policy Daemon. Allows Flash IRC clients to connect", VF_VENDOR);
 	}

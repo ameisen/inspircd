@@ -147,7 +147,7 @@ class CGIResolver : public DNS::Request
 	{
 	}
 
-	void OnLookupComplete(const DNS::Query *r) CXX11_OVERRIDE
+	void OnLookupComplete(const DNS::Query *r) override
 	{
 		/* Check the user still exists */
 		User* them = ServerInstance->FindUUID(theiruid);
@@ -170,7 +170,7 @@ class CGIResolver : public DNS::Request
 		}
 	}
 
-	void OnError(const DNS::Query *r) CXX11_OVERRIDE
+	void OnError(const DNS::Query *r) override
 	{
 		if (!notify)
 			return;
@@ -244,12 +244,12 @@ public:
 	{
 	}
 
-	void init() CXX11_OVERRIDE
+	void init() override
 	{
 		ServerInstance->SNO->EnableSnomask('w', "CGIIRC");
 	}
 
-	void ReadConfig(ConfigStatus& status) CXX11_OVERRIDE
+	void ReadConfig(ConfigStatus& status) override
 	{
 		cmd.Hosts.clear();
 
@@ -298,7 +298,7 @@ public:
 		}
 	}
 
-	ModResult OnCheckReady(LocalUser *user) CXX11_OVERRIDE
+	ModResult OnCheckReady(LocalUser *user) override
 	{
 		if (waiting.get(user))
 			return MOD_RES_DENY;
@@ -317,7 +317,7 @@ public:
 		return MOD_RES_PASSTHRU;
 	}
 
-	ModResult OnSetConnectClass(LocalUser* user, ConnectClass* myclass) CXX11_OVERRIDE
+	ModResult OnSetConnectClass(LocalUser* user, ConnectClass* myclass) override
 	{
 		// If <connect:webirc> is not set then we have nothing to do.
 		const std::string webirc = myclass->config->getString("webirc");
@@ -335,7 +335,7 @@ public:
 		return InspIRCd::Match(*gateway, webirc) ? MOD_RES_PASSTHRU : MOD_RES_DENY;
 	}
 
-	ModResult OnUserRegister(LocalUser* user) CXX11_OVERRIDE
+	ModResult OnUserRegister(LocalUser* user) override
 	{
 		for(CGIHostlist::iterator iter = cmd.Hosts.begin(); iter != cmd.Hosts.end(); iter++)
 		{
@@ -432,7 +432,7 @@ public:
 		return true;
 	}
 
-	Version GetVersion() CXX11_OVERRIDE
+	Version GetVersion() override
 	{
 		return Version("Change user's hosts connecting from known CGI:IRC hosts",VF_VENDOR);
 	}

@@ -45,15 +45,15 @@ class ModuleDelayJoin : public Module
 	{
 	}
 
-	Version GetVersion() CXX11_OVERRIDE;
-	ModResult OnNamesListItem(User* issuer, Membership*, std::string& prefixes, std::string& nick) CXX11_OVERRIDE;
-	void OnUserJoin(Membership*, bool, bool, CUList&) CXX11_OVERRIDE;
+	Version GetVersion() override;
+	ModResult OnNamesListItem(User* issuer, Membership*, std::string& prefixes, std::string& nick) override;
+	void OnUserJoin(Membership*, bool, bool, CUList&) override;
 	void CleanUser(User* user);
-	void OnUserPart(Membership*, std::string &partmessage, CUList&) CXX11_OVERRIDE;
-	void OnUserKick(User* source, Membership*, const std::string &reason, CUList&) CXX11_OVERRIDE;
-	void OnBuildNeighborList(User* source, IncludeChanList& include, std::map<User*, bool>& exception) CXX11_OVERRIDE;
-	void OnText(User* user, void* dest, int target_type, const std::string &text, char status, CUList &exempt_list) CXX11_OVERRIDE;
-	ModResult OnRawMode(User* user, Channel* channel, ModeHandler* mh, const std::string& param, bool adding) CXX11_OVERRIDE;
+	void OnUserPart(Membership*, std::string &partmessage, CUList&) override;
+	void OnUserKick(User* source, Membership*, const std::string &reason, CUList&) override;
+	void OnBuildNeighborList(User* source, IncludeChanList& include, std::map<User*, bool>& exception) override;
+	void OnText(User* user, void* dest, int target_type, const std::string &text, char status, CUList &exempt_list) override;
+	ModResult OnRawMode(User* user, Channel* channel, ModeHandler* mh, const std::string& param, bool adding) override;
 };
 
 ModeAction DelayJoinMode::OnModeChange(User* source, User* dest, Channel* channel, std::string &parameter, bool adding)

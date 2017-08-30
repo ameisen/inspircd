@@ -41,13 +41,13 @@ class intrusive_list_node
 			ptr_next->intrusive_list_node<T, Tag>::ptr_prev = this->ptr_prev;
 		if (ptr_prev)
 			ptr_prev->intrusive_list_node<T, Tag>::ptr_next = this->ptr_next;
-		ptr_next = ptr_prev = NULL;
+		ptr_next = ptr_prev = nullptr;
 	}
 
  public:
 	intrusive_list_node()
-		: ptr_next(NULL)
-		, ptr_prev(NULL)
+		: ptr_next(nullptr)
+		, ptr_prev(nullptr)
 	{
 	}
 

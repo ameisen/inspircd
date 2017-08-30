@@ -45,12 +45,12 @@ class CoreExport CullList
 
 class CoreExport ActionList
 {
-	std::vector<HandlerBase0<void>*> list;
+	std::vector<Handler<void>*> list;
 
  public:
 	/** Adds an item to the list
 	 */
-	void AddAction(HandlerBase0<void>* item) { list.push_back(item); }
+	void AddAction(Handler<void>* item) { list.push_back(item); }
 
 	/** Runs the items
 	 */
