@@ -32,7 +32,7 @@ CmdResult CommandSVSPart::Handle(User* user, std::vector<std::string>& parameter
 	if (!c)
 		return CMD_FAILURE;
 
-	if (IS_LOCAL(u))
+	if (u->as<LocalUser>())
 	{
 		std::string reason = (parameters.size() == 3) ? parameters[2] : "Services forced part";
 		c->PartUser(u, reason);

@@ -207,7 +207,7 @@ class CoreExport DataProvider : public ServiceProvider
 {
  public:
 	DataProvider(Module* Creator, const std::string& Name)
-		: ServiceProvider(Creator, Name, SERVICE_DATA) {}
+		: ServiceProvider(Creator, Name, ServiceType::Data) {}
 };
 
 /** Priority types which can be used by Module::Prioritize()
@@ -851,7 +851,7 @@ class CoreExport Module : public classbase, public usecountbase
 	 * @return MOD_RES_DENY to mark as banned, MOD_RES_ALLOW to skip the
 	 * ban check, or MOD_RES_PASSTHRU to check bans normally
 	 */
-	virtual ModResult OnCheckChannelBan(User* user, Channel* chan);
+	virtual ModResult OnCheckChannelBan(const User* user, const Channel* chan);
 
 	/**
 	 * Checks for a user's match of a single ban
@@ -861,13 +861,13 @@ class CoreExport Module : public classbase, public usecountbase
 	 * @return MOD_RES_DENY to mark as banned, MOD_RES_ALLOW to skip the
 	 * ban check, or MOD_RES_PASSTHRU to check bans normally
 	 */
-	virtual ModResult OnCheckBan(User* user, Channel* chan, const std::string& mask);
+	virtual ModResult OnCheckBan(const User* user, const Channel* chan, const std::string& mask);
 
 	/** Checks for a match on a given extban type
 	 * @return MOD_RES_DENY to mark as banned, MOD_RES_ALLOW to skip the
 	 * ban check, or MOD_RES_PASSTHRU to check bans normally
 	 */
-	virtual ModResult OnExtBanCheck(User* user, Channel* chan, char type);
+	virtual ModResult OnExtBanCheck(const User* user, const Channel* chan, char type);
 
 	/** Called on all /STATS commands
 	 * This method is triggered for all /STATS use, including stats symbols handled by the core.
@@ -1205,7 +1205,7 @@ class CoreExport ModuleManager : public fakederef<ModuleManager>
 
 	template<typename T> inline T* FindDataService(const std::string& name)
 	{
-		return static_cast<T*>(FindService(SERVICE_DATA, name));
+		return static_cast<T*>(FindService(ServiceType::Data, name));
 	}
 
 	/** Get a map of all loaded modules keyed by their name

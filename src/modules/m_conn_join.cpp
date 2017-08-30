@@ -90,7 +90,7 @@ class ModuleConnJoin : public Module
 
 	void OnPostConnect(User* user) override
 	{
-		LocalUser* localuser = IS_LOCAL(user);
+		LocalUser* localuser = user->as<LocalUser>();
 		if (!localuser)
 			return;
 

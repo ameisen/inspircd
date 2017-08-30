@@ -36,7 +36,7 @@ CmdResult CommandModules::Handle (const std::vector<std::string>& parameters, Us
 	// Don't ask remote servers about their modules unless the local user asking is an oper
 	// 2.0 asks anyway, so let's handle that the same way
 	bool for_us = (parameters.empty() || parameters[0] == ServerInstance->Config->ServerName);
-	if ((!for_us) || (!IS_LOCAL(user)))
+	if ((!for_us) || (!user->as<LocalUser>()))
 	{
 		if (!user->IsOper())
 		{
@@ -56,7 +56,7 @@ CmdResult CommandModules::Handle (const std::vector<std::string>& parameters, Us
 		Module* m = i->second;
 		Version V = m->GetVersion();
 
-		if (IS_LOCAL(user) && user->HasPrivPermission("servers/auspex"))
+		if (user->as<LocalUser>() && user->HasPrivPermission("servers/auspex"))
 		{
 			std::string flags("vcC");
 			int pos = 0;

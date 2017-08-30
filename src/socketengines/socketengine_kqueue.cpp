@@ -58,7 +58,7 @@ void SocketEngine::Init()
 #endif
 	len = sizeof(MAX_DESCRIPTORS);
 	// MAX_DESCRIPTORS is mainly used for display purposes, no problem if the sysctl() below fails
-	sysctl(mib, 2, &MAX_DESCRIPTORS, &len, NULL, 0);
+	sysctl(mib, 2, &MAX_DESCRIPTORS, &len, nullptr, 0);
 
 	RecoverFromFork();
 }
@@ -131,11 +131,11 @@ void SocketEngine::DelFd(EventHandler* eh)
 	// First remove the write filter ignoring errors, since we can't be
 	// sure if there are actually any write filters registered.
 	struct kevent* ke = GetChangeKE();
-	EV_SET(ke, eh->GetFd(), EVFILT_WRITE, EV_DELETE, 0, 0, NULL);
+	EV_SET(ke, eh->GetFd(), EVFILT_WRITE, EV_DELETE, 0, 0, nullptr);
 
 	// Then remove the read filter.
 	ke = GetChangeKE();
-	EV_SET(ke, eh->GetFd(), EVFILT_READ, EV_DELETE, 0, 0, NULL);
+	EV_SET(ke, eh->GetFd(), EVFILT_READ, EV_DELETE, 0, 0, nullptr);
 
 	SocketEngine::DelFdRef(eh);
 
@@ -154,7 +154,7 @@ void SocketEngine::OnSetEvent(EventHandler* eh, int old_mask, int new_mask)
 	{
 		// removing poll-style write
 		struct kevent* ke = GetChangeKE();
-		EV_SET(ke, eh->GetFd(), EVFILT_WRITE, EV_DELETE, 0, 0, NULL);
+		EV_SET(ke, eh->GetFd(), EVFILT_WRITE, EV_DELETE, 0, 0, nullptr);
 	}
 	if ((new_mask & (FD_WANT_FAST_WRITE | FD_WANT_SINGLE_WRITE)) && !(old_mask & (FD_WANT_FAST_WRITE | FD_WANT_SINGLE_WRITE)))
 	{

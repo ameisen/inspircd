@@ -85,7 +85,7 @@ class ModuleIRCv3 : public Module, public AccountEventListener
 		for (Channel::MemberMap::const_iterator it = userlist.begin(); it != userlist.end(); ++it)
 		{
 			// Send the extended join line if the current member is local, has the extended-join cap and isn't excepted
-			User* member = IS_LOCAL(it->first);
+			User* member = it->first->as<LocalUser>();
 			if ((member) && (cap_extendedjoin.get(member)) && (excepts.find(member) == excepts.end()))
 			{
 				// Construct the lines we're going to send if we haven't constructed them already
@@ -159,7 +159,7 @@ class ModuleIRCv3 : public Module, public AccountEventListener
 		for (Channel::MemberMap::const_iterator it = userlist.begin(); it != userlist.end(); ++it)
 		{
 			// Send the away notify line if the current member is local, has the away-notify cap and isn't excepted
-			User* member = IS_LOCAL(it->first);
+			User* member = it->first->as<LocalUser>();
 			if ((member) && (cap_awaynotify.get(member)) && (last_excepts.find(member) == last_excepts.end()) && (it->second != memb))
 			{
 				member->Write(line);

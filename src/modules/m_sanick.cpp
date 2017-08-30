@@ -38,7 +38,7 @@ class CommandSanick : public Command
 		User* target = ServerInstance->FindNick(parameters[0]);
 
 		/* Do local sanity checks and bails */
-		if (IS_LOCAL(user))
+		if (user->as<LocalUser>())
 		{
 			if (target && target->server->IsULine())
 			{
@@ -60,7 +60,7 @@ class CommandSanick : public Command
 		}
 
 		/* Have we hit target's server yet? */
-		if (target && IS_LOCAL(target))
+		if (target && target->as<LocalUser>())
 		{
 			std::string oldnick = user->nick;
 			std::string newnick = target->nick;

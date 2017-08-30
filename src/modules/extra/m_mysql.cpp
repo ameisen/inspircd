@@ -240,7 +240,7 @@ class SQLConnection : public SQLProvider
 
 	// This constructor creates an SQLConnection object with the given credentials, but does not connect yet.
 	SQLConnection(Module* p, ConfigTag* tag) : SQLProvider(p, "SQL/" + tag->getString("id")),
-		config(tag), connection(NULL)
+		config(tag), connection(nullptr)
 	{
 	}
 
@@ -261,7 +261,7 @@ class SQLConnection : public SQLProvider
 		std::string pass = config->getString("pass");
 		std::string dbname = config->getString("name");
 		int port = config->getInt("port");
-		bool rv = mysql_real_connect(connection, host.c_str(), user.c_str(), pass.c_str(), dbname.c_str(), port, NULL, 0);
+		bool rv = mysql_real_connect(connection, host.c_str(), user.c_str(), pass.c_str(), dbname.c_str(), port, nullptr, 0);
 		if (!rv)
 			return rv;
 
@@ -387,7 +387,7 @@ class SQLConnection : public SQLProvider
 
 ModuleSQL::ModuleSQL()
 {
-	Dispatcher = NULL;
+	Dispatcher = nullptr;
 }
 
 void ModuleSQL::init()

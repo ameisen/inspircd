@@ -67,7 +67,7 @@ class UserOnlyServerCommand : public ServerCommand
 
 	CmdResult Handle(User* user, std::vector<std::string>& parameters)
 	{
-		RemoteUser* remoteuser = IS_REMOTE(user);
+		RemoteUser* remoteuser = user->as<RemoteUser>();
 		if (!remoteuser)
 			throw ProtocolException("Invalid source");
 		return static_cast<T*>(this)->HandleRemote(remoteuser, parameters);
@@ -86,7 +86,7 @@ class ServerOnlyServerCommand : public ServerCommand
 
 	CmdResult Handle(User* user, std::vector<std::string>& parameters)
 	{
-		if (!IS_SERVER(user))
+		if (!user->as<FakeUser>())
 			throw ProtocolException("Invalid source");
 		TreeServer* server = TreeServer::Get(user);
 		return static_cast<T*>(this)->HandleServer(server, parameters);

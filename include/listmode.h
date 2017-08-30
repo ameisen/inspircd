@@ -134,7 +134,7 @@ class CoreExport ListModeBase : public ModeHandler
 	 * @param channel Channel to get the list from
 	 * @return A list with all modes of this type set on the given channel, can be nullptr
 	 */
-	ModeList* GetList(Channel* channel);
+	ModeList* GetList(const Channel* channel) const;
 
 	/** Display the list for this mode
 	 * See mode.h
@@ -203,7 +203,7 @@ class CoreExport ListModeBase : public ModeHandler
 	virtual void TellNotSet(User* source, Channel* channel, std::string& parameter);
 };
 
-inline ListModeBase::ModeList* ListModeBase::GetList(Channel* channel)
+inline ListModeBase::ModeList* ListModeBase::GetList(const Channel* channel) const
 {
 	ChanData* cd = extItem.get(channel);
 	if (!cd)

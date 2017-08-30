@@ -131,7 +131,7 @@ void Invite::APIImpl::Create(LocalUser* user, Channel* chan, time_t timeout)
 	}
 }
 
-Invite::Invite* Invite::APIImpl::Find(LocalUser* user, Channel* chan)
+Invite::Invite* Invite::APIImpl::Find(const LocalUser* user, const Channel* chan) const
 {
 	const List* list = APIImpl::GetList(user);
 	if (!list)
@@ -147,9 +147,9 @@ Invite::Invite* Invite::APIImpl::Find(LocalUser* user, Channel* chan)
 	return nullptr;
 }
 
-const Invite::List* Invite::APIImpl::GetList(LocalUser* user)
+const Invite::List* Invite::APIImpl::GetList(const LocalUser* user) const
 {
-	Store<LocalUser>* list = userext.get(user);
+	const Store<LocalUser>* list = userext.get(user);
 	if (list)
 		return &list->invites;
 	return nullptr;

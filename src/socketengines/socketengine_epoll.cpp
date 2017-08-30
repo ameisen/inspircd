@@ -149,9 +149,9 @@ void SocketEngine::DelFd(EventHandler* eh)
 		return;
 	}
 
-	// Do not initialize epoll_event because for EPOLL_CTL_DEL operations the event is ignored and can be NULL.
-	// In kernel versions before 2.6.9, the EPOLL_CTL_DEL operation required a non-NULL pointer in event,
-	// even though this argument is ignored. Since Linux 2.6.9, event can be specified as NULL when using EPOLL_CTL_DEL.
+	// Do not initialize epoll_event because for EPOLL_CTL_DEL operations the event is ignored and can be nullptr.
+	// In kernel versions before 2.6.9, the EPOLL_CTL_DEL operation required a non-nullptr pointer in event,
+	// even though this argument is ignored. Since Linux 2.6.9, event can be specified as nullptr when using EPOLL_CTL_DEL.
 	struct epoll_event ev;
 	int i = epoll_ctl(EngineHandle, EPOLL_CTL_DEL, fd, &ev);
 

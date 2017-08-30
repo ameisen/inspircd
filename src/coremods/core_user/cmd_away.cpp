@@ -37,7 +37,7 @@ CmdResult CommandAway::Handle (const std::vector<std::string>& parameters, User 
 	{
 		FIRST_MOD_RESULT(OnSetAway, MOD_RESULT, (user, parameters[0]));
 
-		if (MOD_RESULT == MOD_RES_DENY && IS_LOCAL(user))
+		if (MOD_RESULT == MOD_RES_DENY && user->as<LocalUser>())
 			return CMD_FAILURE;
 
 		user->awaytime = ServerInstance->Time();
@@ -49,7 +49,7 @@ CmdResult CommandAway::Handle (const std::vector<std::string>& parameters, User 
 	{
 		FIRST_MOD_RESULT(OnSetAway, MOD_RESULT, (user, ""));
 
-		if (MOD_RESULT == MOD_RES_DENY && IS_LOCAL(user))
+		if (MOD_RESULT == MOD_RES_DENY && user->as<LocalUser>())
 			return CMD_FAILURE;
 
 		user->awaymsg.clear();
@@ -61,5 +61,5 @@ CmdResult CommandAway::Handle (const std::vector<std::string>& parameters, User 
 
 RouteDescriptor CommandAway::GetRouting(User* user, const std::vector<std::string>& parameters)
 {
-	return (IS_LOCAL(user) ? ROUTE_LOCALONLY : ROUTE_BROADCAST);
+	return (user->as<LocalUser>() ? ROUTE_LOCALONLY : ROUTE_BROADCAST);
 }

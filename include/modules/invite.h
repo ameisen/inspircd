@@ -46,22 +46,22 @@ class Invite::APIBase : public DataProvider
 	/** Retrieves the Invite object for the given (user, channel) pair
 	 * @param user Target user
 	 * @param chan Target channel
-	 * @return Invite object for the given (channel, user) pair if it exists, NULL otherwise
+	 * @return Invite object for the given (channel, user) pair if it exists, nullptr otherwise
 	 */
-	virtual Invite* Find(LocalUser* user, Channel* chan) = 0;
+	virtual Invite* Find(const LocalUser* user, const Channel* chan) const = 0;
 
 	/** Returns the list of channels a user has been invited to but has not yet joined.
 	 * @param user User whose invite list to retrieve
-	 * @return List of channels the user is invited to or NULL if the list is empty
+	 * @return List of channels the user is invited to or nullptr if the list is empty
 	 */
-	virtual const List* GetList(LocalUser* user) = 0;
+	virtual const List* GetList(const LocalUser* user) const = 0;
 
 	/** Check if a user is invited to a channel
 	 * @param user User to check
 	 * @param chan Channel to check
 	 * @return True if the user is invited to the channel, false otherwise
 	 */
-	bool IsInvited(LocalUser* user, Channel* chan) { return (Find(user, chan) != NULL); }
+	bool IsInvited(const LocalUser* user, const Channel* chan) const { return (Find(user, chan) != nullptr); }
 
 	/** Removes an Invite if it exists
 	 * @param user User whose invite to remove
@@ -98,7 +98,7 @@ class Invite::Invite : public insp::intrusive_list_node<Invite, LocalUser>, publ
 	/** Check whether the invite will expire or not
 	 * @return True if the invite is timed, false if it doesn't expire
 	 */
-	bool IsTimed() const { return (expiretimer != NULL); }
+	bool IsTimed() const { return (expiretimer != nullptr); }
 
 	/** Serialize this object
 	 * @param format Serialization format
@@ -110,7 +110,7 @@ class Invite::Invite : public insp::intrusive_list_node<Invite, LocalUser>, publ
 	friend class APIImpl;
 
  private:
-	/** Timer handling expiration. If NULL this invite doesn't expire.
+	/** Timer handling expiration. If nullptr this invite doesn't expire.
 	 */
 	Timer* expiretimer;
 

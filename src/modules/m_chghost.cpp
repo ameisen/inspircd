@@ -61,7 +61,7 @@ class CommandChghost : public Command
 			return CMD_FAILURE;
 		}
 
-		if (IS_LOCAL(dest))
+		if (dest->as<LocalUser>())
 		{
 			if ((dest->ChangeDisplayedHost(parameters[1])) && (!user->server->IsULine()))
 			{

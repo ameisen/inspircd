@@ -22,7 +22,7 @@
 
 #include "inspircd.h"
 
-class OperChans : public SimpleChannelModeHandler
+class OperChans final : public SimpleChannelModeHandler
 {
  public:
 	/* This is an oper-only mode */
@@ -32,7 +32,7 @@ class OperChans : public SimpleChannelModeHandler
 	}
 };
 
-class ModuleOperChans : public Module
+class ModuleOperChans final : public Module
 {
 	OperChans oc;
  public:
@@ -50,7 +50,7 @@ class ModuleOperChans : public Module
 		return MOD_RES_PASSTHRU;
 	}
 
-	ModResult OnCheckBan(User *user, Channel *c, const std::string& mask) override
+	ModResult OnCheckBan(const User *user, const Channel *c, const std::string& mask) final override
 	{
 		if ((mask.length() > 2) && (mask[0] == 'O') && (mask[1] == ':'))
 		{

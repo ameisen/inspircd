@@ -41,7 +41,7 @@ CmdResult CommandInvite::Handle (const std::vector<std::string>& parameters, Use
 	if (parameters.size() >= 2)
 	{
 		User* u;
-		if (IS_LOCAL(user))
+		if (user->as<LocalUser>())
 			u = ServerInstance->FindNickOnly(parameters[0]);
 		else
 			u = ServerInstance->FindNick(parameters[0]);
@@ -50,7 +50,7 @@ CmdResult CommandInvite::Handle (const std::vector<std::string>& parameters, Use
 		time_t timeout = 0;
 		if (parameters.size() >= 3)
 		{
-			if (IS_LOCAL(user))
+			if (user->as<LocalUser>())
 				timeout = ServerInstance->Time() + InspIRCd::Duration(parameters[2]);
 			else if (parameters.size() > 3)
 				timeout = ConvToInt(parameters[3]);
@@ -63,7 +63,7 @@ CmdResult CommandInvite::Handle (const std::vector<std::string>& parameters, Use
 		}
 
 		// Verify channel timestamp if the INVITE is coming from a remote server
-		if (!IS_LOCAL(user))
+		if (!user->as<LocalUser>())
 		{
 			// Remote INVITE commands must carry a channel timestamp
 			if (parameters.size() < 3)
@@ -75,7 +75,7 @@ CmdResult CommandInvite::Handle (const std::vector<std::string>& parameters, Use
 				return CMD_FAILURE;
 		}
 
-		if ((IS_LOCAL(user)) && (!c->HasUser(user)))
+		if ((user->as<LocalUser>()) && (!c->HasUser(user)))
 		{
 			user->WriteNumeric(ERR_NOTONCHANNEL, c->name, "You're not on that channel!");
 			return CMD_FAILURE;
@@ -95,7 +95,7 @@ CmdResult CommandInvite::Handle (const std::vector<std::string>& parameters, Use
 		}
 		else if (MOD_RESULT == MOD_RES_PASSTHRU)
 		{
-			if (IS_LOCAL(user))
+			if (user->as<LocalUser>())
 			{
 				unsigned int rank = c->GetPrefixValue(user);
 				if (rank < HALFOP_VALUE)
@@ -109,13 +109,13 @@ CmdResult CommandInvite::Handle (const std::vector<std::string>& parameters, Use
 			}
 		}
 
-		if (IS_LOCAL(u))
+		if (u->as<LocalUser>())
 		{
-			invapi.Create(IS_LOCAL(u), c, timeout);
+			invapi.Create(u->as<LocalUser>(), c, timeout);
 			u->WriteFrom(user,"INVITE %s :%s",u->nick.c_str(),c->name.c_str());
 		}
 
-		if (IS_LOCAL(user))
+		if (user->as<LocalUser>())
 		{
 			user->WriteNumeric(RPL_INVITING, u->nick, c->name);
 			if (u->IsAway())
@@ -153,11 +153,11 @@ CmdResult CommandInvite::Handle (const std::vector<std::string>& parameters, Use
 		if (ServerInstance->Config->AnnounceInvites != ServerConfig::INVITE_ANNOUNCE_NONE)
 			c->WriteAllExcept(user, true, prefix, excepts, "NOTICE %s :*** %s invited %s into the channel", c->name.c_str(), user->nick.c_str(), u->nick.c_str());
 	}
-	else if (IS_LOCAL(user))
+	else if (user->as<LocalUser>())
 	{
 		// pinched from ircu - invite with not enough parameters shows channels
 		// youve been invited to but haven't joined yet.
-		const Invite::List* list = invapi.GetList(IS_LOCAL(user));
+		const Invite::List* list = invapi.GetList(user->as<LocalUser>());
 		if (list)
 		{
 			for (Invite::List::const_iterator i = list->begin(); i != list->end(); ++i)
@@ -170,5 +170,5 @@ CmdResult CommandInvite::Handle (const std::vector<std::string>& parameters, Use
 
 RouteDescriptor CommandInvite::GetRouting(User* user, const std::vector<std::string>& parameters)
 {
-	return (IS_LOCAL(user) ? ROUTE_LOCALONLY : ROUTE_BROADCAST);
+	return (user->as<LocalUser>() ? ROUTE_LOCALONLY : ROUTE_BROADCAST);
 }

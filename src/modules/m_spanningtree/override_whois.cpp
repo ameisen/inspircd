@@ -24,7 +24,7 @@
 ModResult ModuleSpanningTree::HandleRemoteWhois(const std::vector<std::string>& parameters, User* user)
 {
 	User* remote = ServerInstance->FindNickOnly(parameters[1]);
-	if (remote && !IS_LOCAL(remote))
+	if (remote && !remote->as<LocalUser>())
 	{
 		CmdBuilder(user, "IDLE").push(remote->uuid).Unicast(remote);
 		return MOD_RES_DENY;

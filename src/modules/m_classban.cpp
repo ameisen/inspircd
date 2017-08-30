@@ -19,12 +19,12 @@
 
 #include "inspircd.h"
 
-class ModuleClassBan : public Module
+class ModuleClassBan final : public Module
 {
  public:
-	ModResult OnCheckBan(User* user, Channel* c, const std::string& mask) override
+	ModResult OnCheckBan(const User* user, const Channel* c, const std::string& mask) final override
 	{
-		LocalUser* localUser = IS_LOCAL(user);
+		const LocalUser* localUser = user->as<LocalUser>();
 		if ((localUser) && (mask.length() > 2) && (mask[0] == 'n') && (mask[1] == ':'))
 		{
 			if (InspIRCd::Match(localUser->GetClass()->name, mask.substr(2)))

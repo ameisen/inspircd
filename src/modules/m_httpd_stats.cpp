@@ -190,7 +190,7 @@ class ModuleHttpStats : public Module, public HTTPRequestEventListener
 					if (u->IsOper())
 						data << "<opertype>" << Sanitize(u->oper->name) << "</opertype>";
 					data << "<modes>" << u->GetModeLetters().substr(1) << "</modes><ident>" << Sanitize(u->ident) << "</ident>";
-					LocalUser* lu = IS_LOCAL(u);
+					LocalUser* lu = u->as<LocalUser>();
 					if (lu)
 						data << "<port>" << lu->GetServerPort() << "</port><servaddr>"
 							<< lu->server_sa.str() << "</servaddr>";

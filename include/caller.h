@@ -24,7 +24,7 @@
 template<typename ReturnType, typename... Args> class CoreExport Handler : public classbase
 {
  public:
-	virtual ~Handler() { }
+	virtual ~Handler() = default;
 	virtual ReturnType Call(Args...) = 0;
 };
 
@@ -34,7 +34,7 @@ template<typename ReturnType, typename... Args> class CoreExport Caller
 	Handler<ReturnType, Args...>* target;
 
 	Caller(Handler<ReturnType, Args...>* initial) : target(initial) { }
-	virtual ~Caller() { }
+	virtual ~Caller() = default;
 
 	virtual ReturnType operator()(const Args&... params)
 	{
@@ -43,4 +43,4 @@ template<typename ReturnType, typename... Args> class CoreExport Caller
 };
 
 #define DEFINE_HANDLER(NAME, RETURN, ...) \
-	class CoreExport NAME : public Handler<RETURN, ##__VA_ARGS__> { public: NAME() = default; virtual RETURN Call(__VA_ARGS__); }
+	class CoreExport NAME final : public Handler<RETURN, ##__VA_ARGS__> { public: NAME() = default; virtual RETURN Call(__VA_ARGS__) override final; }

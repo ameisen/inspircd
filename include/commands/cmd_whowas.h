@@ -122,7 +122,7 @@ namespace WhoWas
 
 		/** Retrieves all data known about a given nick
 		 * @param nick Nickname to find, case insensitive (IRC casemapping)
-		 * @return A pointer to a WhoWas::Nick if the nick was found, NULL otherwise
+		 * @return A pointer to a WhoWas::Nick if the nick was found, nullptr otherwise
 		 */
 		const Nick* FindNick(const std::string& nick) const;
 

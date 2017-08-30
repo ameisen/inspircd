@@ -68,14 +68,14 @@ void CommandStats::DoStats(Stats::Context& stats)
 	const char statschar = stats.GetSymbol();
 
 	bool isPublic = ServerInstance->Config->UserStats.find(statschar) != std::string::npos;
-	bool isRemoteOper = IS_REMOTE(user) && (user->IsOper());
-	bool isLocalOperWithPrivs = IS_LOCAL(user) && user->HasPrivPermission("servers/auspex");
+	bool isRemoteOper = user->as<RemoteUser>() && (user->IsOper());
+	bool isLocalOperWithPrivs = user->as<LocalUser>() && user->HasPrivPermission("servers/auspex");
 
 	if (!isPublic && !isRemoteOper && !isLocalOperWithPrivs)
 	{
 		ServerInstance->SNO->WriteToSnoMask('t',
 				"%s '%c' denied for %s (%s@%s)",
-				(IS_LOCAL(user) ? "Stats" : "Remote stats"),
+				(user->as<LocalUser>() ? "Stats" : "Remote stats"),
 				statschar, user->nick.c_str(), user->ident.c_str(), user->host.c_str());
 		stats.AddRow(481, (std::string("Permission Denied - STATS ") + statschar + " requires the servers/auspex priv."));
 		return;
@@ -87,7 +87,7 @@ void CommandStats::DoStats(Stats::Context& stats)
 	{
 		stats.AddRow(219, statschar, "End of /STATS report");
 		ServerInstance->SNO->WriteToSnoMask('t',"%s '%c' requested by %s (%s@%s)",
-			(IS_LOCAL(user) ? "Stats" : "Remote stats"), statschar, user->nick.c_str(), user->ident.c_str(), user->host.c_str());
+			(user->as<LocalUser>() ? "Stats" : "Remote stats"), statschar, user->nick.c_str(), user->ident.c_str(), user->host.c_str());
 		return;
 	}
 
@@ -174,7 +174,7 @@ void CommandStats::DoStats(Stats::Context& stats)
 				User* oper = *i;
 				if (!oper->server->IsULine())
 				{
-					LocalUser* lu = IS_LOCAL(oper);
+					LocalUser* lu = oper->as<LocalUser>();
 					stats.AddRow(249, oper->nick + " (" + oper->ident + "@" + oper->dhost + ") Idle: " +
 							(lu ? ConvToStr(ServerInstance->Time() - lu->idle_lastmsg) + " secs" : "unavailable"));
 					idx++;
@@ -368,7 +368,7 @@ void CommandStats::DoStats(Stats::Context& stats)
 
 	stats.AddRow(219, statschar, "End of /STATS report");
 	ServerInstance->SNO->WriteToSnoMask('t',"%s '%c' requested by %s (%s@%s)",
-		(IS_LOCAL(user) ? "Stats" : "Remote stats"), statschar, user->nick.c_str(), user->ident.c_str(), user->host.c_str());
+		(user->as<LocalUser>() ? "Stats" : "Remote stats"), statschar, user->nick.c_str(), user->ident.c_str(), user->host.c_str());
 	return;
 }
 
@@ -377,7 +377,7 @@ CmdResult CommandStats::Handle (const std::vector<std::string>& parameters, User
 	if (parameters.size() > 1 && parameters[1] != ServerInstance->Config->ServerName)
 	{
 		// Give extra penalty if a non-oper does /STATS <remoteserver>
-		LocalUser* localuser = IS_LOCAL(user);
+		LocalUser* localuser = user->as<LocalUser>();
 		if ((localuser) && (!user->IsOper()))
 			localuser->CommandFloodPenalty += 2000;
 		return CMD_SUCCESS;

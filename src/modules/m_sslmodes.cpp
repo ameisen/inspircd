@@ -26,7 +26,7 @@
 
 /** Handle channel mode +z
  */
-class SSLMode : public ModeHandler
+class SSLMode final : public ModeHandler
 {
  public:
 	UserCertificateAPI API;
@@ -43,7 +43,7 @@ class SSLMode : public ModeHandler
 		{
 			if (!channel->IsModeSet(this))
 			{
-				if (IS_LOCAL(source))
+				if (source->as<LocalUser>())
 				{
 					if (!API)
 						return MODEACTION_DENY;
@@ -80,7 +80,7 @@ class SSLMode : public ModeHandler
 	}
 };
 
-class ModuleSSLModes : public Module
+class ModuleSSLModes final : public Module
 {
 
 	SSLMode sslm;
@@ -115,7 +115,7 @@ class ModuleSSLModes : public Module
 		return MOD_RES_PASSTHRU;
 	}
 
-	ModResult OnCheckBan(User *user, Channel *c, const std::string& mask) override
+	ModResult OnCheckBan(const User *user, const Channel *c, const std::string& mask) final override
 	{
 		if ((mask.length() > 2) && (mask[0] == 'z') && (mask[1] == ':'))
 		{

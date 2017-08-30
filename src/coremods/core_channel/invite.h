@@ -62,6 +62,12 @@ class Invite::ExtItem : public ExtensionItem
 		return store;
 	}
 
+	const Store<T>* get(const Extensible* ext) const
+	{
+		const Store<T>* store = static_cast<const Store<T>*>(get_raw(ext));
+		return store;
+	}
+
 	void unset(Extensible* ext)
 	{
 		void* store = unset_raw(ext);
@@ -107,7 +113,7 @@ class Invite::ExtItem : public ExtensionItem
 	}
 };
 
-class Invite::APIImpl : public APIBase
+class Invite::APIImpl final : public APIBase
 {
 	ExtItem<LocalUser, ExtensionItem::EXT_USER> userext;
 	ExtItem<Channel, ExtensionItem::EXT_CHANNEL> chanext;
@@ -115,10 +121,10 @@ class Invite::APIImpl : public APIBase
  public:
 	APIImpl(Module* owner);
 
-	void Create(LocalUser* user, Channel* chan, time_t timeout) override;
-	Invite* Find(LocalUser* user, Channel* chan) override;
-	bool Remove(LocalUser* user, Channel* chan) override;
-	const List* GetList(LocalUser* user) override;
+	virtual void Create(LocalUser* user, Channel* chan, time_t timeout) final override;
+	virtual Invite* Find(const LocalUser* user, const Channel* chan) const final override;
+	virtual bool Remove(LocalUser* user, Channel* chan) final override;
+	virtual const List* GetList(const LocalUser* user) const final override;
 
 	void RemoveAll(LocalUser* user) { userext.unset(user); }
 	void RemoveAll(Channel* chan) { chanext.unset(chan); }

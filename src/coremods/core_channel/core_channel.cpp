@@ -22,7 +22,7 @@
 #include "invite.h"
 #include "listmode.h"
 
-class CoreModChannel : public Module, public CheckExemption::EventListener
+class CoreModChannel final : public Module, public CheckExemption::EventListener
 {
 	Invite::APIImpl invapi;
 	CommandInvite cmdinvite;
@@ -32,9 +32,9 @@ class CoreModChannel : public Module, public CheckExemption::EventListener
 	CommandTopic cmdtopic;
 	insp::flat_map<std::string, char> exemptions;
 
-	ModResult IsInvited(User* user, Channel* chan)
+	ModResult IsInvited(const User* user, const Channel* chan)
 	{
-		LocalUser* localuser = IS_LOCAL(user);
+		const LocalUser* localuser = user->as<LocalUser>();
 		if ((localuser) && (invapi.IsInvited(localuser, chan)))
 			return MOD_RES_ALLOW;
 		return MOD_RES_PASSTHRU;
@@ -109,7 +109,7 @@ class CoreModChannel : public Module, public CheckExemption::EventListener
 	void OnPostJoin(Membership* memb) override
 	{
 		Channel* const chan = memb->chan;
-		LocalUser* const localuser = IS_LOCAL(memb->user);
+		LocalUser* const localuser = memb->user->as<LocalUser>();
 		if (localuser)
 		{
 			// Remove existing invite, if any
@@ -129,7 +129,7 @@ class CoreModChannel : public Module, public CheckExemption::EventListener
 		return IsInvited(user, chan);
 	}
 
-	ModResult OnCheckChannelBan(User* user, Channel* chan) override
+	ModResult OnCheckChannelBan(const User* user, const Channel* chan) final override
 	{
 		// Hook only runs when being invited bypasses +bkl
 		return IsInvited(user, chan);

@@ -115,9 +115,9 @@ void Channel::DelUser(const MemberMap::iterator& membiter)
 	CheckDestroy();
 }
 
-Membership* Channel::GetUser(User* user)
+Membership* Channel::GetUser(User* user) const
 {
-	MemberMap::iterator i = userlist.find(user);
+	auto i = userlist.find(user);
 	if (i == userlist.end())
 		return nullptr;
 	return i->second;
@@ -294,7 +294,7 @@ Channel* Channel::JoinUser(LocalUser* user, std::string cname, bool override, co
 
 Membership* Channel::ForceJoin(User* user, const std::string* privs, bool bursting, bool created_by_local)
 {
-	if (IS_SERVER(user))
+	if (user->as<FakeUser>())
 	{
 		ServerInstance->Logs->Log("CHANNELS", LOG_DEBUG, "Attempted to join server user " + user->uuid + " to channel " + this->name);
 		return nullptr;
@@ -342,7 +342,7 @@ Membership* Channel::ForceJoin(User* user, const std::string* privs, bool bursti
 	return memb;
 }
 
-bool Channel::IsBanned(User* user)
+bool Channel::IsBanned(const User* user) const
 {
 	ModResult result;
 	FIRST_MOD_RESULT(OnCheckChannelBan, result, (user, this));
@@ -363,7 +363,7 @@ bool Channel::IsBanned(User* user)
 	return false;
 }
 
-bool Channel::CheckBan(User* user, const std::string& mask)
+bool Channel::CheckBan(const User* user, const std::string& mask) const
 {
 	ModResult result;
 	FIRST_MOD_RESULT(OnCheckBan, result, (user, this, mask));
@@ -391,7 +391,7 @@ bool Channel::CheckBan(User* user, const std::string& mask)
 	return false;
 }
 
-ModResult Channel::GetExtBanStatus(User *user, char type)
+ModResult Channel::GetExtBanStatus(const User *user, char type) const
 {
 	ModResult rv;
 	FIRST_MOD_RESULT(OnExtBanCheck, rv, (user, this, type));
@@ -462,7 +462,7 @@ void Channel::WriteChannel(User* user, const std::string &text)
 
 	for (const auto &i : userlist)
 	{
-		if (IS_LOCAL(i.first))
+		if (i.first->as<LocalUser>())
 			i.first->Write(message);
 	}
 }
@@ -480,7 +480,7 @@ void Channel::WriteChannelWithServ(const std::string& ServName, const std::strin
 
 	for (const auto &i : userlist)
 	{
-		if (IS_LOCAL(i.first))
+		if (i.first->as<LocalUser>())
 			i.first->Write(message);
 	}
 }
@@ -520,7 +520,7 @@ void Channel::RawWriteAllExcept(User* user, bool serversource, char status, CULi
 
 	for (const auto &i : userlist)
 	{
-		if (IS_LOCAL(i.first) && (except_list.find(i.first) == except_list.end()))
+		if (i.first->as<LocalUser>() && (except_list.find(i.first) == except_list.end()))
 		{
 			/* User doesn't have the status we're after */
 			if (minrank && i.second->getRank() < minrank)
@@ -538,9 +538,9 @@ void Channel::WriteAllExceptSender(User* user, bool serversource, char status, c
 	this->WriteAllExcept(user, serversource, status, except_list, std::string(text));
 }
 
-const char* Channel::ChanModes(bool showkey)
+const char* Channel::ChanModes(bool showkey) const
 {
-	static std::string scratch; // todo : awful
+	thread_local static std::string scratch; // todo : awful
 	std::string sparam;
 
 	scratch.clear();
@@ -627,9 +627,9 @@ std::string Membership::GetAllPrefixChars() const
 	return ret;
 }
 
-unsigned int Channel::GetPrefixValue(User* user)
+unsigned int Channel::GetPrefixValue(User* user) const
 {
-	MemberMap::iterator m = userlist.find(user);
+	auto m = userlist.find(user);
 	if (m == userlist.end())
 		return 0;
 	return m->second->getRank();

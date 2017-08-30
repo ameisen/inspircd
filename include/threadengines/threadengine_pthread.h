@@ -81,7 +81,7 @@ class CoreExport Mutex
 	 */
 	Mutex()
 	{
-		pthread_mutex_init(&putex, NULL);
+		pthread_mutex_init(&putex, nullptr);
 	}
 	/** Enter/enable the mutex lock.
 	 */
@@ -109,7 +109,7 @@ class ThreadQueueData : public Mutex
  public:
 	ThreadQueueData()
 	{
-		pthread_cond_init(&cond, NULL);
+		pthread_cond_init(&cond, nullptr);
 	}
 
 	~ThreadQueueData()

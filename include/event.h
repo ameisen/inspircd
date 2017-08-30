@@ -41,7 +41,7 @@ class Events::ModuleEventProvider : public ServiceProvider, private dynamic_refe
 	 * @param eventid Identifier of the event or event group provided, must be unique
 	 */
 	ModuleEventProvider(Module* mod, const std::string& eventid)
-		: ServiceProvider(mod, eventid, SERVICE_DATA)
+		: ServiceProvider(mod, eventid, ServiceType::Data)
 		, prov(mod, eventid)
 	{
 		prov.SetCaptureHook(this);

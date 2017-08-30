@@ -99,7 +99,7 @@ static void populate(CUList& except, Membership* memb)
 	const Channel::MemberMap& users = memb->chan->GetUsers();
 	for (Channel::MemberMap::const_iterator i = users.begin(); i != users.end(); ++i)
 	{
-		if (i->first == memb->user || !IS_LOCAL(i->first))
+		if (i->first == memb->user || !i->first->as<LocalUser>())
 			continue;
 		except.insert(i->first);
 	}
@@ -171,7 +171,7 @@ ModResult ModuleDelayJoin::OnRawMode(User* user, Channel* channel, ModeHandler* 
 		return MOD_RES_PASSTHRU;
 
 	User* dest;
-	if (IS_LOCAL(user))
+	if (user->as<LocalUser>())
 		dest = ServerInstance->FindNickOnly(param);
 	else
 		dest = ServerInstance->FindNick(param);

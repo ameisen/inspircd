@@ -27,7 +27,7 @@
 #include "builtinmodes.h"
 
 ModeHandler::ModeHandler(Module* Creator, const std::string& Name, char modeletter, ParamSpec Params, ModeType type, Class mclass)
-	: ServiceProvider(Creator, Name, SERVICE_MODE), modeid(ModeParser::MODEID_MAX),
+	: ServiceProvider(Creator, Name, ServiceType::Mode), modeid(ModeParser::MODEID_MAX),
 	parameters_taken(Params), mode(modeletter), oper(false),
 	list(false), m_type(type), type_id(mclass), levelrequired(HALFOP_VALUE)
 {
@@ -163,7 +163,7 @@ PrefixMode::PrefixMode(Module* Creator, const std::string& Name, char ModeLetter
 ModeAction PrefixMode::OnModeChange(User* source, User*, Channel* chan, std::string& parameter, bool adding)
 {
 	User* target;
-	if (IS_LOCAL(source))
+	if (source->as<LocalUser>())
 		target = ServerInstance->FindNickOnly(parameter);
 	else
 		target = ServerInstance->FindNick(parameter);
@@ -224,7 +224,7 @@ ModeAction ModeParser::TryMode(User* user, User* targetuser, Channel* chan, Mode
 	ModResult MOD_RESULT;
 	FIRST_MOD_RESULT(OnRawMode, MOD_RESULT, (user, chan, mh, parameter, adding));
 
-	if (IS_LOCAL(user) && (MOD_RESULT == MOD_RES_DENY))
+	if (user->as<LocalUser>() && (MOD_RESULT == MOD_RES_DENY))
 		return MODEACTION_DENY;
 
 	const char modechar = mh->GetModeChar();
@@ -284,7 +284,7 @@ ModeAction ModeParser::TryMode(User* user, User* targetuser, Channel* chan, Mode
 		}
 	}
 
-	if (IS_LOCAL(user) && !user->IsOper())
+	if (user->as<LocalUser>() && !user->IsOper())
 	{
 		char* disabled = (type == MODETYPE_CHANNEL) ? ServerInstance->Config->DisabledCModes : ServerInstance->Config->DisabledUModes;
 		if (disabled[modechar - 'A'])
@@ -295,7 +295,7 @@ ModeAction ModeParser::TryMode(User* user, User* targetuser, Channel* chan, Mode
 		}
 	}
 
-	if ((adding) && (IS_LOCAL(user)) && (mh->NeedsOper()) && (!user->HasModePermission(mh)))
+	if ((adding) && (user->as<LocalUser>()) && (mh->NeedsOper()) && (!user->HasModePermission(mh)))
 	{
 		/* It's an oper only mode, and they don't have access to it. */
 		if (user->IsOper())

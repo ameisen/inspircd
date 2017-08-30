@@ -21,7 +21,7 @@
 #include "modules/cap.h"
 #include "modules/reload.h"
 
-class CapNotify : public Cap::Capability
+class CapNotify final : public Cap::Capability
 {
 	bool OnRequest(LocalUser* user, bool add) override
 	{
@@ -31,11 +31,11 @@ class CapNotify : public Cap::Capability
 		return true;
 	}
 
-	bool OnList(LocalUser* user) override
+	bool OnList(const LocalUser* user) const final override
 	{
 		// If the client supports 3.2 enable cap-notify for them
 		if (GetProtocol(user) != Cap::CAP_LEGACY)
-			set(user, true);
+			set(const_cast<LocalUser *>(user), true); // todo : I dislike this.
 		return true;
 	}
 

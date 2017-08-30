@@ -47,7 +47,7 @@ class CommandNicklock : public Command
 		}
 
 		/* Do local sanity checks and bails */
-		if (IS_LOCAL(user))
+		if (user->as<LocalUser>())
 		{
 			if (!ServerInstance->IsNick(parameters[1]))
 			{
@@ -59,7 +59,7 @@ class CommandNicklock : public Command
 		}
 
 		/* If we made it this far, extend the user */
-		if (IS_LOCAL(target))
+		if (target->as<LocalUser>())
 		{
 			locked.set(target, 1);
 
@@ -106,7 +106,7 @@ class CommandNickunlock : public Command
 			return CMD_FAILURE;
 		}
 
-		if (IS_LOCAL(target))
+		if (target->as<LocalUser>())
 		{
 			if (locked.set(target, 0))
 			{

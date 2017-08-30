@@ -38,7 +38,7 @@ class DelayMsgMode : public ParamMode<DelayMsgMode, LocalIntExt>
 	ModeAction OnSet(User* source, Channel* chan, std::string& parameter);
 	void OnUnset(User* source, Channel* chan);
 
-	void SerializeParam(Channel* chan, int n, std::string& out)
+	static void SerializeParam(const Channel* chan, int n, std::string& out)
 	{
 		out += ConvToStr(n);
 	}
@@ -87,7 +87,7 @@ Version ModuleDelayMsg::GetVersion()
 
 void ModuleDelayMsg::OnUserJoin(Membership* memb, bool sync, bool created, CUList&)
 {
-	if ((IS_LOCAL(memb->user)) && (memb->chan->IsModeSet(djm)))
+	if ((memb->user->as<LocalUser>()) && (memb->chan->IsModeSet(djm)))
 	{
 		djm.jointime.set(memb, ServerInstance->Time());
 	}
@@ -95,7 +95,7 @@ void ModuleDelayMsg::OnUserJoin(Membership* memb, bool sync, bool created, CULis
 
 ModResult ModuleDelayMsg::OnUserPreMessage(User* user, void* dest, int target_type, std::string& text, char status, CUList& exempt_list, MessageType msgtype)
 {
-	if (!IS_LOCAL(user))
+	if (!user->as<LocalUser>())
 		return MOD_RES_PASSTHRU;
 
 	if ((target_type != TYPE_CHANNEL) || ((!allownotice) && (msgtype == MSG_NOTICE)))

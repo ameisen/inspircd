@@ -548,7 +548,7 @@ void XLine::DefaultApply(User* u, const std::string &line, bool bancache)
 
 bool KLine::Matches(User *u)
 {
-	LocalUser* lu = IS_LOCAL(u);
+	LocalUser* lu = u->as<LocalUser>();
 	if (lu && lu->exempt)
 		return false;
 
@@ -571,7 +571,7 @@ void KLine::Apply(User* u)
 
 bool GLine::Matches(User *u)
 {
-	LocalUser* lu = IS_LOCAL(u);
+	LocalUser* lu = u->as<LocalUser>();
 	if (lu && lu->exempt)
 		return false;
 
@@ -594,7 +594,7 @@ void GLine::Apply(User* u)
 
 bool ELine::Matches(User *u)
 {
-	LocalUser* lu = IS_LOCAL(u);
+	LocalUser* lu = u->as<LocalUser>();
 	if (lu && lu->exempt)
 		return false;
 
@@ -612,7 +612,7 @@ bool ELine::Matches(User *u)
 
 bool ZLine::Matches(User *u)
 {
-	LocalUser* lu = IS_LOCAL(u);
+	LocalUser* lu = u->as<LocalUser>();
 	if (lu && lu->exempt)
 		return false;
 

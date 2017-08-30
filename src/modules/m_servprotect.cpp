@@ -71,7 +71,7 @@ class ModuleServProtectMode : public Module, public Whois::EventListener, public
 		/* Check that the mode is not a server mode, it is being removed, the user making the change is local, there is a parameter,
 		 * and the user making the change is not a uline
 		 */
-		if (!adding && chan && IS_LOCAL(user) && !param.empty())
+		if (!adding && chan && user->as<LocalUser>() && !param.empty())
 		{
 			const PrefixMode* const pm = mh->IsPrefixMode();
 			if (!pm)

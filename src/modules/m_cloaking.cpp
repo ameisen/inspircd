@@ -39,7 +39,7 @@ static const char base32[] = "0123456789abcdefghijklmnopqrstuv";
 
 /** Handles user mode +x
  */
-class CloakUser : public ModeHandler
+class CloakUser final : public ModeHandler
 {
  public:
 	LocalStringExt ext;
@@ -55,7 +55,7 @@ class CloakUser : public ModeHandler
 
 	ModeAction OnModeChange(User* source, User* dest, Channel* channel, std::string &parameter, bool adding)
 	{
-		LocalUser* user = IS_LOCAL(dest);
+		LocalUser* user = dest->as<LocalUser>();
 
 		/* For remote clients, we don't take any action, we just allow it.
 		 * The local server where they are will set their cloak instead.
@@ -122,7 +122,7 @@ class CloakUser : public ModeHandler
 	}
 };
 
-class CommandCloak : public Command
+class CommandCloak final : public Command
 {
  public:
 	CommandCloak(Module* Creator) : Command(Creator, "CLOAK", 1)
@@ -134,7 +134,7 @@ class CommandCloak : public Command
 	CmdResult Handle(const std::vector<std::string> &parameters, User *user);
 };
 
-class ModuleCloaking : public Module
+class ModuleCloaking final : public Module
 {
  public:
 	CloakUser cu;
@@ -271,13 +271,13 @@ class ModuleCloaking : public Module
 		return rv;
 	}
 
-	ModResult OnCheckBan(User* user, Channel* chan, const std::string& mask) override
+	ModResult OnCheckBan(const User* user, const Channel* chan, const std::string& mask) final override
 	{
-		LocalUser* lu = IS_LOCAL(user);
+		const LocalUser* lu = user->as<LocalUser>();
 		if (!lu)
 			return MOD_RES_PASSTHRU;
 
-		OnUserConnect(lu);
+		OnUserConnect(const_cast<LocalUser *>(lu)); // todo : I dislike this.
 		std::string* cloak = cu.ext.get(user);
 		/* Check if they have a cloaked host, but are not using it */
 		if (cloak && *cloak != user->dhost)

@@ -85,7 +85,7 @@ User::User(const std::string& uid, Server* srv, int type)
 }
 
 LocalUser::LocalUser(int myfd, irc::sockets::sockaddrs* client, irc::sockets::sockaddrs* servaddr)
-	: User(ServerInstance->UIDGen.GetUID(), ServerInstance->FakeClient->server, USERTYPE_LOCAL)
+	: User(ServerInstance->UIDGen.GetUID(), ServerInstance->FakeClient->server, user_type)
 	, eh(this)
 	, bytes_in(0)
 	, bytes_out(0)
@@ -107,10 +107,6 @@ LocalUser::LocalUser(int myfd, irc::sockets::sockaddrs* client, irc::sockets::so
 	memcpy(&client_sa, client, sizeof(irc::sockets::sockaddrs));
 	memcpy(&server_sa, servaddr, sizeof(irc::sockets::sockaddrs));
 	dhost = host = GetIPString();
-}
-
-User::~User()
-{
 }
 
 const std::string& User::MakeHost()
@@ -348,9 +344,9 @@ void User::Oper(OperInfo* info)
 	if (info->oper_block)
 		opername = info->oper_block->getString("name");
 
-	if (IS_LOCAL(this))
+	if (this->as<LocalUser>())
 	{
-		LocalUser* l = IS_LOCAL(this);
+		LocalUser* l = this->as<LocalUser>();
 		std::string vhost = oper->getConfig("vhost");
 		if (!vhost.empty())
 			l->ChangeDisplayedHost(vhost);
@@ -367,7 +363,7 @@ void User::Oper(OperInfo* info)
 	ServerInstance->Users->all_opers.push_back(this);
 
 	// Expand permissions from config for faster lookup
-	if (IS_LOCAL(this))
+	if (this->as<LocalUser>())
 		oper->init();
 
 	FOREACH_MOD(OnPostOper, (this, oper->name, opername));
@@ -679,7 +675,7 @@ int LocalUser::GetServerPort()
 	return 0;
 }
 
-const std::string& User::GetIPString()
+const std::string& User::GetIPString() const
 {
 	int port;
 	if (cachedip.empty())
@@ -917,7 +913,7 @@ void User::ForEachNeighbor(ForEachNeighborHandler& handler, bool include_self)
 	// Handle exceptions first
 	for (std::map<User*, bool>::const_iterator i = exceptions.begin(); i != exceptions.end(); ++i)
 	{
-		LocalUser* curr = IS_LOCAL(i->first);
+		LocalUser* curr = i->first->as<LocalUser>();
 		if (curr)
 		{
 			// Mark as visited to ensure we won't visit again if there is a common channel
@@ -935,7 +931,7 @@ void User::ForEachNeighbor(ForEachNeighborHandler& handler, bool include_self)
 		const Channel::MemberMap& userlist = chan->GetUsers();
 		for (Channel::MemberMap::const_iterator j = userlist.begin(); j != userlist.end(); ++j)
 		{
-			LocalUser* curr = IS_LOCAL(j->first);
+			LocalUser* curr = j->first->as<LocalUser>();
 			// User not yet visited?
 			if ((curr) && (curr->already_sent != newid))
 			{
@@ -983,10 +979,10 @@ bool User::ChangeName(const std::string& gecos)
 	if (!this->fullname.compare(gecos))
 		return true;
 
-	if (IS_LOCAL(this))
+	if (this->as<LocalUser>())
 	{
 		ModResult MOD_RESULT;
-		FIRST_MOD_RESULT(OnChangeLocalUserGECOS, MOD_RESULT, (IS_LOCAL(this),gecos));
+		FIRST_MOD_RESULT(OnChangeLocalUserGECOS, MOD_RESULT, (this->as<LocalUser>(),gecos));
 		if (MOD_RESULT == MOD_RES_DENY)
 			return false;
 		FOREACH_MOD(OnChangeName, (this,gecos));
@@ -1001,10 +997,10 @@ bool User::ChangeDisplayedHost(const std::string& shost)
 	if (dhost == shost)
 		return true;
 
-	if (IS_LOCAL(this))
+	if (this->as<LocalUser>())
 	{
 		ModResult MOD_RESULT;
-		FIRST_MOD_RESULT(OnChangeLocalUserHost, MOD_RESULT, (IS_LOCAL(this),shost));
+		FIRST_MOD_RESULT(OnChangeLocalUserHost, MOD_RESULT, (this->as<LocalUser>(),shost));
 		if (MOD_RESULT == MOD_RES_DENY)
 			return false;
 	}
@@ -1014,7 +1010,7 @@ bool User::ChangeDisplayedHost(const std::string& shost)
 	this->dhost.assign(shost, 0, ServerInstance->Config->Limits.MaxHost);
 	this->InvalidateCache();
 
-	if (IS_LOCAL(this))
+	if (this->as<LocalUser>())
 		this->WriteNumeric(RPL_YOURDISPLAYEDHOST, this->dhost, "is now your displayed host");
 
 	return true;

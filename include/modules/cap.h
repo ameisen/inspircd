@@ -91,7 +91,7 @@ namespace Cap
 
 		/** Find a capability by name
 		 * @param name Capability to find
-		 * @return Capability object pointer if found, NULL otherwise
+		 * @return Capability object pointer if found, nullptr otherwise
 		 */
 		virtual Capability* Find(const std::string& name) const = 0;
 
@@ -122,7 +122,7 @@ namespace Cap
 		 */
 		Bit bit;
 
-		/** Extension containing all caps set by a user. NULL if the cap is unregistered.
+		/** Extension containing all caps set by a user. nullptr if the cap is unregistered.
 		 */
 		ExtItem* extitem;
 
@@ -143,7 +143,7 @@ namespace Cap
 		void Unregister()
 		{
 			bit = 0;
-			extitem = NULL;
+			extitem = nullptr;
 		}
 
 		Ext AddToMask(Ext mask) const { return (mask | GetMask()); }
@@ -169,7 +169,7 @@ namespace Cap
 		 * @param Name Raw name of the cap as used in the protocol (CAP LS, etc.)
 		 */
 		Capability(Module* mod, const std::string& Name)
-			: ServiceProvider(mod, Name, SERVICE_CUSTOM)
+			: ServiceProvider(mod, Name, ServiceType::Custom)
 			, active(true)
 			, manager(mod, "capmanager")
 		{
@@ -192,7 +192,7 @@ namespace Cap
 		 * @param user User to check
 		 * @return True if the user is using this capability, false otherwise
 		 */
-		bool get(User* user) const
+		bool get(const User* user) const
 		{
 			if (!IsRegistered())
 				return false;
@@ -204,7 +204,7 @@ namespace Cap
 		 * @param user User to turn the cap on/off for
 		 * @param val True to turn the cap on, false to turn it off
 		 */
-		void set(User* user, bool val)
+		void set(User* user, bool val) const
 		{
 			if (!IsRegistered())
 				return;
@@ -244,14 +244,14 @@ namespace Cap
 		 * The cap must be active and the manager must be available for a cap to be registered.
 		 * @return True if the cap is registered in the manager, false otherwise
 		 */
-		bool IsRegistered() const { return (extitem != NULL); }
+		bool IsRegistered() const { return (extitem != nullptr); }
 
 		/** Get the CAP negotiation protocol version of a user.
 		 * The cap must be registered for this to return anything other than CAP_LEGACY.
 		 * @param user User whose negotiation protocol version to query
 		 * @return One of the Capability::Protocol enum indicating the highest supported capability negotiation protocol version
 		 */
-		Protocol GetProtocol(LocalUser* user) const
+		Protocol GetProtocol(const LocalUser* user) const
 		{
 			return ((IsRegistered() && (extitem->get(user) & CAP_302_BIT)) ? CAP_302 : CAP_LEGACY);
 		}
@@ -271,18 +271,18 @@ namespace Cap
 		 * @param user User querying a list capabilities
 		 * @return True to add this cap to the list sent to the user, false to not list it
 		 */
-		virtual bool OnList(LocalUser* user)
+		virtual bool OnList(const LocalUser* user) const
 		{
 			return true;
 		}
 
 		/** Query the value of this capability for a user
 		 * @param user User who will get the value of the capability
-		 * @return Value to show to the user. If NULL, the capability has no value (default).
+		 * @return Value to show to the user. If nullptr, the capability has no value (default).
 		 */
-		virtual const std::string* GetValue(LocalUser* user) const
+		virtual const std::string* GetValue(const LocalUser* user) const
 		{
-			return NULL;
+			return nullptr;
 		}
 	};
 

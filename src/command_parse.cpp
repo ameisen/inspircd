@@ -20,6 +20,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+ // Temporary hack to get around a warning being thrown by a Microsoft header.
+#if _MSC_VER == 1911
+#	pragma warning( disable : 4244 )  
+#include <algorithm>
+#	pragma warning( default : 4244 )  
+#endif
 
 #include "inspircd.h"
 
@@ -72,7 +78,7 @@ bool CommandParser::LoopCall(User* user, Command* handler, const std::vector<std
 	irc::commasepstream items2(extra >= 0 ? parameters[extra] : "", true);
 	std::string item;
 	unsigned int max = 0;
-	LocalUser* localuser = IS_LOCAL(user);
+	LocalUser* localuser = user->as<LocalUser>();
 
 	/* Attempt to iterate these lists and call the command handler
 	 * for every parameter or parameter pair until there are no more
@@ -131,7 +137,7 @@ CmdResult CommandParser::CallHandler(const std::string& commandname, const std::
 		{
 			bool bOkay = false;
 
-			if (IS_LOCAL(user) && n->second->flags_needed)
+			if (user->as<LocalUser>() && n->second->flags_needed)
 			{
 				/* if user is local, and flags are needed .. */
 
@@ -343,7 +349,7 @@ void CommandParser::RemoveCommand(Command* x)
 }
 
 CommandBase::CommandBase(Module* mod, const std::string& cmd, unsigned int minpara, unsigned int maxpara)
-	: ServiceProvider(mod, cmd, SERVICE_COMMAND)
+	: ServiceProvider(mod, cmd, ServiceType::Command)
 	, flags_needed(0)
 	, min_params(minpara)
 	, max_params(maxpara)

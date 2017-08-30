@@ -29,7 +29,7 @@ static void* entry_point(void* parameter)
 	sigset_t set;
 	sigemptyset(&set);
 	sigaddset(&set, SIGPIPE);
-	pthread_sigmask(SIG_BLOCK, &set, NULL);
+	pthread_sigmask(SIG_BLOCK, &set, nullptr);
 
 	Thread* pt = static_cast<Thread*>(parameter);
 	pt->Run();
@@ -39,14 +39,14 @@ static void* entry_point(void* parameter)
 
 void ThreadEngine::Start(Thread* thread)
 {
-	if (pthread_create(&thread->state.pthread_id, NULL, entry_point, thread) != 0)
+	if (pthread_create(&thread->state.pthread_id, nullptr, entry_point, thread) != 0)
 		throw CoreException("Unable to create new thread: " + std::string(strerror(errno)));
 }
 
 void ThreadEngine::Stop(Thread* thread)
 {
 	thread->SetExitFlag();
-	pthread_join(thread->state.pthread_id, NULL);
+	pthread_join(thread->state.pthread_id, nullptr);
 }
 
 #ifdef HAS_EVENTFD
@@ -92,7 +92,7 @@ class ThreadSignalSocket : public EventHandler
 
 SocketThread::SocketThread()
 {
-	signal.sock = NULL;
+	signal.sock = nullptr;
 	int fd = eventfd(0, EFD_NONBLOCK);
 	if (fd < 0)
 		throw CoreException("Could not create pipe " + std::string(strerror(errno)));
@@ -145,7 +145,7 @@ class ThreadSignalSocket : public EventHandler
 
 SocketThread::SocketThread()
 {
-	signal.sock = NULL;
+	signal.sock = nullptr;
 	int fds[2];
 	if (pipe(fds))
 		throw CoreException("Could not create pipe " + std::string(strerror(errno)));

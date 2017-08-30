@@ -354,7 +354,7 @@ ModResult ModuleSpanningTree::HandleConnect(const std::vector<std::string>& para
 
 void ModuleSpanningTree::OnUserInvite(User* source, User* dest, Channel* channel, time_t expiry, unsigned int notifyrank, CUList& notifyexcepts)
 {
-	if (IS_LOCAL(source))
+	if (source->as<LocalUser>())
 	{
 		CmdBuilder params(source, "INVITE");
 		params.push_back(dest->uuid);
@@ -380,7 +380,7 @@ ModResult ModuleSpanningTree::OnPreTopicChange(User* user, Channel* chan, const 
 void ModuleSpanningTree::OnPostTopicChange(User* user, Channel* chan, const std::string &topic)
 {
 	// Drop remote events on the floor.
-	if (!IS_LOCAL(user))
+	if (!user->as<LocalUser>())
 		return;
 
 	CommandFTopic::Builder(user, chan).Broadcast();
@@ -388,14 +388,14 @@ void ModuleSpanningTree::OnPostTopicChange(User* user, Channel* chan, const std:
 
 void ModuleSpanningTree::OnUserMessage(User* user, void* dest, int target_type, const std::string& text, char status, const CUList& exempt_list, MessageType msgtype)
 {
-	if (!IS_LOCAL(user))
+	if (!user->as<LocalUser>())
 		return;
 
 	const char* message_type = (msgtype == MSG_PRIVMSG ? "PRIVMSG" : "NOTICE");
 	if (target_type == TYPE_USER)
 	{
 		User* d = (User*) dest;
-		if (!IS_LOCAL(d))
+		if (!d->as<LocalUser>())
 		{
 			CmdBuilder params(user, message_type);
 			params.push_back(d->uuid);
@@ -447,7 +447,7 @@ void ModuleSpanningTree::OnUserConnect(LocalUser* user)
 void ModuleSpanningTree::OnUserJoin(Membership* memb, bool sync, bool created_by_local, CUList& excepts)
 {
 	// Only do this for local users
-	if (!IS_LOCAL(memb->user))
+	if (!memb->user->as<LocalUser>())
 		return;
 
 	// Assign the current membership id to the new Membership and increase it
@@ -476,7 +476,7 @@ void ModuleSpanningTree::OnUserJoin(Membership* memb, bool sync, bool created_by
 
 void ModuleSpanningTree::OnChangeHost(User* user, const std::string &newhost)
 {
-	if (user->registered != REG_ALL || !IS_LOCAL(user))
+	if (user->registered != REG_ALL || !user->as<LocalUser>())
 		return;
 
 	CmdBuilder(user, "FHOST").push(newhost).Broadcast();
@@ -484,7 +484,7 @@ void ModuleSpanningTree::OnChangeHost(User* user, const std::string &newhost)
 
 void ModuleSpanningTree::OnChangeName(User* user, const std::string &gecos)
 {
-	if (user->registered != REG_ALL || !IS_LOCAL(user))
+	if (user->registered != REG_ALL || !user->as<LocalUser>())
 		return;
 
 	CmdBuilder(user, "FNAME").push_last(gecos).Broadcast();
@@ -492,7 +492,7 @@ void ModuleSpanningTree::OnChangeName(User* user, const std::string &gecos)
 
 void ModuleSpanningTree::OnChangeIdent(User* user, const std::string &ident)
 {
-	if ((user->registered != REG_ALL) || (!IS_LOCAL(user)))
+	if ((user->registered != REG_ALL) || (!user->as<LocalUser>()))
 		return;
 
 	CmdBuilder(user, "FIDENT").push(ident).Broadcast();
@@ -500,7 +500,7 @@ void ModuleSpanningTree::OnChangeIdent(User* user, const std::string &ident)
 
 void ModuleSpanningTree::OnUserPart(Membership* memb, std::string &partmessage, CUList& excepts)
 {
-	if (IS_LOCAL(memb->user))
+	if (memb->user->as<LocalUser>())
 	{
 		CmdBuilder params(memb->user, "PART");
 		params.push_back(memb->chan->name);
@@ -512,7 +512,7 @@ void ModuleSpanningTree::OnUserPart(Membership* memb, std::string &partmessage, 
 
 void ModuleSpanningTree::OnUserQuit(User* user, const std::string &reason, const std::string &oper_message)
 {
-	if (IS_LOCAL(user))
+	if (user->as<LocalUser>())
 	{
 		if (oper_message != reason)
 			ServerInstance->PI->SendMetaData(user, "operquit", oper_message);
@@ -539,7 +539,7 @@ void ModuleSpanningTree::OnUserQuit(User* user, const std::string &reason, const
 
 void ModuleSpanningTree::OnUserPostNick(User* user, const std::string &oldnick)
 {
-	if (IS_LOCAL(user))
+	if (user->as<LocalUser>())
 	{
 		// The nick TS is updated by the core, we don't do it
 		CmdBuilder params(user, "NICK");
@@ -555,14 +555,14 @@ void ModuleSpanningTree::OnUserPostNick(User* user, const std::string &oldnick)
 
 void ModuleSpanningTree::OnUserKick(User* source, Membership* memb, const std::string &reason, CUList& excepts)
 {
-	if ((!IS_LOCAL(source)) && (source != ServerInstance->FakeClient))
+	if ((!source->as<LocalUser>()) && (source != ServerInstance->FakeClient))
 		return;
 
 	CmdBuilder params(source, "KICK");
 	params.push_back(memb->chan->name);
 	params.push_back(memb->user->uuid);
 	// If a remote user is being kicked by us then send the membership id in the kick too
-	if (!IS_LOCAL(memb->user))
+	if (!memb->user->as<LocalUser>())
 		params.push_int(memb->id);
 	params.push_last(reason);
 	params.Broadcast();
@@ -609,7 +609,7 @@ void ModuleSpanningTree::ReadConfig(ConfigStatus& status)
 		std::string msg = "Error in configuration: ";
 		msg.append(e.GetReason());
 		ServerInstance->SNO->WriteToSnoMask('l', msg);
-		if (status.srcuser && !IS_LOCAL(status.srcuser))
+		if (status.srcuser && !status.srcuser->as<LocalUser>())
 			ServerInstance->PI->SendSNONotice('L', msg);
 	}
 }
@@ -674,7 +674,7 @@ restart:
 
 void ModuleSpanningTree::OnOper(User* user, const std::string &opertype)
 {
-	if (user->registered != REG_ALL || !IS_LOCAL(user))
+	if (user->registered != REG_ALL || !user->as<LocalUser>())
 		return;
 
 	// Note: The protocol does not allow direct umode +o;
@@ -684,7 +684,7 @@ void ModuleSpanningTree::OnOper(User* user, const std::string &opertype)
 
 void ModuleSpanningTree::OnAddLine(User* user, XLine *x)
 {
-	if (!x->IsBurstable() || loopCall || (user && !IS_LOCAL(user)))
+	if (!x->IsBurstable() || loopCall || (user && !user->as<LocalUser>()))
 		return;
 
 	if (!user)
@@ -695,7 +695,7 @@ void ModuleSpanningTree::OnAddLine(User* user, XLine *x)
 
 void ModuleSpanningTree::OnDelLine(User* user, XLine *x)
 {
-	if (!x->IsBurstable() || loopCall || (user && !IS_LOCAL(user)))
+	if (!x->IsBurstable() || loopCall || (user && !user->as<LocalUser>()))
 		return;
 
 	if (!user)
@@ -709,7 +709,7 @@ void ModuleSpanningTree::OnDelLine(User* user, XLine *x)
 
 ModResult ModuleSpanningTree::OnSetAway(User* user, const std::string &awaymsg)
 {
-	if (IS_LOCAL(user))
+	if (user->as<LocalUser>())
 		CommandAway::Builder(user, awaymsg).Broadcast();
 
 	return MOD_RES_PASSTHRU;

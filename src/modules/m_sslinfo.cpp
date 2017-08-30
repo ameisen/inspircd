@@ -20,7 +20,7 @@
 #include "inspircd.h"
 #include "modules/ssl.h"
 
-class SSLCertExt : public ExtensionItem {
+class SSLCertExt final : public ExtensionItem {
  public:
 	SSLCertExt(Module* parent)
 		: ExtensionItem("ssl_cert", ExtensionItem::EXT_USER, parent)
@@ -79,7 +79,7 @@ class SSLCertExt : public ExtensionItem {
 
 /** Handle /SSLINFO
  */
-class CommandSSLInfo : public Command
+class CommandSSLInfo final : public Command
 {
  public:
 	SSLCertExt CertExt;
@@ -123,7 +123,7 @@ class CommandSSLInfo : public Command
 	}
 };
 
-class UserCertificateAPIImpl : public UserCertificateAPIBase
+class UserCertificateAPIImpl final : public UserCertificateAPIBase
 {
 	SSLCertExt& ext;
 
@@ -133,13 +133,13 @@ class UserCertificateAPIImpl : public UserCertificateAPIBase
 	{
 	}
 
- 	ssl_cert* GetCertificate(User* user) override
+ 	ssl_cert* GetCertificate(const User* user) override
  	{
  		return ext.get(user);
  	}
 };
 
-class ModuleSSLInfo : public Module, public Whois::EventListener
+class ModuleSSLInfo final : public Module, public Whois::EventListener
 {
 	CommandSSLInfo cmd;
 	UserCertificateAPIImpl APIImpl;
@@ -209,7 +209,7 @@ class ModuleSSLInfo : public Module, public Whois::EventListener
 
 	void OnPostConnect(User* user) override
 	{
-		LocalUser* const localuser = IS_LOCAL(user);
+		LocalUser* const localuser = user->as<LocalUser>();
 		if (!localuser)
 			return;
 

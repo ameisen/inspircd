@@ -167,8 +167,8 @@ class reference
 	inline bool operator>(const reference<T>& other) const { return value > other.value; }
 	static inline void* operator new(size_t, void* m) { return m; }
  private:
-	static void* operator new(size_t) = delete;;
-	static void operator delete(void*) = delete;;
+	static void* operator new(size_t) = delete;
+	static void operator delete(void*) = delete;
 };
 
 /** This class can be used on its own to represent an exception, or derived to represent a module-specific exception.
@@ -191,7 +191,7 @@ class CoreExport CoreException : public std::exception
 	/** This constructor can be used to specify an error message before throwing.
 	 * @param message Human readable error message
 	 */
-	CoreException(const std::string &message) : err(message), source("The core") {}
+	CoreException(const std::string &message) : err(message), source("The Core") {}
 	/** This constructor can be used to specify an error message before throwing,
 	 * and to specify the source of the exception.
 	 * @param message Human readable error message
@@ -202,7 +202,7 @@ class CoreExport CoreException : public std::exception
 	 * Actually no, it does nothing. Never mind.
 	 * @throws Nothing!
 	 */
-	virtual ~CoreException() throw() {}
+	virtual ~CoreException() noexcept = default;
 	/** Returns the reason for the exception.
 	 * @return Human readable description of the error
 	 */
@@ -225,19 +225,19 @@ class CoreExport ModuleException : public CoreException
 
 typedef const reference<Module> ModuleRef;
 
-enum ServiceType {
+enum class ServiceType : uint32_t {
 	/** is a Command */
-	SERVICE_COMMAND,
+	Command,
 	/** is a ModeHandler */
-	SERVICE_MODE,
+	Mode,
 	/** is a metadata descriptor */
-	SERVICE_METADATA,
+	Metadata,
 	/** is a data processing provider (MD5, SQL) */
-	SERVICE_DATA,
+	Data,
 	/** is an I/O hook provider (SSL) */
-	SERVICE_IOHOOK,
+	IO_Hook,
 	/** Service managed by a module */
-	SERVICE_CUSTOM
+	Custom
 };
 
 /** A structure defining something that a module can provide */
@@ -251,7 +251,7 @@ class CoreExport ServiceProvider : public classbase
 	/** Type of service (must match object type) */
 	const ServiceType service;
 	ServiceProvider(Module* Creator, const std::string& Name, ServiceType Type);
-	virtual ~ServiceProvider();
+	virtual ~ServiceProvider() = default;
 
 	/** Register this service in the appropriate registrar
 	 */

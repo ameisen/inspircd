@@ -37,7 +37,7 @@ CmdResult CommandKick::Handle (const std::vector<std::string>& parameters, User 
 	if (CommandParser::LoopCall(user, this, parameters, 1))
 		return CMD_SUCCESS;
 
-	if (IS_LOCAL(user))
+	if (user->as<LocalUser>())
 		u = ServerInstance->FindNickOnly(parameters[1]);
 	else
 		u = ServerInstance->FindNick(parameters[1]);
@@ -49,7 +49,7 @@ CmdResult CommandKick::Handle (const std::vector<std::string>& parameters, User 
 	}
 
 	Membership* srcmemb = nullptr;
-	if (IS_LOCAL(user))
+	if (user->as<LocalUser>())
 	{
 		srcmemb = c->GetUser(user);
 		if (!srcmemb)
@@ -74,7 +74,7 @@ CmdResult CommandKick::Handle (const std::vector<std::string>& parameters, User 
 	Membership* const memb = victimiter->second;
 
 	// KICKs coming from servers can carry a membership id
-	if ((!IS_LOCAL(user)) && (parameters.size() > 3))
+	if ((!user->as<LocalUser>()) && (parameters.size() > 3))
 	{
 		// If the current membership id is not equal to the one in the message then the user rejoined
 		if (memb->id != Membership::IdFromString(parameters[2]))
@@ -124,5 +124,5 @@ CmdResult CommandKick::Handle (const std::vector<std::string>& parameters, User 
 
 RouteDescriptor CommandKick::GetRouting(User* user, const std::vector<std::string>& parameters)
 {
-	return (IS_LOCAL(user) ? ROUTE_LOCALONLY : ROUTE_BROADCAST);
+	return (user->as<LocalUser>() ? ROUTE_LOCALONLY : ROUTE_BROADCAST);
 }

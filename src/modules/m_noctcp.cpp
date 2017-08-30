@@ -47,7 +47,7 @@ class ModuleNoCTCP : public Module
 
 	ModResult OnUserPreMessage(User* user, void* dest, int target_type, std::string& text, char status, CUList& exempt_list, MessageType msgtype) override
 	{
-		if ((target_type == TYPE_CHANNEL) && (IS_LOCAL(user)))
+		if ((target_type == TYPE_CHANNEL) && (user->as<LocalUser>()))
 		{
 			Channel* c = (Channel*)dest;
 			if ((text.empty()) || (text[0] != '\001') || (!strncmp(text.c_str(),"\1ACTION ",8)))

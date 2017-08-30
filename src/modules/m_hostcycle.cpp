@@ -44,7 +44,7 @@ class ModuleHostCycle : public Module
 		exceptions.erase(user);
 		for (std::map<User*,bool>::iterator i = exceptions.begin(); i != exceptions.end(); ++i)
 		{
-			LocalUser* u = IS_LOCAL(i->first);
+			LocalUser* u = i->first->as<LocalUser>();
 			if ((u) && (!u->quitting) && (!chghostcap.get(u)))
 			{
 				if (i->second)
@@ -80,7 +80,7 @@ class ModuleHostCycle : public Module
 			const Channel::MemberMap& ulist = c->GetUsers();
 			for (Channel::MemberMap::const_iterator j = ulist.begin(); j != ulist.end(); ++j)
 			{
-				LocalUser* u = IS_LOCAL(j->first);
+				LocalUser* u = j->first->as<LocalUser>();
 				if (u == nullptr || u == user)
 					continue;
 				if (u->already_sent == silent_id)

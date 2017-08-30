@@ -86,9 +86,9 @@ bool CommandWho::whomatch(User* cuser, User* user, const char* matchtext)
 	if (user->registered != REG_ALL)
 		return false;
 
-	if (opt_local && !IS_LOCAL(user))
+	if (opt_local && !user->as<LocalUser>())
 		return false;
-	else if (opt_far && IS_LOCAL(user))
+	else if (opt_far && user->as<LocalUser>())
 		return false;
 
 	if (opt_mode)
@@ -136,7 +136,7 @@ bool CommandWho::whomatch(User* cuser, User* user, const char* matchtext)
 			irc::portparser portrange(matchtext, false);
 			long portno = -1;
 			while ((portno = portrange.GetToken()))
-				if (IS_LOCAL(user) && portno == IS_LOCAL(user)->GetServerPort())
+				if (user->as<LocalUser>() && portno == user->as<LocalUser>()->GetServerPort())
 				{
 					match = true;
 					break;
@@ -397,8 +397,8 @@ CmdResult CommandWho::Handle (const std::vector<std::string>& parameters, User *
 
 	// Penalize the user a bit for large queries
 	// (add one unit of penalty per 200 results)
-	if (IS_LOCAL(user))
-		IS_LOCAL(user)->CommandFloodPenalty += whoresults.size() * 5;
+	if (user->as<LocalUser>())
+		user->as<LocalUser>()->CommandFloodPenalty += whoresults.size() * 5;
 	return CMD_SUCCESS;
 }
 

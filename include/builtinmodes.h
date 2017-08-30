@@ -37,30 +37,30 @@ class ModeChannelBan : public ListModeBase
 
 /** Channel mode +k
  */
-class ModeChannelKey : public ParamMode<ModeChannelKey, LocalStringExt>
+class ModeChannelKey final : public ParamMode<ModeChannelKey, LocalStringExt>
 {
 	static const std::string::size_type maxkeylen = 32;
  public:
 	ModeChannelKey();
-	ModeAction OnModeChange(User* source, User* dest, Channel* channel, std::string &parameter, bool adding);
-	void SerializeParam(Channel* chan, const std::string* key, std::string& out);
-	ModeAction OnSet(User* source, Channel* chan, std::string& param);
+	virtual ModeAction OnModeChange(User* source, User* dest, Channel* channel, std::string &parameter, bool adding) final override;
+	static void SerializeParam(const Channel* chan, const std::string* key, std::string& out);
+	virtual ModeAction OnSet(User* source, Channel* chan, std::string& param) final override;
 };
 
 /** Channel mode +l
  */
-class ModeChannelLimit : public ParamMode<ModeChannelLimit, LocalIntExt>
+class ModeChannelLimit final : public ParamMode<ModeChannelLimit, LocalIntExt>
 {
  public:
 	ModeChannelLimit();
-	bool ResolveModeConflict(std::string &their_param, const std::string &our_param, Channel* channel);
-	void SerializeParam(Channel* chan, intptr_t n, std::string& out);
-	ModeAction OnSet(User* source, Channel* channel, std::string& parameter);
+	virtual bool ResolveModeConflict(std::string &their_param, const std::string &our_param, Channel* channel) final override;
+	static void SerializeParam(const Channel* chan, intptr_t n, std::string& out);
+	virtual ModeAction OnSet(User* source, Channel* channel, std::string& parameter) final override;
 };
 
 /** Channel mode +o
  */
-class ModeChannelOp : public PrefixMode
+class ModeChannelOp final : public PrefixMode
 {
  public:
 	ModeChannelOp()
@@ -72,7 +72,7 @@ class ModeChannelOp : public PrefixMode
 
 /** Channel mode +v
  */
-class ModeChannelVoice : public PrefixMode
+class ModeChannelVoice final : public PrefixMode
 {
  public:
 	ModeChannelVoice()
@@ -84,7 +84,7 @@ class ModeChannelVoice : public PrefixMode
 
 /** User mode +s
  */
-class ModeUserServerNoticeMask : public ModeHandler
+class ModeUserServerNoticeMask final : public ModeHandler
 {
 	/** Process a snomask modifier string, e.g. +abc-de
 	 * @param user The target user
@@ -97,21 +97,21 @@ class ModeUserServerNoticeMask : public ModeHandler
 
  public:
 	ModeUserServerNoticeMask();
-	ModeAction OnModeChange(User* source, User* dest, Channel* channel, std::string &parameter, bool adding) override;
-	void OnParameterMissing(User* user, User* dest, Channel* channel) override;
+	virtual ModeAction OnModeChange(User* source, User* dest, Channel* channel, std::string &parameter, bool adding) final override;
+	virtual void OnParameterMissing(User* user, User* dest, Channel* channel) final override;
 
 	/** Create a displayable mode string of the snomasks set on a given user
 	 * @param user The user whose notice masks to format
 	 * @return The notice mask character sequence
 	 */
-	std::string GetUserParameter(const User* user) const override;
+	virtual std::string GetUserParameter(const User* user) const final override;
 };
 
 /** User mode +o
  */
-class ModeUserOperator : public ModeHandler
+class ModeUserOperator final : public ModeHandler
 {
  public:
 	ModeUserOperator();
-	ModeAction OnModeChange(User* source, User* dest, Channel* channel, std::string &parameter, bool adding);
+	virtual ModeAction OnModeChange(User* source, User* dest, Channel* channel, std::string &parameter, bool adding) final override;
 };

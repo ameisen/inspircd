@@ -38,7 +38,7 @@ CmdResult CommandIdle::HandleRemote(RemoteUser* issuer, std::vector<std::string>
 	if ((!target) || (target->registered != REG_ALL))
 		return CMD_FAILURE;
 
-	LocalUser* localtarget = IS_LOCAL(target);
+	LocalUser* localtarget = target->as<LocalUser>();
 	if (!localtarget)
 	{
 		// Forward to target's server

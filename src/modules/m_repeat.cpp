@@ -156,7 +156,7 @@ class RepeatMode : public ParamMode<RepeatMode, SimpleExtItem<ChannelSettings> >
 			return MODEACTION_DENY;
 		}
 
-		LocalUser* localsource = IS_LOCAL(source);
+		LocalUser* localsource = source->as<LocalUser>();
 		if ((localsource) && (!ValidateSettings(localsource, settings)))
 			return MODEACTION_DENY;
 
@@ -256,7 +256,7 @@ class RepeatMode : public ParamMode<RepeatMode, SimpleExtItem<ChannelSettings> >
 		return ConvToStr(ms.MaxLines) + ":" + ConvToStr(ms.MaxSecs) + ":" + ConvToStr(ms.MaxDiff) + ":" + ConvToStr(ms.MaxBacklog);
 	}
 
-	void SerializeParam(Channel* chan, const ChannelSettings* chset, std::string& out)
+	static void SerializeParam(const Channel* chan, const ChannelSettings* chset, std::string& out)
 	{
 		chset->serialize(out);
 	}
@@ -363,7 +363,7 @@ class RepeatModule : public Module
 
 	ModResult OnUserPreMessage(User* user, void* dest, int target_type, std::string& text, char status, CUList& exempt_list, MessageType msgtype) override
 	{
-		if (target_type != TYPE_CHANNEL || !IS_LOCAL(user))
+		if (target_type != TYPE_CHANNEL || !user->as<LocalUser>())
 			return MOD_RES_PASSTHRU;
 
 		Channel* chan = reinterpret_cast<Channel*>(dest);

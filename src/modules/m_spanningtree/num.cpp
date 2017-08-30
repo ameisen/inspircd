@@ -29,7 +29,7 @@ CmdResult CommandNum::HandleServer(TreeServer* server, std::vector<std::string>&
 	if (!target)
 		return CMD_FAILURE;
 
-	LocalUser* const localtarget = IS_LOCAL(target);
+	LocalUser* const localtarget = target->as<LocalUser>();
 	if (!localtarget)
 		return CMD_SUCCESS;
 

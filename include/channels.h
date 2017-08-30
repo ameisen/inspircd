@@ -34,12 +34,12 @@
  * This class represents a channel, and contains its name, modes, topic, topic set time,
  * etc, and an instance of the BanList type.
  */
-class CoreExport Channel : public Extensible
+class CoreExport Channel final : public Extensible
 {
  public:
 	/** A map of Memberships on a channel keyed by User pointers
 	 */
- 	typedef std::map<User*, Membership *> MemberMap;
+ 	using MemberMap = std::map<User*, Membership *>;
 
  private:
 	/** Set default modes for the channel on creation
@@ -117,9 +117,9 @@ class CoreExport Channel : public Extensible
 	  * @param mode The mode character you wish to query
 	  * @return True if the custom mode is set, false if otherwise
 	  */
-	bool IsModeSet(ModeHandler* mode) { return ((mode->GetId() != ModeParser::MODEID_MAX) && (modes[mode->GetId()])); }
-	bool IsModeSet(ModeHandler& mode) { return IsModeSet(&mode); }
-	bool IsModeSet(ChanModeReference& mode);
+	bool IsModeSet(ModeHandler* mode) const { return ((mode->GetId() != ModeParser::MODEID_MAX) && (modes[mode->GetId()])); }
+	bool IsModeSet(ModeHandler& mode) const { return IsModeSet(&mode); }
+	bool IsModeSet(ChanModeReference& mode) const;
 
 	/** Returns the parameter for a custom mode on a channel.
 	  * @param mode The mode character you wish to query
@@ -131,9 +131,9 @@ class CoreExport Channel : public Extensible
 	  *
 	  * @return The parameter for this mode is returned, or an empty string
 	  */
-	std::string GetModeParameter(ModeHandler* mode);
-	std::string GetModeParameter(ChanModeReference& mode);
-	std::string GetModeParameter(ParamModeBase* pm);
+	std::string GetModeParameter(ModeHandler* mode) const;
+	std::string GetModeParameter(ChanModeReference& mode) const;
+	std::string GetModeParameter(ParamModeBase* pm) const;
 
 	/** Sets the channel topic.
 	 * @param user The user setting the topic.
@@ -181,9 +181,9 @@ class CoreExport Channel : public Extensible
 	 * @param user The user to look for
 	 * @return True if the user is on this channel
 	 */
-	bool HasUser(User* user);
+	bool HasUser (User* user) const;
 
-	Membership* GetUser(User* user);
+	Membership* GetUser(User* user) const;
 
 	/** Make src kick user from this channel with the given reason.
 	 * @param src The source of the kick
@@ -307,7 +307,7 @@ class CoreExport Channel : public Extensible
 	 * otherwise it is replaced with '&lt;KEY&gt;'
 	 * @return The channel mode string
 	 */
-	const char* ChanModes(bool showkey);
+	const char* ChanModes(bool showkey) const;
 
 	/** Get the value of a users prefix on this channel.
 	 * @param user The user to look up
@@ -320,21 +320,21 @@ class CoreExport Channel : public Extensible
 	 * is a prefix of greater 'worth' than ops, and a value less than
 	 * VOICE_VALUE is of lesser 'worth' than a voice.
 	 */
-	unsigned int GetPrefixValue(User* user);
+	unsigned int GetPrefixValue(User* user) const;
 
 	/** Check if a user is banned on this channel
 	 * @param user A user to check against the banlist
 	 * @returns True if the user given is banned
 	 */
-	bool IsBanned(User* user);
+	bool IsBanned(const User* user) const;
 
 	/** Check a single ban for match
 	 */
-	bool CheckBan(User* user, const std::string& banmask);
+	bool CheckBan(const User* user, const std::string& banmask) const;
 
 	/** Get the status of an "action" type extban
 	 */
-	ModResult GetExtBanStatus(User *u, char type);
+	ModResult GetExtBanStatus(const User *u, char type) const;
 
 	/** Write a NOTICE to all local users on the channel
 	 * @param text Text to send
@@ -342,19 +342,19 @@ class CoreExport Channel : public Extensible
 	void WriteNotice(const std::string& text);
 };
 
-inline bool Channel::HasUser(User* user)
+inline bool Channel::HasUser(User* user) const
 {
 	return (userlist.find(user) != userlist.end());
 }
 
-inline std::string Channel::GetModeParameter(ChanModeReference& mode)
+inline std::string Channel::GetModeParameter(ChanModeReference& mode) const
 {
 	if (!mode)
 		return "";
 	return GetModeParameter(*mode);
 }
 
-inline std::string Channel::GetModeParameter(ModeHandler* mh)
+inline std::string Channel::GetModeParameter(ModeHandler* mh) const
 {
 	std::string out;
 	ParamModeBase* pm = mh->IsParameterMode();
@@ -363,7 +363,7 @@ inline std::string Channel::GetModeParameter(ModeHandler* mh)
 	return out;
 }
 
-inline std::string Channel::GetModeParameter(ParamModeBase* pm)
+inline std::string Channel::GetModeParameter(ParamModeBase* pm) const
 {
 	std::string out;
 	if (this->IsModeSet(pm))
@@ -371,7 +371,7 @@ inline std::string Channel::GetModeParameter(ParamModeBase* pm)
 	return out;
 }
 
-inline bool Channel::IsModeSet(ChanModeReference& mode)
+inline bool Channel::IsModeSet(ChanModeReference& mode) const
 {
 	if (!mode)
 		return false;

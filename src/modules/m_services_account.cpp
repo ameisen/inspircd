@@ -28,7 +28,7 @@
 
 /** Channel mode +r - mark a channel as identified
  */
-class Channel_r : public ModeHandler
+class Channel_r final : public ModeHandler
 {
  public:
 	Channel_r(Module* Creator) : ModeHandler(Creator, "c_registered", 'r', PARAM_NONE, MODETYPE_CHANNEL) { }
@@ -36,7 +36,7 @@ class Channel_r : public ModeHandler
 	ModeAction OnModeChange(User* source, User* dest, Channel* channel, std::string &parameter, bool adding)
 	{
 		// only a u-lined server may add or remove the +r mode.
-		if (!IS_LOCAL(source))
+		if (!source->as<LocalUser>())
 		{
 			// Only change the mode if it's not redundant
 			if ((adding != channel->IsModeSet(this)))
@@ -55,7 +55,7 @@ class Channel_r : public ModeHandler
 
 /** User mode +r - mark a user as identified
  */
-class User_r : public ModeHandler
+class User_r final : public ModeHandler
 {
 
  public:
@@ -63,7 +63,7 @@ class User_r : public ModeHandler
 
 	ModeAction OnModeChange(User* source, User* dest, Channel* channel, std::string &parameter, bool adding)
 	{
-		if (!IS_LOCAL(source))
+		if (!source->as<LocalUser>())
 		{
 			if ((adding != dest->IsModeSet(this)))
 			{
@@ -81,7 +81,7 @@ class User_r : public ModeHandler
 
 /** Channel mode +R - unidentified users cannot join
  */
-class AChannel_R : public SimpleChannelModeHandler
+class AChannel_R final : public SimpleChannelModeHandler
 {
  public:
 	AChannel_R(Module* Creator) : SimpleChannelModeHandler(Creator, "reginvite", 'R') { }
@@ -89,7 +89,7 @@ class AChannel_R : public SimpleChannelModeHandler
 
 /** User mode +R - unidentified users cannot message
  */
-class AUser_R : public SimpleUserModeHandler
+class AUser_R final : public SimpleUserModeHandler
 {
  public:
 	AUser_R(Module* Creator) : SimpleUserModeHandler(Creator, "regdeaf", 'R') { }
@@ -97,13 +97,13 @@ class AUser_R : public SimpleUserModeHandler
 
 /** Channel mode +M - unidentified users cannot message channel
  */
-class AChannel_M : public SimpleChannelModeHandler
+class AChannel_M final : public SimpleChannelModeHandler
 {
  public:
 	AChannel_M(Module* Creator) : SimpleChannelModeHandler(Creator, "regmoderated", 'M') { }
 };
 
-class AccountExtItemImpl : public AccountExtItem
+class AccountExtItemImpl final : public AccountExtItem
 {
 	Events::ModuleEventProvider eventprov;
 
@@ -127,7 +127,7 @@ class AccountExtItemImpl : public AccountExtItem
 		if (!value.empty())
 		{
 			// Logged in
-			if (IS_LOCAL(user))
+			if (user->as<LocalUser>())
 			{
 				user->WriteNumeric(900, user->GetFullHost(), value, InspIRCd::Format("You are now logged in as %s", value.c_str()));
 			}
@@ -138,7 +138,7 @@ class AccountExtItemImpl : public AccountExtItem
 	}
 };
 
-class ModuleServicesAccount : public Module, public Whois::EventListener
+class ModuleServicesAccount final : public Module, public Whois::EventListener
 {
 	CheckExemption::EventProvider exemptionprov;
 	AChannel_R m1;
@@ -190,7 +190,7 @@ class ModuleServicesAccount : public Module, public Whois::EventListener
 
 	ModResult OnUserPreMessage(User* user, void* dest, int target_type, std::string& text, char status, CUList& exempt_list, MessageType msgtype) override
 	{
-		if (!IS_LOCAL(user))
+		if (!user->as<LocalUser>())
 			return MOD_RES_PASSTHRU;
 
 		std::string *account = accountname.get(user);
@@ -223,7 +223,7 @@ class ModuleServicesAccount : public Module, public Whois::EventListener
 		return MOD_RES_PASSTHRU;
 	}
 
-	ModResult OnCheckBan(User* user, Channel* chan, const std::string& mask) override
+	ModResult OnCheckBan(const User* user, const Channel* chan, const std::string& mask) final override
 	{
 		if (checking_ban)
 			return MOD_RES_PASSTHRU;

@@ -47,7 +47,7 @@ CmdResult CommandFMode::Handle(User* who, std::vector<std::string>& params)
 	ServerInstance->Modes.ModeParamsToChangeList(who, MODETYPE_CHANNEL, params, changelist, 2);
 
 	ModeParser::ModeProcessFlag flags = ModeParser::MODE_LOCALONLY;
-	if ((TS == ourTS) && IS_SERVER(who))
+	if ((TS == ourTS) && who->as<FakeUser>())
 		flags |= ModeParser::MODE_MERGE;
 
 	ServerInstance->Modes->Process(who, chan, nullptr, changelist, flags);

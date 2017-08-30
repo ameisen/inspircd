@@ -105,7 +105,7 @@ class DummyZ : public ModeHandler
 	// Handle /MODE #chan Z
 	void DisplayList(User* user, Channel* chan)
 	{
-		if (IS_LOCAL(user))
+		if (user->as<LocalUser>())
 			::DisplayList(static_cast<LocalUser*>(user), chan);
 	}
 };

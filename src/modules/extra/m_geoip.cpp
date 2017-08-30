@@ -59,14 +59,14 @@ class ModuleGeoIP : public Module
  public:
 	ModuleGeoIP()
 		: ext("geoip_cc", ExtensionItem::EXT_USER, this)
-		, gi(NULL)
+		, gi(nullptr)
 	{
 	}
 
 	void init() override
 	{
 		gi = GeoIP_new(GEOIP_STANDARD);
-		if (gi == NULL)
+		if (gi == nullptr)
 				throw ModuleException("Unable to initialize geoip, are you missing GeoIP.dat?");
 
 		const UserManager::LocalList& list = ServerInstance->Users.GetLocalUsers();

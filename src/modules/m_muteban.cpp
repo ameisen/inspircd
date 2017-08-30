@@ -30,7 +30,7 @@ class ModuleQuietBan : public Module
 
 	ModResult OnUserPreMessage(User* user, void* dest, int target_type, std::string& text, char status, CUList& exempt_list, MessageType msgtype) override
 	{
-		if (!IS_LOCAL(user) || target_type != TYPE_CHANNEL)
+		if (!user->as<LocalUser>() || target_type != TYPE_CHANNEL)
 			return MOD_RES_PASSTHRU;
 
 		Channel* chan = static_cast<Channel*>(dest);

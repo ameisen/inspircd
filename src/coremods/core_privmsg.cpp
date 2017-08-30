@@ -56,7 +56,7 @@ class MessageCommandBase : public Command
 
 	RouteDescriptor GetRouting(User* user, const std::vector<std::string>& parameters)
 	{
-		if (IS_LOCAL(user))
+		if (user->as<LocalUser>())
 			// This is handled by the OnUserMessage hook to split the LoopCall pieces
 			return ROUTE_LOCALONLY;
 		else
@@ -81,7 +81,7 @@ CmdResult MessageCommandBase::HandleMessage(const std::vector<std::string>& para
 	Channel *chan;
 	CUList except_list;
 
-	LocalUser* localuser = IS_LOCAL(user);
+	LocalUser* localuser = user->as<LocalUser>();
 	if (localuser)
 		localuser->idle_lastmsg = ServerInstance->Time();
 
@@ -237,7 +237,7 @@ CmdResult MessageCommandBase::HandleMessage(const std::vector<std::string>& para
 
 		FOREACH_MOD(OnText, (user, dest, TYPE_USER, text, 0, except_list));
 
-		if (IS_LOCAL(dest))
+		if (dest->as<LocalUser>())
 		{
 			// direct write, same server
 			dest->WriteFrom(user, "%s %s :%s", MessageTypeString[mt], dest->nick.c_str(), text);

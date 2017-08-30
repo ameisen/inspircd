@@ -242,7 +242,7 @@ class CoreExport User : public Extensible
 
 	/** Set by GetIPString() to avoid constantly re-grabbing IP via sockets voodoo.
 	 */
-	std::string cachedip;
+	mutable std::string cachedip;
 
 	/** The user's mode list.
 	 * Much love to the STL for giving us an easy to use bitset, saving us RAM.
@@ -362,7 +362,7 @@ class CoreExport User : public Extensible
 	/** Get client IP string from sockaddr, using static internal buffer
 	 * @return The IP string
 	 */
-	const std::string& GetIPString();
+	const std::string& GetIPString() const;
 
 	/** Get CIDR mask, using default range, for this user
 	 */
@@ -717,8 +717,20 @@ class CoreExport User : public Extensible
 
 	/** Default destructor
 	 */
-	virtual ~User();
+	virtual ~User() = default;
 	virtual CullResult cull() override;
+
+	template <typename T>
+	inline T * as()
+	{
+		return usertype == T::user_type ? static_cast<T*>(this) : nullptr;
+	}
+
+	template <typename T>
+	inline const T * as() const
+	{
+		return usertype == T::user_type ? static_cast<const T*>(this) : nullptr;
+	}
 };
 
 class CoreExport UserIOHandler : public StreamSocket
@@ -742,6 +754,8 @@ typedef unsigned int already_sent_t;
 class CoreExport LocalUser : public User, public insp::intrusive_list_node<LocalUser>
 {
  public:
+	static constexpr auto user_type = USERTYPE_LOCAL;
+	 
 	LocalUser(int fd, irc::sockets::sockaddrs* client, irc::sockets::sockaddrs* server);
 	CullResult cull() override;
 
@@ -886,7 +900,9 @@ class CoreExport LocalUser : public User, public insp::intrusive_list_node<Local
 class RemoteUser : public User
 {
  public:
-	RemoteUser(const std::string& uid, Server* srv) : User(uid, srv, USERTYPE_REMOTE)
+	static constexpr auto user_type = USERTYPE_REMOTE;
+
+	RemoteUser(const std::string& uid, Server* srv) : User(uid, srv, user_type)
 	{
 	}
 };
@@ -894,13 +910,15 @@ class RemoteUser : public User
 class CoreExport FakeUser : public User
 {
  public:
-	FakeUser(const std::string& uid, Server* srv) : User(uid, srv, USERTYPE_SERVER)
+	static constexpr auto user_type = USERTYPE_SERVER;
+
+	FakeUser(const std::string& uid, Server* srv) : User(uid, srv, user_type)
 	{
 		nick = srv->GetName();
 	}
 
 	FakeUser(const std::string& uid, const std::string& sname, const std::string& sdesc)
-		: User(uid, new Server(sname, sdesc), USERTYPE_SERVER)
+		: User(uid, new Server(sname, sdesc), user_type)
 	{
 		nick = sname;
 	}
@@ -909,23 +927,6 @@ class CoreExport FakeUser : public User
 	virtual const std::string& GetFullHost() override;
 	virtual const std::string& GetFullRealHost() override;
 };
-
-/* Faster than dynamic_cast */
-/** Is a local user */
-inline LocalUser* IS_LOCAL(User* u)
-{
-	return u->usertype == USERTYPE_LOCAL ? static_cast<LocalUser*>(u) : nullptr;
-}
-/** Is a remote user */
-inline RemoteUser* IS_REMOTE(User* u)
-{
-	return u->usertype == USERTYPE_REMOTE ? static_cast<RemoteUser*>(u) : nullptr;
-}
-/** Is a server fakeuser */
-inline FakeUser* IS_SERVER(User* u)
-{
-	return u->usertype == USERTYPE_SERVER ? static_cast<FakeUser*>(u) : nullptr;
-}
 
 inline bool User::IsModeSet(const ModeHandler* mh) const
 {

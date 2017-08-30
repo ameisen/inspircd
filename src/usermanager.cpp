@@ -168,7 +168,7 @@ void UserManager::QuitUser(User* user, const std::string& quitreason, const std:
 		return;
 	}
 
-	if (IS_SERVER(user))
+	if (user->as<FakeUser>())
 	{
 		ServerInstance->Logs->Log("USERS", LOG_DEFAULT, "ERROR: Tried to quit server user: " + user->nick);
 		return;
@@ -194,9 +194,9 @@ void UserManager::QuitUser(User* user, const std::string& quitreason, const std:
 	else
 		unregistered_count--;
 
-	if (IS_LOCAL(user))
+	if (user->as<LocalUser>())
 	{
-		LocalUser* lu = IS_LOCAL(user);
+		LocalUser* lu = user->as<LocalUser>();
 		FOREACH_MOD(OnUserDisconnect, (lu));
 		lu->eh.Close();
 
@@ -216,7 +216,7 @@ void UserManager::AddClone(User* user)
 {
 	CloneCounts& counts = clonemap[user->GetCIDRMask()];
 	counts.global++;
-	if (IS_LOCAL(user))
+	if (user->as<LocalUser>())
 		counts.local++;
 }
 
@@ -234,7 +234,7 @@ void UserManager::RemoveCloneCounts(User *user)
 			return;
 		}
 
-		if (IS_LOCAL(user))
+		if (user->as<LocalUser>())
 			counts.local--;
 	}
 }

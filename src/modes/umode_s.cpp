@@ -95,7 +95,7 @@ std::string ModeUserServerNoticeMask::ProcessNoticeMasks(User* user, const std::
 			default:
 				// For local users check whether the given snomask is valid and enabled - IsSnomaskUsable() tests both.
 				// For remote users accept what we were told, unless the snomask char is not a letter.
-				if (IS_LOCAL(user))
+				if (user->as<LocalUser>())
 				{
 					if (!ServerInstance->SNO->IsSnomaskUsable(*i))
 					{

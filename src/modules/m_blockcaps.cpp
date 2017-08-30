@@ -56,7 +56,7 @@ public:
 	{
 		if (target_type == TYPE_CHANNEL)
 		{
-			if ((!IS_LOCAL(user)) || (text.length() < minlen))
+			if ((!user->as<LocalUser>()) || (text.length() < minlen))
 				return MOD_RES_PASSTHRU;
 
 			Channel* c = (Channel*)dest;

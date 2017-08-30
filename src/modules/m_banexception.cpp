@@ -35,14 +35,14 @@
 
 /** Handles +e channel mode
  */
-class BanException : public ListModeBase
+class BanException final : public ListModeBase
 {
  public:
 	BanException(Module* Creator) : ListModeBase(Creator, "banexception", 'e', "End of Channel Exception List", 348, 349, true) { }
 };
 
 
-class ModuleBanException : public Module
+class ModuleBanException final : public Module
 {
 	BanException be;
 
@@ -51,12 +51,12 @@ class ModuleBanException : public Module
 	{
 	}
 
-	void On005Numeric(std::map<std::string, std::string>& tokens) override
+	virtual void On005Numeric(std::map<std::string, std::string>& tokens) final override
 	{
 		tokens["EXCEPTS"] = "e";
 	}
 
-	ModResult OnExtBanCheck(User *user, Channel *chan, char type) override
+	virtual ModResult OnExtBanCheck(const User *user, const Channel *chan, char type) final override
 	{
 		ListModeBase::ModeList* list = be.GetList(chan);
 		if (!list)
@@ -77,7 +77,7 @@ class ModuleBanException : public Module
 		return MOD_RES_PASSTHRU;
 	}
 
-	ModResult OnCheckChannelBan(User* user, Channel* chan) override
+	virtual ModResult OnCheckChannelBan(const User* user, const Channel* chan) final override
 	{
 		ListModeBase::ModeList* list = be.GetList(chan);
 		if (!list)
@@ -97,12 +97,12 @@ class ModuleBanException : public Module
 		return MOD_RES_PASSTHRU;
 	}
 
-	void ReadConfig(ConfigStatus& status) override
+	virtual void ReadConfig(ConfigStatus& status) final override
 	{
 		be.DoRehash();
 	}
 
-	Version GetVersion() override
+	virtual Version GetVersion() final override
 	{
 		return Version("Provides support for the +e channel mode", VF_VENDOR);
 	}

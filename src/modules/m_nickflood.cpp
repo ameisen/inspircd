@@ -113,7 +113,7 @@ class NickFlood : public ParamMode<NickFlood, SimpleExtItem<nickfloodsettings> >
 		return MODEACTION_ALLOW;
 	}
 
-	void SerializeParam(Channel* chan, const nickfloodsettings* nfs, std::string& out)
+	static void SerializeParam(const Channel* chan, const nickfloodsettings* nfs, std::string& out)
 	{
 		out.append(ConvToStr(nfs->nicks)).push_back(':');
 		out.append(ConvToStr(nfs->secs));

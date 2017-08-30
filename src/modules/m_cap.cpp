@@ -220,7 +220,7 @@ class Cap::ManagerImpl : public Cap::Manager, public ReloadModule::EventListener
 		FOREACH_MOD_CUSTOM(evprov, Cap::EventListener, OnCapValueChange, (cap));
 	}
 
-	Protocol GetProtocol(LocalUser* user) const
+	Protocol GetProtocol(const LocalUser* user) const
 	{
 		return ((capext.get(user) & CAP_302_BIT) ? CAP_302 : CAP_LEGACY);
 	}
@@ -254,7 +254,7 @@ class Cap::ManagerImpl : public Cap::Manager, public ReloadModule::EventListener
 		return true;
 	}
 
-	void HandleList(std::string& out, LocalUser* user, bool show_all, bool show_values, bool minus_prefix = false) const
+	void HandleList(std::string& out, const LocalUser* user, bool show_all, bool show_values, bool minus_prefix = false) const
 	{
 		Ext show_caps = (show_all ? ~0 : capext.get(user));
 
@@ -299,8 +299,8 @@ Cap::ExtItem::ExtItem(Module* mod)
 std::string Cap::ExtItem::serialize(SerializeFormat format, const Extensible* container, void* item) const
 {
 	std::string ret;
-	// XXX: Cast away the const because IS_LOCAL() doesn't handle it
-	LocalUser* user = IS_LOCAL(const_cast<User*>(static_cast<const User*>(container)));
+	// XXX: Cast away the const because ->as<LocalUser>() doesn't handle it
+	const LocalUser* user = static_cast<const User*>(container)->as<LocalUser>();
 	if ((format == FORMAT_NETWORK) || (!user))
 		return ret;
 
@@ -327,7 +327,7 @@ void Cap::ExtItem::unserialize(SerializeFormat format, Extensible* container, co
 	if (format == FORMAT_NETWORK)
 		return;
 
-	LocalUser* user = IS_LOCAL(static_cast<User*>(container));
+	LocalUser* user = static_cast<User*>(container)->as<LocalUser>();
 	if (!user)
 		return; // Can't happen
 

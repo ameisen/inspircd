@@ -33,7 +33,7 @@ CmdResult CommandQuit::Handle (const std::vector<std::string>& parameters, User 
 	std::string quitmsg;
 	if (parameters.empty())
 		quitmsg = "Client exited";
-	else if (IS_LOCAL(user))
+	else if (user->as<LocalUser>())
 		msgwrap.Wrap(parameters[0], quitmsg);
 	else
 		quitmsg = parameters[0];
@@ -46,5 +46,5 @@ CmdResult CommandQuit::Handle (const std::vector<std::string>& parameters, User 
 
 RouteDescriptor CommandQuit::GetRouting(User* user, const std::vector<std::string>& parameters)
 {
-	return (IS_LOCAL(user) ? ROUTE_LOCALONLY : ROUTE_BROADCAST);
+	return (user->as<LocalUser>() ? ROUTE_LOCALONLY : ROUTE_BROADCAST);
 }

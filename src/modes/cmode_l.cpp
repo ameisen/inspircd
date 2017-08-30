@@ -43,7 +43,7 @@ ModeAction ModeChannelLimit::OnSet(User* user, Channel* chan, std::string& param
 	return MODEACTION_ALLOW;
 }
 
-void ModeChannelLimit::SerializeParam(Channel* chan, intptr_t n, std::string& out)
+void ModeChannelLimit::SerializeParam(const Channel* chan, intptr_t n, std::string& out)
 {
 	out += ConvToStr(n);
 }

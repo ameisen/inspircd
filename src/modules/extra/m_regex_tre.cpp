@@ -43,7 +43,7 @@ public:
 			// Get the error string into a std::string. YUCK this involves at least 2 string copies.
 			std::string error;
 			char* errbuf;
-			size_t sz = regerror(errcode, &regbuf, NULL, 0);
+			size_t sz = regerror(errcode, &regbuf, nullptr, 0);
 			errbuf = new char[sz + 1];
 			memset(errbuf, 0, sz + 1);
 			regerror(errcode, &regbuf, errbuf, sz + 1);
@@ -61,7 +61,7 @@ public:
 
 	bool Matches(const std::string& text)  override
 	{
-		return (regexec(&regbuf, text.c_str(), 0, NULL, 0) == 0);
+		return (regexec(&regbuf, text.c_str(), 0, nullptr, 0) == 0);
 	}
 };
 

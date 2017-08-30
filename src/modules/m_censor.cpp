@@ -65,7 +65,7 @@ class ModuleCensor : public Module
 	// format of a config entry is <badword text="shit" replace="poo">
 	ModResult OnUserPreMessage(User* user, void* dest, int target_type, std::string& text, char status, CUList& exempt_list, MessageType msgtype) override
 	{
-		if (!IS_LOCAL(user))
+		if (!user->as<LocalUser>())
 			return MOD_RES_PASSTHRU;
 
 		bool active = false;

@@ -136,7 +136,7 @@ void Snomask::Send(char letter, const std::string& desc, const std::string& msg)
 	{
 		User* user = *i;
 		// IsNoticeMaskSet() returns false for opers who aren't +s, no need to check for it seperately
-		if (IS_LOCAL(user) && user->IsNoticeMaskSet(letter))
+		if (user->as<LocalUser>() && user->IsNoticeMaskSet(letter))
 			user->WriteNotice(finalmsg);
 	}
 }

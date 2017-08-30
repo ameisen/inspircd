@@ -239,7 +239,7 @@ class CommandDccallow : public Command
 			user->WriteNumeric(998, helptext[i]);
 		user->WriteNumeric(999, "End of DCCALLOW HELP");
 
-		LocalUser* localuser = IS_LOCAL(user);
+		LocalUser* localuser = user->as<LocalUser>();
 		if (localuser)
 			localuser->CommandFloodPenalty += 4000;
 	}
@@ -295,7 +295,7 @@ class ModuleDCCAllow : public Module
 
 	ModResult OnUserPreMessage(User* user, void* dest, int target_type, std::string& text, char status, CUList& exempt_list, MessageType msgtype) override
 	{
-		if (!IS_LOCAL(user))
+		if (!user->as<LocalUser>())
 			return MOD_RES_PASSTHRU;
 
 		if (target_type == TYPE_USER)

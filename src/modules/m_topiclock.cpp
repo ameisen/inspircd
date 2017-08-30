@@ -129,7 +129,7 @@ class ModuleTopicLock : public Module
 	ModResult OnPreTopicChange(User* user, Channel* chan, const std::string &topic) override
 	{
 		// Only fired for local users currently, but added a check anyway
-		if ((IS_LOCAL(user)) && (topiclock.get(chan)))
+		if ((user->as<LocalUser>()) && (topiclock.get(chan)))
 		{
 			user->WriteNumeric(744, chan->name, "TOPIC cannot be changed due to topic lock being active on the channel");
 			return MOD_RES_DENY;

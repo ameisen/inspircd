@@ -205,7 +205,7 @@ CmdResult CommandFilter::Handle(const std::vector<std::string> &parameters, User
 		if (static_cast<ModuleFilter *>(me)->DeleteFilter(parameters[0]))
 		{
 			user->WriteNotice("*** Removed filter '" + parameters[0] + "'");
-			ServerInstance->SNO->WriteToSnoMask(IS_LOCAL(user) ? 'a' : 'A', "FILTER: "+user->nick+" removed filter '"+parameters[0]+"'");
+			ServerInstance->SNO->WriteToSnoMask(user->as<LocalUser>() ? 'a' : 'A', "FILTER: "+user->nick+" removed filter '"+parameters[0]+"'");
 			return CMD_SUCCESS;
 		}
 		else
@@ -257,7 +257,7 @@ CmdResult CommandFilter::Handle(const std::vector<std::string> &parameters, User
 					(duration ? ", duration " +  parameters[3] : "") + ", flags '" + flags + "', reason: '" +
 					parameters[reasonindex] + "'");
 
-				ServerInstance->SNO->WriteToSnoMask(IS_LOCAL(user) ? 'a' : 'A', "FILTER: "+user->nick+" added filter '"+freeform+"', type '"+parameters[1]+"', "+(duration ? "duration "+parameters[3]+", " : "")+"flags '"+flags+"', reason: "+parameters[reasonindex]);
+				ServerInstance->SNO->WriteToSnoMask(user->as<LocalUser>() ? 'a' : 'A', "FILTER: "+user->nick+" added filter '"+freeform+"', type '"+parameters[1]+"', "+(duration ? "duration "+parameters[3]+", " : "")+"flags '"+flags+"', reason: "+parameters[reasonindex]);
 
 				return CMD_SUCCESS;
 			}
@@ -313,7 +313,7 @@ void ModuleFilter::FreeFilters()
 ModResult ModuleFilter::OnUserPreMessage(User* user, void* dest, int target_type, std::string& text, char status, CUList& exempt_list, MessageType msgtype)
 {
 	// Leave remote users and servers alone
-	if (!IS_LOCAL(user))
+	if (!user->as<LocalUser>())
 		return MOD_RES_PASSTHRU;
 
 	flags = (msgtype == MSG_PRIVMSG) ? FLAG_PRIVMSG : FLAG_NOTICE;

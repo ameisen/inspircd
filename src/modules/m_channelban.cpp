@@ -20,7 +20,7 @@
 
 #include "inspircd.h"
 
-class ModuleBadChannelExtban : public Module
+class ModuleBadChannelExtban final : public Module
 {
  public:
 	Version GetVersion() override
@@ -28,7 +28,7 @@ class ModuleBadChannelExtban : public Module
 		return Version("Extban 'j' - channel status/join ban", VF_OPTCOMMON|VF_VENDOR);
 	}
 
-	ModResult OnCheckBan(User *user, Channel *c, const std::string& mask) override
+	ModResult OnCheckBan(const User *user, const Channel *c, const std::string& mask) final override
 	{
 		if ((mask.length() > 2) && (mask[0] == 'j') && (mask[1] == ':'))
 		{

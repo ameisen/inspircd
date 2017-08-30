@@ -27,7 +27,7 @@
 
 static std::string sasl_target;
 
-class ServerTracker : public SpanningTreeEventListener
+class ServerTracker final : public SpanningTreeEventListener
 {
 	bool online;
 
@@ -43,12 +43,12 @@ class ServerTracker : public SpanningTreeEventListener
 		}
 	}
 
-	void OnServerLink(const Server* server) override
+	virtual void OnServerLink(const Server* server) final override
 	{
 		Update(server, true);
 	}
 
-	void OnServerSplit(const Server* server) override
+	virtual void OnServerSplit(const Server* server) final override
 	{
 		Update(server, false);
 	}
@@ -86,12 +86,12 @@ class ServerTracker : public SpanningTreeEventListener
 	bool IsOnline() const { return online; }
 };
 
-class SASLCap : public Cap::Capability
+class SASLCap final : public Cap::Capability
 {
 	std::string mechlist;
 	const ServerTracker& servertracker;
 
-	bool OnRequest(LocalUser* user, bool adding) override
+	bool OnRequest(LocalUser* user, bool adding) final override
 	{
 		// Requesting this cap is allowed anytime
 		if (adding)
@@ -101,12 +101,12 @@ class SASLCap : public Cap::Capability
 		return (user->registered != REG_ALL);
 	}
 
-	bool OnList(LocalUser* user) override
+	bool OnList(const LocalUser* user) const final override
 	{
 		return servertracker.IsOnline();
 	}
 
-	const std::string* GetValue(LocalUser* user) const override
+	const std::string* GetValue(const LocalUser* user) const final override
 	{
 		return &mechlist;
 	}
@@ -216,7 +216,7 @@ class SaslAuthenticator
 		params.push_back("S");
 		params.push_back(method);
 
-		LocalUser* localuser = IS_LOCAL(user);
+		LocalUser* localuser = user->as<LocalUser>();
 		if (localuser)
 		{
 			std::string fp = SSLClientCert::GetFingerprint(&localuser->eh);
@@ -331,7 +331,7 @@ class SaslAuthenticator
 	}
 };
 
-class CommandAuthenticate : public Command
+class CommandAuthenticate final : public Command
 {
  public:
 	SimpleExtItem<SaslAuthenticator>& authExt;
@@ -365,7 +365,7 @@ class CommandAuthenticate : public Command
 	}
 };
 
-class CommandSASL : public Command
+class CommandSASL final : public Command
 {
  public:
 	SimpleExtItem<SaslAuthenticator>& authExt;
@@ -402,7 +402,7 @@ class CommandSASL : public Command
 	}
 };
 
-class ModuleSASL : public Module
+class ModuleSASL final : public Module
 {
 	SimpleExtItem<SaslAuthenticator> authExt;
 	ServerTracker servertracker;
@@ -423,19 +423,19 @@ class ModuleSASL : public Module
 		saslevprov = &sasleventprov;
 	}
 
-	void init() override
+	virtual void init() final override
 	{
 		if (!ServerInstance->Modules->Find("m_services_account.so") || !ServerInstance->Modules->Find("m_cap.so"))
 			ServerInstance->Logs->Log(MODNAME, LOG_DEFAULT, "WARNING: m_services_account.so and m_cap.so are not loaded! m_sasl.so will NOT function correctly until these two modules are loaded!");
 	}
 
-	void ReadConfig(ConfigStatus& status) override
+	virtual void ReadConfig(ConfigStatus& status) final override
 	{
 		sasl_target = ServerInstance->Config->ConfValue("sasl")->getString("target", "*");
 		servertracker.Reset();
 	}
 
-	void OnUserConnect(LocalUser *user) override
+	virtual void OnUserConnect(LocalUser *user) final override
 	{
 		SaslAuthenticator *sasl_ = authExt.get(user);
 		if (sasl_)
@@ -445,13 +445,13 @@ class ModuleSASL : public Module
 		}
 	}
 
-	void OnDecodeMetaData(Extensible* target, const std::string& extname, const std::string& extdata) override
+	virtual void OnDecodeMetaData(Extensible* target, const std::string& extname, const std::string& extdata) final override
 	{
 		if ((target == nullptr) && (extname == "saslmechlist"))
 			cap.SetMechlist(extdata);
 	}
 
-	Version GetVersion() override
+	virtual Version GetVersion() final override
 	{
 		return Version("Provides support for IRC Authentication Layer (aka: SASL) via AUTHENTICATE.", VF_VENDOR);
 	}

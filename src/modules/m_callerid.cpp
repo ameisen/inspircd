@@ -166,7 +166,7 @@ class CommandAccept : public Command
 			tok.erase(tok.begin());
 
 		User* target;
-		if (!cmdfrom || !IS_LOCAL(cmdfrom))
+		if (!cmdfrom || !cmdfrom->as<LocalUser>())
 			target = ServerInstance->FindNick(tok);
 		else
 			target = ServerInstance->FindNickOnly(tok);
@@ -229,7 +229,7 @@ public:
 			return CMD_FAILURE;
 		}
 
-		if ((!IS_LOCAL(user)) && (!IS_LOCAL(action.first)))
+		if ((!user->as<LocalUser>()) && (!action.first->as<LocalUser>()))
 			// Neither source nor target is local, forward the command to the server of target
 			return CMD_SUCCESS;
 
@@ -249,7 +249,7 @@ public:
 		// Or if the source is local then LoopCall() runs OnPostCommand() after each entry in the list,
 		// meaning the linking module has sent an ACCEPT already for each entry in the list to the
 		// appropiate server and the ACCEPT with the list of nicks (this) doesn't need to be sent anywhere.
-		if ((!IS_LOCAL(user)) && (parameters[0].find(',') != std::string::npos))
+		if ((!user->as<LocalUser>()) && (parameters[0].find(',') != std::string::npos))
 			return ROUTE_BROADCAST;
 
 		// Find the target
@@ -380,7 +380,7 @@ public:
 
 	ModResult OnUserPreMessage(User* user, void* voiddest, int target_type, std::string& text, char status, CUList& exempt_list, MessageType msgtype) override
 	{
-		if (!IS_LOCAL(user) || target_type != TYPE_USER)
+		if (!user->as<LocalUser>() || target_type != TYPE_USER)
 			return MOD_RES_PASSTHRU;
 
 		User* dest = static_cast<User*>(voiddest);

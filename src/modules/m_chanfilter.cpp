@@ -90,7 +90,7 @@ class ModuleChanFilter : public Module
 		ModResult res;
 		FIRST_MOD_RESULT_CUSTOM(exemptionprov, CheckExemption::EventListener, OnCheckExemption, res, (user, chan, "filter"));
 
-		if (!IS_LOCAL(user) || res == MOD_RES_ALLOW)
+		if (!user->as<LocalUser>() || res == MOD_RES_ALLOW)
 			return MOD_RES_PASSTHRU;
 
 		ListModeBase::ModeList* list = cf.GetList(chan);

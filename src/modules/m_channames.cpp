@@ -86,7 +86,7 @@ class ModuleChannelNames : public Module
 			Channel::MemberMap& users = c->userlist;
 			for (Channel::MemberMap::iterator j = users.begin(); j != users.end(); )
 			{
-				if (IS_LOCAL(j->first))
+				if (j->first->as<LocalUser>())
 				{
 					// KickUser invalidates the iterator
 					Channel::MemberMap::iterator it = j++;

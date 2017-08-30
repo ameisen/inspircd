@@ -115,7 +115,7 @@ class JoinFlood : public ParamMode<JoinFlood, SimpleExtItem<joinfloodsettings> >
 		return MODEACTION_ALLOW;
 	}
 
-	void SerializeParam(Channel* chan, const joinfloodsettings* jfs, std::string& out)
+	static void SerializeParam(const Channel* chan, const joinfloodsettings* jfs, std::string& out)
 	{
 		out.append(ConvToStr(jfs->joins)).push_back(':');
 		out.append(ConvToStr(jfs->secs));

@@ -36,7 +36,7 @@ class ModuleChanCreate : public Module
 
 	void OnUserJoin(Membership* memb, bool sync, bool created, CUList& except) override
 	{
-		if ((created) && (IS_LOCAL(memb->user)))
+		if ((created) && (memb->user->as<LocalUser>()))
 		{
 			ServerInstance->SNO->WriteGlobalSno('j', "Channel %s created by %s", memb->chan->name.c_str(), memb->user->GetFullRealHost().c_str());
 		}

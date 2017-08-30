@@ -34,7 +34,7 @@ class Redirect : public ParamMode<Redirect, LocalStringExt>
 
 	ModeAction OnSet(User* source, Channel* channel, std::string& parameter)
 	{
-		if (IS_LOCAL(source))
+		if (source->as<LocalUser>())
 		{
 			if (!ServerInstance->IsChannel(parameter))
 			{
@@ -43,7 +43,7 @@ class Redirect : public ParamMode<Redirect, LocalStringExt>
 			}
 		}
 
-		if (IS_LOCAL(source) && !source->IsOper())
+		if (source->as<LocalUser>() && !source->IsOper())
 		{
 			Channel* c = ServerInstance->FindChan(parameter);
 			if (!c)
@@ -66,7 +66,7 @@ class Redirect : public ParamMode<Redirect, LocalStringExt>
 		return MODEACTION_ALLOW;
 	}
 
-	void SerializeParam(Channel* chan, const std::string* str, std::string& out)
+	static void SerializeParam(const Channel* chan, const std::string* str, std::string& out)
 	{
 		out += *str;
 	}

@@ -62,7 +62,7 @@ class WhoisNoticeCmd : public Command
 
 		User* source = ServerInstance->FindNick(parameters[1]);
 
-		if (IS_LOCAL(dest) && source)
+		if (dest->as<LocalUser>() && source)
 			HandleFast(dest, source);
 
 		return CMD_SUCCESS;
@@ -107,7 +107,7 @@ class ModuleShowwhois : public Module, public Whois::EventListener
 		if (!ShowWhoisFromOpers && source->IsOper())
 			return;
 
-		if (IS_LOCAL(dest))
+		if (dest->as<LocalUser>())
 		{
 			cmd.HandleFast(dest, source);
 		}

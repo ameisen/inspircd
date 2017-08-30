@@ -33,7 +33,7 @@ CmdResult CommandPart::Handle (const std::vector<std::string>& parameters, User 
 	std::string reason;
 	if (parameters.size() > 1)
 	{
-		if (IS_LOCAL(user))
+		if (user->as<LocalUser>())
 			msgwrap.Wrap(parameters[1], reason);
 		else
 			reason = parameters[1];
@@ -61,5 +61,5 @@ CmdResult CommandPart::Handle (const std::vector<std::string>& parameters, User 
 
 RouteDescriptor CommandPart::GetRouting(User* user, const std::vector<std::string>& parameters)
 {
-	return (IS_LOCAL(user) ? ROUTE_LOCALONLY : ROUTE_BROADCAST);
+	return (user->as<LocalUser>() ? ROUTE_LOCALONLY : ROUTE_BROADCAST);
 }

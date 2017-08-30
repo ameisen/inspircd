@@ -112,7 +112,7 @@ class ModuleSWhois : public Module, public Whois::LineEventListener
 
 	void OnPostOper(User* user, const std::string &opertype, const std::string &opername) override
 	{
-		if (!IS_LOCAL(user))
+		if (!user->as<LocalUser>())
 			return;
 
 		std::string swhois = user->oper->getConfig("swhois");

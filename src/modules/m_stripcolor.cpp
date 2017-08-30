@@ -60,7 +60,7 @@ class ModuleStripColor : public Module
 
 	ModResult OnUserPreMessage(User* user, void* dest, int target_type, std::string& text, char status, CUList& exempt_list, MessageType msgtype) override
 	{
-		if (!IS_LOCAL(user))
+		if (!user->as<LocalUser>())
 			return MOD_RES_PASSTHRU;
 
 		bool active = false;
@@ -94,7 +94,7 @@ class ModuleStripColor : public Module
 		User* user = memb->user;
 		Channel* channel = memb->chan;
 
-		if (!IS_LOCAL(user))
+		if (!user->as<LocalUser>())
 			return;
 
 		if (channel->GetExtBanStatus(user, 'S').check(!user->IsModeSet(csc)))

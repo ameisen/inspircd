@@ -56,7 +56,7 @@ class CommandSajoin : public Command
 				user->WriteNumeric(ERR_NOPRIVILEGES, "Cannot use an SA command on a u-lined client");
 				return CMD_FAILURE;
 			}
-			if (IS_LOCAL(user) && !ServerInstance->IsChannel(channel))
+			if (user->as<LocalUser>() && !ServerInstance->IsChannel(channel))
 			{
 				/* we didn't need to check this for each character ;) */
 				user->WriteNotice("*** Invalid characters in channel name or name too long");
@@ -74,7 +74,7 @@ class CommandSajoin : public Command
 			 * For non-local users, we just return CMD_SUCCESS, knowing this will propagate it where it needs to be
 			 * and then that server will handle the command.
 			 */
-			LocalUser* localuser = IS_LOCAL(dest);
+			LocalUser* localuser = dest->as<LocalUser>();
 			if (localuser)
 			{
 				chan = Channel::JoinUser(localuser, channel, true);

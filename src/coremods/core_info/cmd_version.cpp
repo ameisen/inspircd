@@ -31,7 +31,7 @@ CmdResult CommandVersion::Handle (const std::vector<std::string>&, User *user)
 {
 	std::string version = ServerInstance->GetVersionString((user->IsOper()));
 	user->WriteNumeric(RPL_VERSION, version);
-	LocalUser *lu = IS_LOCAL(user);
+	LocalUser *lu = user->as<LocalUser>();
 	if (lu != nullptr)
 	{
 		ServerInstance->ISupport.SendTo(lu);

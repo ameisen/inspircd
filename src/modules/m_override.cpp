@@ -102,7 +102,7 @@ class ModuleOverride : public Module
 
 	ModResult OnPreTopicChange(User *source, Channel *channel, const std::string &topic) override
 	{
-		if (IS_LOCAL(source) && source->IsOper() && CanOverride(source, "TOPIC"))
+		if (source->as<LocalUser>() && source->IsOper() && CanOverride(source, "TOPIC"))
 		{
 			if (!channel->HasUser(source) || (channel->IsModeSet(topiclock) && channel->GetPrefixValue(source) < HALFOP_VALUE))
 			{
@@ -135,7 +135,7 @@ class ModuleOverride : public Module
 	{
 		if (!channel)
 			return MOD_RES_PASSTHRU;
-		if (!source->IsOper() || !IS_LOCAL(source))
+		if (!source->IsOper() || !source->as<LocalUser>())
 			return MOD_RES_PASSTHRU;
 
 		const Modes::ChangeList::List& list = modes.getlist();

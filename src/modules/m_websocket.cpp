@@ -25,7 +25,7 @@ static const char MagicGUID[] = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
 static const char whitespace[] = " \t\r\n";
 static dynamic_reference_nocheck<HashProvider>* sha1;
 
-class WebSocketHookProvider : public IOHookProvider
+class WebSocketHookProvider final : public IOHookProvider
 {
  public:
 	WebSocketHookProvider(Module* mod)
@@ -33,14 +33,14 @@ class WebSocketHookProvider : public IOHookProvider
 	{
 	}
 
-	void OnAccept(StreamSocket* sock, irc::sockets::sockaddrs* client, irc::sockets::sockaddrs* server) override;
+	virtual void OnAccept(StreamSocket* sock, irc::sockets::sockaddrs* client, irc::sockets::sockaddrs* server) final override;
 
-	void OnConnect(StreamSocket* sock) override
+	virtual void OnConnect(StreamSocket* sock) final override
 	{
 	}
 };
 
-class WebSocketHook : public IOHookMiddle
+class WebSocketHook final : public IOHookMiddle
 {
 	class HTTPHeaderFinder
 	{
@@ -326,7 +326,7 @@ class WebSocketHook : public IOHookMiddle
 		sock->AddIOHook(this);
 	}
 
-	int OnStreamSocketWrite(StreamSocket* sock, StreamSocket::SendQueue& uppersendq) override
+	virtual int OnStreamSocketWrite(StreamSocket* sock, StreamSocket::SendQueue& uppersendq) final override
 	{
 		StreamSocket::SendQueue& mysendq = GetSendQ();
 
@@ -344,7 +344,7 @@ class WebSocketHook : public IOHookMiddle
 		return 1;
 	}
 
-	int OnStreamSocketRead(StreamSocket* sock, std::string& destrecvq) override
+	virtual int OnStreamSocketRead(StreamSocket* sock, std::string& destrecvq) final override
 	{
 		if (state == STATE_HTTPREQ)
 		{
@@ -363,7 +363,7 @@ class WebSocketHook : public IOHookMiddle
 		return wsret;
 	}
 
-	void OnStreamSocketClose(StreamSocket* sock) override
+	virtual void OnStreamSocketClose(StreamSocket* sock) final override
 	{
 	}
 };
@@ -373,7 +373,7 @@ void WebSocketHookProvider::OnAccept(StreamSocket* sock, irc::sockets::sockaddrs
 	new WebSocketHook(this, sock);
 }
 
-class ModuleWebSocket : public Module
+class ModuleWebSocket final : public Module
 {
 	dynamic_reference_nocheck<HashProvider> hash;
 	WebSocketHookProvider hookprov;
@@ -386,17 +386,17 @@ class ModuleWebSocket : public Module
 		sha1 = &hash;
 	}
 
-	void OnCleanup(int target_type, void* item) override
+	virtual void OnCleanup(int target_type, void* item) final override
 	{
 		if (target_type != TYPE_USER)
 			return;
 
-		LocalUser* user = IS_LOCAL(static_cast<User*>(item));
+		LocalUser* user = static_cast<User*>(item)->as<LocalUser>();
 		if ((user) && (user->eh.GetModHook(this)))
 			ServerInstance->Users.QuitUser(user, "WebSocket module unloading");
 	}
 
-	Version GetVersion() override
+	virtual Version GetVersion() final override
 	{
 		return Version("Provides RFC 6455 WebSocket support", VF_VENDOR);
 	}

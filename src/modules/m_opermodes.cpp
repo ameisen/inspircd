@@ -32,7 +32,7 @@ class ModuleModesOnOper : public Module
 
 	void OnPostOper(User* user, const std::string &opertype, const std::string &opername) override
 	{
-		if (!IS_LOCAL(user))
+		if (!user->as<LocalUser>())
 			return;
 
 		// whenever a user opers, go through the oper types, find their <type:modes>,

@@ -56,7 +56,7 @@ class CommandSakick : public Command
 			 * just return CMD_SUCCESS knowing the protocol module will route the SAKICK to the user's
 			 * local server and that will kick them instead.
 			 */
-			if (IS_LOCAL(dest))
+			if (dest->as<LocalUser>())
 			{
 				// Target is on this server, kick them and send the snotice
 				channel->KickUser(ServerInstance->FakeClient, dest, reason);

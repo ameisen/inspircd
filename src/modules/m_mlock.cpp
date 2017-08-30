@@ -39,7 +39,7 @@ class ModuleMLock : public Module
 		if (!channel)
 			return MOD_RES_PASSTHRU;
 
-		if (!IS_LOCAL(source))
+		if (!source->as<LocalUser>())
 			return MOD_RES_PASSTHRU;
 
 		std::string *mlock_str = mlock.get(channel);

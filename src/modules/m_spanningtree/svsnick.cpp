@@ -27,7 +27,7 @@ CmdResult CommandSVSNick::Handle(User* user, std::vector<std::string>& parameter
 {
 	User* u = ServerInstance->FindNick(parameters[0]);
 
-	if (u && IS_LOCAL(u))
+	if (u && u->as<LocalUser>())
 	{
 		// The 4th parameter is optional and it is the expected nick TS of the target user. If this parameter is
 		// present and it doesn't match the user's nick TS, the SVSNICK is not acted upon.

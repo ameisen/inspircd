@@ -66,14 +66,14 @@ class HistoryMode : public ParamMode<HistoryMode, SimpleExtItem<HistoryList> >
 			return MODEACTION_DENY;
 
 		std::string duration(parameter, colon+1);
-		if ((IS_LOCAL(source)) && ((duration.length() > 10) || (!IsValidDuration(duration))))
+		if ((source->as<LocalUser>()) && ((duration.length() > 10) || (!IsValidDuration(duration))))
 			return MODEACTION_DENY;
 
 		unsigned int len = ConvToInt(parameter.substr(0, colon));
 		int time = InspIRCd::Duration(duration);
 		if (len == 0 || time < 0)
 			return MODEACTION_DENY;
-		if (len > maxlines && IS_LOCAL(source))
+		if (len > maxlines && source->as<LocalUser>())
 			return MODEACTION_DENY;
 		if (len > maxlines)
 			len = maxlines;
@@ -96,7 +96,7 @@ class HistoryMode : public ParamMode<HistoryMode, SimpleExtItem<HistoryList> >
 		return MODEACTION_ALLOW;
 	}
 
-	void SerializeParam(Channel* chan, const HistoryList* history, std::string& out)
+	static void SerializeParam(const Channel* chan, const HistoryList* history, std::string& out)
 	{
 		out.append(history->param);
 	}
@@ -139,7 +139,7 @@ class ModuleChanHistory : public Module
 
 	void OnPostJoin(Membership* memb) override
 	{
-		if (IS_REMOTE(memb->user))
+		if (memb->user->as<RemoteUser>())
 			return;
 
 		if (memb->user->IsModeSet(botmode) && !dobots)

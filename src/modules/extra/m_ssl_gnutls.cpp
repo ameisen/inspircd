@@ -185,7 +185,7 @@ namespace GnuTLS
 			gnutls_hash_hd_t is_digest;
 			if (gnutls_hash_init(&is_digest, hash) < 0)
 				throw Exception("Unknown hash type " + hashname);
-			gnutls_hash_deinit(is_digest, NULL);
+			gnutls_hash_deinit(is_digest, nullptr);
 #else
 			if (hashname == "md5")
 				hash = GNUTLS_DIG_MD5;
@@ -378,7 +378,7 @@ namespace GnuTLS
 				ret.append(token);
 
 				gnutls_priority_t test;
-				if (gnutls_priority_init(&test, ret.c_str(), NULL) < 0)
+				if (gnutls_priority_init(&test, ret.c_str(), nullptr) < 0)
 				{
 					// The new token broke the priority string, revert to the previously working one
 					ServerInstance->Logs->Log(MODNAME, LOG_DEBUG, "Priority string token not recognized: \"%s\"", token.c_str());
@@ -470,11 +470,11 @@ namespace GnuTLS
 		 */
 		X509CertList certs;
 
-		/** Trusted CA, may be NULL
+		/** Trusted CA, may be nullptr
 		 */
 		std::auto_ptr<X509CertList> trustedca;
 
-		/** Certificate revocation list, may be NULL
+		/** Certificate revocation list, may be nullptr
 		 */
 		std::auto_ptr<X509CRL> crl;
 
@@ -501,7 +501,7 @@ namespace GnuTLS
 		 */
 		void SetCA(std::auto_ptr<X509CertList>& certlist, std::auto_ptr<X509CRL>& CRL)
 		{
-			// Do nothing if certlist is NULL
+			// Do nothing if certlist is nullptr
 			if (certlist.get())
 			{
 				int ret = gnutls_certificate_set_x509_trust(cred, certlist->raw(), certlist->size());
@@ -538,7 +538,7 @@ namespace GnuTLS
 		{
 			// Copy data from GnuTLS buffers to recvq
 			gnutls_datum_t datum;
-			gnutls_packet_get(packet, &datum, NULL);
+			gnutls_packet_get(packet, &datum, nullptr);
 			recvq.append(reinterpret_cast<const char*>(datum.data), datum.size);
 
 			gnutls_packet_deinit(packet);
@@ -718,8 +718,8 @@ class GnuTLSIOHook : public SSLIOHook
 			gnutls_bye(this->sess, GNUTLS_SHUT_WR);
 			gnutls_deinit(this->sess);
 		}
-		sess = NULL;
-		certificate = NULL;
+		sess = nullptr;
+		certificate = nullptr;
 		status = ISSL_NONE;
 	}
 
@@ -818,7 +818,7 @@ class GnuTLSIOHook : public SSLIOHook
 
 		cert_list_size = 0;
 		cert_list = gnutls_certificate_get_peers(this->sess, &cert_list_size);
-		if (cert_list == NULL)
+		if (cert_list == nullptr)
 		{
 			certinfo->error = "No certificate was found";
 			goto info_done_dealloc;
@@ -1043,7 +1043,7 @@ info_done_dealloc:
  public:
 	GnuTLSIOHook(IOHookProvider* hookprov, StreamSocket* sock, inspircd_gnutls_session_init_flags_t flags, const reference<GnuTLS::Profile>& sslprofile)
 		: SSLIOHook(hookprov)
-		, sess(NULL)
+		, sess(nullptr)
 		, status(ISSL_NONE)
 		, profile(sslprofile)
 #ifdef INSPIRCD_GNUTLS_HAS_CORK
@@ -1308,7 +1308,7 @@ class ModuleSSLGnuTLS : public Module
 
 	void init() override
 	{
-		ServerInstance->Logs->Log(MODNAME, LOG_DEFAULT, "GnuTLS lib version %s module was compiled for " GNUTLS_VERSION, gnutls_check_version(NULL));
+		ServerInstance->Logs->Log(MODNAME, LOG_DEFAULT, "GnuTLS lib version %s module was compiled for " GNUTLS_VERSION, gnutls_check_version(nullptr));
 		ReadProfiles();
 		ServerInstance->GenRandom = &randhandler;
 	}
@@ -1337,7 +1337,7 @@ class ModuleSSLGnuTLS : public Module
 	{
 		if(target_type == TYPE_USER)
 		{
-			LocalUser* user = IS_LOCAL(static_cast<User*>(item));
+			LocalUser* user = static_cast<User*>(item->as<LocalUser>());
 
 			if ((user) && (user->eh.GetModHook(this)))
 			{

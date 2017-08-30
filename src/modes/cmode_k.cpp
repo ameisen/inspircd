@@ -32,7 +32,7 @@ ModeAction ModeChannelKey::OnModeChange(User* source, User*, Channel* channel, s
 {
 	const std::string* key = ext.get(channel);
 	bool exists = (key != nullptr);
-	if (IS_LOCAL(source))
+	if (source->as<LocalUser>())
 	{
 		if (exists == adding)
 			return MODEACTION_DENY;
@@ -62,7 +62,7 @@ ModeAction ModeChannelKey::OnModeChange(User* source, User*, Channel* channel, s
 	return MODEACTION_ALLOW;
 }
 
-void ModeChannelKey::SerializeParam(Channel* chan, const std::string* key, std::string& out)
+void ModeChannelKey::SerializeParam(const Channel* chan, const std::string* key, std::string& out)
 {
 	out += *key;
 }

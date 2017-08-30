@@ -96,7 +96,7 @@ class SQLConn : public SQLProvider
 		{
 			// Even in case of an error conn must be closed
 			sqlite3_close(conn);
-			conn = NULL;
+			conn = nullptr;
 			ServerInstance->Logs->Log(MODNAME, LOG_DEFAULT, "WARNING: Could not open DB with id: " + tag->getString("id"));
 		}
 	}
@@ -114,7 +114,7 @@ class SQLConn : public SQLProvider
 	{
 		SQLite3Result res;
 		sqlite3_stmt *stmt;
-		int err = sqlite3_prepare_v2(conn, q.c_str(), q.length(), &stmt, NULL);
+		int err = sqlite3_prepare_v2(conn, q.c_str(), q.length(), &stmt, nullptr);
 		if (err != SQLITE_OK)
 		{
 			SQLerror error(SQL_QSEND_FAIL, sqlite3_errmsg(conn));

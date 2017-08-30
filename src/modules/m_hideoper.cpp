@@ -137,7 +137,7 @@ class ModuleHideOper : public Module, public Whois::LineEventListener
 			User* oper = *i;
 			if (!oper->server->IsULine() && (stats.GetSource()->IsOper() || !oper->IsModeSet(hm)))
 			{
-				LocalUser* lu = IS_LOCAL(oper);
+				LocalUser* lu = oper->as<LocalUser>();
 				stats.AddRow(249, oper->nick + " (" + oper->ident + "@" + oper->dhost + ") Idle: " +
 						(lu ? ConvToStr(ServerInstance->Time() - lu->idle_lastmsg) + " secs" : "unavailable"));
 				count++;

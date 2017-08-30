@@ -48,7 +48,7 @@ class ModuleNoNotice : public Module
 	ModResult OnUserPreMessage(User* user, void* dest, int target_type, std::string& text, char status, CUList& exempt_list, MessageType msgtype) override
 	{
 		ModResult res;
-		if ((msgtype == MSG_NOTICE) && (target_type == TYPE_CHANNEL) && (IS_LOCAL(user)))
+		if ((msgtype == MSG_NOTICE) && (target_type == TYPE_CHANNEL) && (user->as<LocalUser>()))
 		{
 			Channel* c = (Channel*)dest;
 			if (!c->GetExtBanStatus(user, 'T').check(!c->IsModeSet(nt)))

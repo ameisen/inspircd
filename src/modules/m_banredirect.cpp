@@ -146,7 +146,7 @@ class BanRedirect : public ModeWatcher
 
 			if(mask[CHAN].length())
 			{
-				if (adding && IS_LOCAL(source))
+				if (adding && source->as<LocalUser>())
 				{
 					if (!ServerInstance->IsChannel(mask[CHAN]))
 					{

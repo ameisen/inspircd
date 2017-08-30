@@ -41,7 +41,7 @@ class ModuleAllowInvite : public Module
 
 	ModResult OnUserPreInvite(User* user,User* dest,Channel* channel, time_t timeout) override
 	{
-		if (IS_LOCAL(user))
+		if (user->as<LocalUser>())
 		{
 			ModResult res = channel->GetExtBanStatus(user, 'A');
 			if (res == MOD_RES_DENY)

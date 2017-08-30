@@ -451,7 +451,7 @@ bool TreeSocket::PreProcessOldProtocolMessage(User*& who, std::string& cmd, std:
 	else if (cmd == "JOIN")
 	{
 		// 2.0 allows and forwards legacy JOINs but we don't, so translate them to FJOINs before processing
-		if ((params.size() != 1) || (IS_SERVER(who)))
+		if ((params.size() != 1) || (who->as<FakeUser>()))
 			return false; // Huh?
 
 		cmd = "FJOIN";

@@ -74,7 +74,7 @@ static int exdataindex;
 
 char* get_error()
 {
-	return ERR_error_string(ERR_get_error(), NULL);
+	return ERR_error_string(ERR_get_error(), nullptr);
 }
 
 static int OnVerify(int preverify_ok, X509_STORE_CTX* ctx);
@@ -97,10 +97,10 @@ namespace OpenSSL
 		DHParams(const std::string& filename)
 		{
 			BIO* dhpfile = BIO_new_file(filename.c_str(), "r");
-			if (dhpfile == NULL)
+			if (dhpfile == nullptr)
 				throw Exception("Couldn't open DH file " + filename);
 
-			dh = PEM_read_bio_DHparams(dhpfile, NULL, NULL, NULL);
+			dh = PEM_read_bio_DHparams(dhpfile, nullptr, nullptr, nullptr);
 			BIO_free(dhpfile);
 
 			if (!dh)
@@ -145,7 +145,7 @@ namespace OpenSSL
 			mode |= SSL_MODE_RELEASE_BUFFERS;
 #endif
 			SSL_CTX_set_mode(ctx, mode);
-			SSL_CTX_set_verify(ctx, SSL_VERIFY_NONE, NULL);
+			SSL_CTX_set_verify(ctx, SSL_VERIFY_NONE, nullptr);
 			SSL_CTX_set_session_cache_mode(ctx, SSL_SESS_CACHE_OFF);
 			SSL_CTX_set_info_callback(ctx, StaticSSLInfoCallback);
 		}
@@ -317,7 +317,7 @@ namespace OpenSSL
 
 			std::string hash = tag->getString("hash", "md5");
 			digest = EVP_get_digestbyname(hash.c_str());
-			if (digest == NULL)
+			if (digest == nullptr)
 				throw Exception("Unknown hash type " + hash);
 
 			std::string ciphers = tag->getString("ciphers");
@@ -388,7 +388,7 @@ namespace OpenSSL
 		static int destroy(BIO* bio)
 		{
 			// XXX: Dummy function to avoid a memory leak in OpenSSL.
-			// The memory leak happens in BIO_free() (bio_lib.c) when the destroy func of the BIO is NULL.
+			// The memory leak happens in BIO_free() (bio_lib.c) when the destroy func of the BIO is nullptr.
 			// This is fixed in OpenSSL but some distros still ship the unpatched version hence we provide this workaround.
 			return 1;
 		}
@@ -427,12 +427,12 @@ static BIO_METHOD biomethods =
 	"inspircd",
 	OpenSSL::BIOMethod::write,
 	OpenSSL::BIOMethod::read,
-	NULL, // puts
-	NULL, // gets
+	nullptr, // puts
+	nullptr, // gets
 	OpenSSL::BIOMethod::ctrl,
 	OpenSSL::BIOMethod::create,
 	OpenSSL::BIOMethod::destroy, // destroy, does nothing, see function body for more info
-	NULL // callback_ctrl
+	nullptr // callback_ctrl
 };
 #else
 static BIO_METHOD* biomethods;
@@ -512,8 +512,8 @@ class OpenSSLIOHook : public SSLIOHook
 			SSL_shutdown(sess);
 			SSL_free(sess);
 		}
-		sess = NULL;
-		certificate = NULL;
+		sess = nullptr;
+		certificate = nullptr;
 		status = ISSL_NONE;
 	}
 
@@ -940,7 +940,7 @@ class ModuleSSLOpenSSL : public Module
 
 		// Register application specific data
 		char exdatastr[] = "inspircd";
-		exdataindex = SSL_get_ex_new_index(0, exdatastr, NULL, NULL, NULL);
+		exdataindex = SSL_get_ex_new_index(0, exdatastr, nullptr, nullptr, nullptr);
 		if (exdataindex < 0)
 			throw ModuleException("Failed to register application specific data");
 
@@ -966,7 +966,7 @@ class ModuleSSLOpenSSL : public Module
 	{
 		if (target_type == TYPE_USER)
 		{
-			LocalUser* user = IS_LOCAL((User*)item);
+			LocalUser* user = (User*->as<LocalUser>()item);
 
 			if ((user) && (user->eh.GetModHook(this)))
 			{

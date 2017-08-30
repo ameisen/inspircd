@@ -42,7 +42,7 @@ class PCRERegex : public Regex
 	{
 		const char* error;
 		int erroffset;
-		regex = pcre_compile(rx.c_str(), 0, &error, &erroffset, NULL);
+		regex = pcre_compile(rx.c_str(), 0, &error, &erroffset, nullptr);
 		if (!regex)
 		{
 			ServerInstance->Logs->Log(MODNAME, LOG_DEBUG, "pcre_compile failed: /%s/ [%d] %s", rx.c_str(), erroffset, error);
@@ -57,7 +57,7 @@ class PCRERegex : public Regex
 
 	bool Matches(const std::string& text) override
 	{
-		return (pcre_exec(regex, NULL, text.c_str(), text.length(), 0, 0, NULL, 0) >= 0);
+		return (pcre_exec(regex, nullptr, text.c_str(), text.length(), 0, 0, nullptr, 0) >= 0);
 	}
 };
 

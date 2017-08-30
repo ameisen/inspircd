@@ -74,7 +74,7 @@ class ModulePassForward : public Module
 
 	void OnPostConnect(User* ruser) override
 	{
-		LocalUser* user = IS_LOCAL(ruser);
+		LocalUser* user = ruser->as<LocalUser>();
 		if (!user || user->password.empty())
 			return;
 

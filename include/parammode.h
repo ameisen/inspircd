@@ -33,7 +33,7 @@ class CoreExport ParamModeBase : public ModeHandler
 	// Does nothing by default
 	void OnUnset(User* source, Channel* chan) { }
 	virtual ModeAction OnSet(User* source, Channel* chan, std::string& param) = 0;
-	virtual void GetParameter(Channel* chan, std::string& out) = 0;
+	virtual void GetParameter(const Channel* chan, std::string& out) const = 0;
 };
 
 /** Defines a parameter mode
@@ -60,16 +60,15 @@ class ParamMode : public ParamModeBase
 	{
 	}
 
-	void OnUnsetInternal(User* source, Channel* chan) override
+	virtual void OnUnsetInternal(User* source, Channel* chan) final override
 	{
 		T* mh = static_cast<T*>(this);
 		mh->OnUnset(source, chan);
 		ext.unset(chan);
 	}
 
-	void GetParameter(Channel* chan, std::string& out) override
+	virtual void GetParameter(const Channel* chan, std::string& out) const final override
 	{
-		T* mh = static_cast<T*>(this);
-		mh->SerializeParam(chan, ext.get(chan), out);
+		T::SerializeParam(chan, ext.get(chan), out);
 	}
 };

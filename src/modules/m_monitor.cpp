@@ -428,7 +428,7 @@ class ModuleMonitor : public Module
 
 	void OnUserQuit(User* user, const std::string& message, const std::string& oper_message) override
 	{
-		LocalUser* localuser = IS_LOCAL(user);
+		LocalUser* localuser = user->as<LocalUser>();
 		if (localuser)
 			manager.UnwatchAll(localuser);
 		SendAlert(RPL_MONOFFLINE, user->nick);

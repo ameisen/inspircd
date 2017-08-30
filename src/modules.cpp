@@ -104,9 +104,9 @@ ModResult	Module::OnRawMode(User*, Channel*, ModeHandler*, const std::string&, b
 ModResult	Module::OnCheckInvite(User*, Channel*) { DetachEvent(I_OnCheckInvite); return MOD_RES_PASSTHRU; }
 ModResult	Module::OnCheckKey(User*, Channel*, const std::string&) { DetachEvent(I_OnCheckKey); return MOD_RES_PASSTHRU; }
 ModResult	Module::OnCheckLimit(User*, Channel*) { DetachEvent(I_OnCheckLimit); return MOD_RES_PASSTHRU; }
-ModResult	Module::OnCheckChannelBan(User*, Channel*) { DetachEvent(I_OnCheckChannelBan); return MOD_RES_PASSTHRU; }
-ModResult	Module::OnCheckBan(User*, Channel*, const std::string&) { DetachEvent(I_OnCheckBan); return MOD_RES_PASSTHRU; }
-ModResult	Module::OnExtBanCheck(User*, Channel*, char) { DetachEvent(I_OnExtBanCheck); return MOD_RES_PASSTHRU; }
+ModResult	Module::OnCheckChannelBan(const User*, const Channel*) { DetachEvent(I_OnCheckChannelBan); return MOD_RES_PASSTHRU; }
+ModResult	Module::OnCheckBan(const User*, const Channel*, const std::string&) { DetachEvent(I_OnCheckBan); return MOD_RES_PASSTHRU; }
+ModResult	Module::OnExtBanCheck(const User*, const Channel*, char) { DetachEvent(I_OnExtBanCheck); return MOD_RES_PASSTHRU; }
 ModResult	Module::OnStats(Stats::Context&) { DetachEvent(I_OnStats); return MOD_RES_PASSTHRU; }
 ModResult	Module::OnChangeLocalUserHost(LocalUser*, const std::string&) { DetachEvent(I_OnChangeLocalUserHost); return MOD_RES_PASSTHRU; }
 ModResult	Module::OnChangeLocalUserGECOS(LocalUser*, const std::string&) { DetachEvent(I_OnChangeLocalUserGECOS); return MOD_RES_PASSTHRU; }
@@ -526,8 +526,8 @@ void ModuleManager::AddService(ServiceProvider& item)
 {
 	switch (item.service)
 	{
-		case SERVICE_DATA:
-		case SERVICE_IOHOOK:
+		case ServiceType::Data:
+		case ServiceType::IO_Hook:
 		{
 			if ((!item.name.compare(0, 5, "mode/", 5)) || (!item.name.compare(0, 6, "umode/", 6)))
 				throw ModuleException("The \"mode/\" and the \"umode\" service name prefixes are reserved.");
@@ -551,17 +551,17 @@ void ModuleManager::DelService(ServiceProvider& item)
 {
 	switch (item.service)
 	{
-		case SERVICE_MODE:
+	case ServiceType::Mode:
 			if (!ServerInstance->Modes->DelMode(static_cast<ModeHandler*>(&item)))
 				throw ModuleException("Mode "+std::string(item.name)+" does not exist.");
 			// Fall through
-		case SERVICE_DATA:
-		case SERVICE_IOHOOK:
+	case ServiceType::Data:
+	case ServiceType::IO_Hook:
 		{
 			DelReferent(&item);
 			return;
 		}
-		default:
+	default:
 			throw ModuleException("Cannot delete unknown service type");
 	}
 }
@@ -570,8 +570,8 @@ ServiceProvider* ModuleManager::FindService(ServiceType type, const std::string&
 {
 	switch (type)
 	{
-		case SERVICE_DATA:
-		case SERVICE_IOHOOK:
+	case ServiceType::Data:
+	case ServiceType::IO_Hook:
 		{
 			std::multimap<std::string, ServiceProvider*>::iterator i = DataProviders.find(name);
 			if (i != DataProviders.end() && i->second->service == type)
@@ -579,8 +579,8 @@ ServiceProvider* ModuleManager::FindService(ServiceType type, const std::string&
 			return nullptr;
 		}
 		// TODO implement finding of the other types
-		default:
-			throw ModuleException("Cannot find unknown service type");
+	default:
+		throw ModuleException("Cannot find unknown service type");
 	}
 }
 

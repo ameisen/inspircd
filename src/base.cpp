@@ -93,16 +93,12 @@ usecountbase::~usecountbase()
 			this, count);
 }
 
-ServiceProvider::~ServiceProvider()
-{
-}
-
 void ServiceProvider::RegisterService()
 {
 }
 
 ExtensionItem::ExtensionItem(const std::string& Key, ExtensibleType exttype, Module* mod)
-	: ServiceProvider(mod, Key, SERVICE_METADATA)
+	: ServiceProvider(mod, Key, ServiceType::Metadata)
 	, type(exttype)
 {
 }

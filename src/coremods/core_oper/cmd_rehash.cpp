@@ -67,7 +67,7 @@ CmdResult CommandRehash::Handle (const std::vector<std::string>& parameters, Use
 		std::string m = user->nick + " is rehashing config file " + FileSystem::GetFileName(ServerInstance->ConfigFileName) + " on " + ServerInstance->Config->ServerName;
 		ServerInstance->SNO->WriteGlobalSno('a', m);
 
-		if (IS_LOCAL(user))
+		if (user->as<LocalUser>())
 			user->WriteNumeric(RPL_REHASHING, FileSystem::GetFileName(ServerInstance->ConfigFileName), "Rehashing");
 		else
 			ServerInstance->PI->SendUserNotice(user, "*** Rehashing server " + FileSystem::GetFileName(ServerInstance->ConfigFileName));
@@ -83,7 +83,7 @@ CmdResult CommandRehash::Handle (const std::vector<std::string>& parameters, Use
 		 * A rehash is already in progress! ahh shit.
 		 * XXX, todo: we should find some way to kill runaway rehashes that are blocking, this is a major problem for unrealircd users
 		 */
-		if (IS_LOCAL(user))
+		if (user->as<LocalUser>())
 			user->WriteNotice("*** Could not rehash: A rehash is already in progress.");
 		else
 			ServerInstance->PI->SendUserNotice(user, "*** Could not rehash: A rehash is already in progress.");

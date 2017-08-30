@@ -113,7 +113,7 @@ class CommandTban : public Command
 
 		CUList tmp;
 		T.mask = mask;
-		T.expire = expire + (IS_REMOTE(user) ? 5 : 0);
+		T.expire = expire + (user->as<RemoteUser>() ? 5 : 0);
 		T.chan = channel;
 		TimedBanList.push_back(T);
 

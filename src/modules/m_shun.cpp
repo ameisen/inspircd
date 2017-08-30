@@ -19,6 +19,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+ // Temporary hack to get around a warning being thrown by a Microsoft header.
+#if _MSC_VER == 1911
+#	pragma warning( disable : 4244 )  
+#include <algorithm>
+#	pragma warning( default : 4244 )  
+#endif
 
 #include "inspircd.h"
 #include "xline.h"
@@ -37,7 +43,7 @@ public:
 	bool Matches(User *u)
 	{
 		// E: overrides shun
-		LocalUser* lu = IS_LOCAL(u);
+		LocalUser* lu = u->as<LocalUser>();
 		if (lu && lu->exempt)
 			return false;
 
@@ -160,7 +166,7 @@ class CommandShun : public Command
 
 	RouteDescriptor GetRouting(User* user, const std::vector<std::string>& parameters)
 	{
-		if (IS_LOCAL(user))
+		if (user->as<LocalUser>())
 			return ROUTE_LOCALONLY; // spanningtree will send ADDLINE
 
 		return ROUTE_BROADCAST;

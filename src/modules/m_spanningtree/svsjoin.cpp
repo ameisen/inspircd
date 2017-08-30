@@ -34,7 +34,7 @@ CmdResult CommandSVSJoin::Handle(User* user, std::vector<std::string>& parameter
 		return CMD_FAILURE;
 
 	/* only join if it's local, otherwise just pass it on! */
-	LocalUser* localuser = IS_LOCAL(u);
+	LocalUser* localuser = u->as<LocalUser>();
 	if (localuser)
 	{
 		bool override = false;

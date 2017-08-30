@@ -74,7 +74,7 @@ class ModuleOperPrefixMode : public Module
 
 	void OnPostJoin(Membership* memb) override
 	{
-		if ((!IS_LOCAL(memb->user)) || (!memb->user->IsOper()) || (memb->user->IsModeSet(hideopermode)))
+		if ((!memb->user->as<LocalUser>()) || (!memb->user->IsOper()) || (memb->user->IsModeSet(hideopermode)))
 			return;
 
 		if (memb->HasMode(&opm))
@@ -96,7 +96,7 @@ class ModuleOperPrefixMode : public Module
 
 	void OnPostOper(User* user, const std::string& opername, const std::string& opertype) override
 	{
-		if (IS_LOCAL(user) && (!user->IsModeSet(hideopermode)))
+		if (user->as<LocalUser>() && (!user->IsModeSet(hideopermode)))
 			SetOperPrefix(user, true);
 	}
 
@@ -122,7 +122,7 @@ HideOperWatcher::HideOperWatcher(ModuleOperPrefixMode* parent)
 void HideOperWatcher::AfterMode(User* source, User* dest, Channel* channel, const std::string& parameter, bool adding)
 {
 	// If hideoper is being unset because the user is deopering, don't set +y
-	if (IS_LOCAL(dest) && dest->IsOper())
+	if (dest->as<LocalUser>() && dest->IsOper())
 		parentmod->SetOperPrefix(dest, !adding);
 }
 

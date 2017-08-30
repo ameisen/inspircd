@@ -29,7 +29,7 @@ class ModulePartMsgBan : public Module
 
 	void OnUserPart(Membership* memb, std::string &partmessage, CUList& excepts) override
 	{
-		if (!IS_LOCAL(memb->user))
+		if (!memb->user->as<LocalUser>())
 			return;
 
 		if (memb->chan->GetExtBanStatus(memb->user, 'p') == MOD_RES_DENY)

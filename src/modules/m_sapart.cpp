@@ -62,7 +62,7 @@ class CommandSapart : public Command
 			 * just return CMD_SUCCESS knowing the protocol module will route the SAPART to the users
 			 * local server and that will generate the PART instead
 			 */
-			if (IS_LOCAL(dest))
+			if (dest->as<LocalUser>())
 			{
 				channel->PartUser(dest, reason);
 				ServerInstance->SNO->WriteGlobalSno('a', user->nick+" used SAPART to make "+dest->nick+" part "+channel->name);

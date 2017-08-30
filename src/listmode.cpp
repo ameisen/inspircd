@@ -165,7 +165,7 @@ ModeAction ListModeBase::OnModeChange(User* source, User*, Channel* channel, std
 			}
 		}
 
-		if ((IS_LOCAL(source)) && (cd->list.size() >= GetLimitInternal(channel->name, cd)))
+		if ((source->as<LocalUser>()) && (cd->list.size() >= GetLimitInternal(channel->name, cd)))
 		{
 			/* List is full, give subclass a chance to send a custom message */
 			TellListTooLong(source, channel, parameter);

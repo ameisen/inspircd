@@ -97,14 +97,14 @@ class KickRejoin : public ParamMode<KickRejoin, SimpleExtItem<KickRejoinData> >
 		if (v <= 0)
 			return MODEACTION_DENY;
 
-		if ((IS_LOCAL(source) && ((unsigned int)v > max)))
+		if ((source->as<LocalUser>() && ((unsigned int)v > max)))
 			v = max;
 
 		ext.set(channel, new KickRejoinData(v));
 		return MODEACTION_ALLOW;
 	}
 
-	void SerializeParam(Channel* chan, const KickRejoinData* krd, std::string& out)
+	static void SerializeParam(const Channel* chan, const KickRejoinData* krd, std::string& out)
 	{
 		out.append(ConvToStr(krd->delay));
 	}
@@ -141,7 +141,7 @@ public:
 
 	void OnUserKick(User* source, Membership* memb, const std::string &reason, CUList& excepts) override
 	{
-		if ((!IS_LOCAL(memb->user)) || (source == memb->user))
+		if ((!memb->user->as<LocalUser>()) || (source == memb->user))
 			return;
 
 		KickRejoinData* data = kr.ext.get(memb->chan);

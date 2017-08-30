@@ -86,7 +86,7 @@ class ModuleOpermotd : public Module
 
 	void OnOper(User* user, const std::string &opertype) override
 	{
-		if (onoper && IS_LOCAL(user))
+		if (onoper && user->as<LocalUser>())
 			cmd.ShowOperMOTD(user);
 	}
 

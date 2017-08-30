@@ -26,7 +26,7 @@ class LDAPException : public ModuleException
  public:
 	LDAPException(const std::string& reason) : ModuleException(reason) { }
 
-	virtual ~LDAPException() throw() { }
+	virtual ~LDAPException() noexcept { }
 };
 
 struct LDAPModification

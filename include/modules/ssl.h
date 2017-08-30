@@ -169,7 +169,7 @@ class SSLIOHook : public IOHook
 		IOHook* const iohook = sock->GetIOHook();
 		if ((iohook) && ((iohook->prov->type == IOHookProvider::IOH_SSL)))
 			return static_cast<SSLIOHook*>(iohook);
-		return NULL;
+		return nullptr;
 	}
 
 	SSLIOHook(IOHookProvider* hookprov)
@@ -179,7 +179,7 @@ class SSLIOHook : public IOHook
 
 	/**
 	 * Get the certificate sent by this peer
-	 * @return The SSL certificate sent by the peer, NULL if no cert was sent
+	 * @return The SSL certificate sent by the peer, nullptr if no cert was sent
 	 */
 	ssl_cert* GetCertificate() const
 	{
@@ -215,13 +215,13 @@ class SSLClientCert
  	/**
 	 * Get the client certificate from a socket
 	 * @param sock The socket to get the certificate from, the socket does not have to use SSL
-	 * @return The SSL client certificate information, NULL if the peer is not using SSL
+	 * @return The SSL client certificate information, nullptr if the peer is not using SSL
 	 */
 	static ssl_cert* GetCertificate(StreamSocket* sock)
 	{
 		SSLIOHook* ssliohook = SSLIOHook::IsSSL(sock);
 		if (!ssliohook)
-			return NULL;
+			return nullptr;
 
 		return ssliohook->GetCertificate();
 	}
@@ -252,9 +252,9 @@ class UserCertificateAPIBase : public DataProvider
 
 	/** Get the SSL certificate of a user
 	 * @param user The user whose certificate to get, user may be remote
-	 * @return The SSL certificate of the user or NULL if the user is not using SSL
+	 * @return The SSL certificate of the user or nullptr if the user is not using SSL
 	 */
-	virtual ssl_cert* GetCertificate(User* user) = 0;
+	virtual ssl_cert* GetCertificate(const User* user) = 0;
 
 	/** Get the key fingerprint from a user's certificate
 	 * @param user The user whose key fingerprint to get, user may be remote

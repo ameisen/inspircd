@@ -25,12 +25,12 @@
 
 CmdResult SplitCommand::Handle(const std::vector<std::string>& parms, User* u)
 {
-	if (IS_LOCAL(u))
-		return HandleLocal(parms, IS_LOCAL(u));
-	if (IS_REMOTE(u))
-		return HandleRemote(parms, IS_REMOTE(u));
-	if (IS_SERVER(u))
-		return HandleServer(parms, IS_SERVER(u));
+	if (u->as<LocalUser>())
+		return HandleLocal(parms, u->as<LocalUser>());
+	if (u->as<RemoteUser>())
+		return HandleRemote(parms, u->as<RemoteUser>());
+	if (u->as<FakeUser>())
+		return HandleServer(parms, u->as<FakeUser>());
 	ServerInstance->Logs->Log("COMMAND", LOG_DEFAULT, "Unknown user type in command (uuid=%s)!", u->uuid.c_str());
 	return CMD_INVALID;
 }

@@ -150,7 +150,7 @@ class SQLConn : public SQLProvider, public EventHandler
 	QueueItem		qinprog;	/* If there is currently a query in progress */
 
 	SQLConn(Module* Creator, ConfigTag* tag)
-	: SQLProvider(Creator, "SQL/" + tag->getString("id")), conf(tag), sql(NULL), status(CWRITE), qinprog(NULL, "")
+	: SQLProvider(Creator, "SQL/" + tag->getString("id")), conf(tag), sql(nullptr), status(CWRITE), qinprog(nullptr, "")
 	{
 		if (!DoConnect())
 		{
@@ -329,7 +329,7 @@ restart:
 				}
 
 				delete qinprog.c;
-				qinprog = QueueItem(NULL, "");
+				qinprog = QueueItem(nullptr, "");
 				goto restart;
 			}
 			else
@@ -488,7 +488,7 @@ restart:
 		if(sql)
 		{
 			PQfinish(sql);
-			sql = NULL;
+			sql = nullptr;
 		}
 	}
 };
@@ -500,7 +500,7 @@ class ModulePgSQL : public Module
 	ReconnectTimer* retimer;
 
 	ModulePgSQL()
-		: retimer(NULL)
+		: retimer(nullptr)
 	{
 	}
 
@@ -561,7 +561,7 @@ class ModulePgSQL : public Module
 			{
 				conn->qinprog.c->OnError(err);
 				delete conn->qinprog.c;
-				conn->qinprog.c = NULL;
+				conn->qinprog.c = nullptr;
 			}
 			std::deque<QueueItem>::iterator j = conn->queue.begin();
 			while (j != conn->queue.end())
@@ -587,7 +587,7 @@ class ModulePgSQL : public Module
 
 bool ReconnectTimer::Tick(time_t time)
 {
-	mod->retimer = NULL;
+	mod->retimer = nullptr;
 	mod->ReadConf();
 	delete this;
 	return false;

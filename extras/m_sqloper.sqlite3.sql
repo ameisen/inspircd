@@ -4,4 +4,4 @@ username text,
 password text,
 hostname text,
 type text,
-active integer NOT NULL DEFAULT 1);
+active integer NOT nullptr DEFAULT 1);

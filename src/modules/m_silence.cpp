@@ -83,7 +83,7 @@ class CommandSVSSilence : public Command
 		if (!u)
 			return CMD_FAILURE;
 
-		if (IS_LOCAL(u))
+		if (u->as<LocalUser>())
 		{
 			ServerInstance->Parser.CallHandler("SILENCE", std::vector<std::string>(parameters.begin() + 1, parameters.end()), u);
 		}
@@ -322,7 +322,7 @@ class ModuleSilence : public Module
 		const Channel::MemberMap& ulist = chan->GetUsers();
 		for (Channel::MemberMap::const_iterator i = ulist.begin(); i != ulist.end(); ++i)
 		{
-			if (IS_LOCAL(i->first))
+			if (i->first->as<LocalUser>())
 			{
 				if (MatchPattern(i->first, sender, public_silence) == MOD_RES_DENY)
 				{
@@ -334,7 +334,7 @@ class ModuleSilence : public Module
 
 	ModResult OnUserPreMessage(User* user, void* dest, int target_type, std::string& text, char status, CUList& exempt_list, MessageType msgtype) override
 	{
-		if (target_type == TYPE_USER && IS_LOCAL(((User*)dest)))
+		if (target_type == TYPE_USER && ((static_cast<User *>(dest)->as<LocalUser>())))
 		{
 			return MatchPattern((User*)dest, user, ((msgtype == MSG_PRIVMSG) ? SILENCE_PRIVATE : SILENCE_NOTICE));
 		}

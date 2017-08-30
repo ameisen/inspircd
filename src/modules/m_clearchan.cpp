@@ -76,7 +76,7 @@ class CommandClearChan : public Command
 		const std::string reason = parameters.size() > 2 ? parameters.back() : "Clearing " + chan->name;
 
 		if (!user->server->IsSilentULine())
-			ServerInstance->SNO->WriteToSnoMask((IS_LOCAL(user) ? 'a' : 'A'), user->nick + " has cleared \002" + chan->name + "\002 (" + method + "): " + reason);
+			ServerInstance->SNO->WriteToSnoMask((user->as<LocalUser>() ? 'a' : 'A'), user->nick + " has cleared \002" + chan->name + "\002 (" + method + "): " + reason);
 
 		user->WriteNotice("Clearing \002" + chan->name + "\002 (" + method + "): " + reason);
 
@@ -106,7 +106,7 @@ class CommandClearChan : public Command
 			const Channel::MemberMap::iterator currit = i;
 			++i;
 
-			if (!IS_LOCAL(curr) || curr->IsOper())
+			if (!curr->as<LocalUser>() || curr->IsOper())
 				continue;
 
 			// If kicking users, remove them and skip the QuitUser()
@@ -179,7 +179,7 @@ class ModuleClearChan : public Module
 		const Channel::MemberMap& users = cmd.activechan->GetUsers();
 		for (Channel::MemberMap::const_iterator i = users.begin(); i != users.end(); ++i)
 		{
-			LocalUser* curr = IS_LOCAL(i->first);
+			LocalUser* curr = i->first->as<LocalUser>();
 			if (!curr)
 				continue;
 
@@ -210,7 +210,7 @@ class ModuleClearChan : public Module
 		for (Channel::MemberMap::const_iterator i = users.begin(); i != users.end(); ++i)
 		{
 			User* curr = i->first;
-			if ((IS_LOCAL(curr)) && (!curr->IsOper()) && (curr != leaving))
+			if ((curr->as<LocalUser>()) && (!curr->IsOper()) && (curr != leaving))
 				excepts.insert(curr);
 		}
 	}

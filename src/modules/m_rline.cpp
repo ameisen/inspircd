@@ -58,7 +58,7 @@ class RLine : public XLine
 
 	bool Matches(User *u)
 	{
-		LocalUser* lu = IS_LOCAL(u);
+		LocalUser* lu = u->as<LocalUser>();
 		if (lu && lu->exempt)
 			return false;
 
@@ -198,7 +198,7 @@ class CommandRLine : public Command
 
 	RouteDescriptor GetRouting(User* user, const std::vector<std::string>& parameters)
 	{
-		if (IS_LOCAL(user))
+		if (user->as<LocalUser>())
 			return ROUTE_LOCALONLY; // spanningtree will send ADDLINE
 
 		return ROUTE_BROADCAST;
@@ -295,7 +295,7 @@ class ModuleRLine : public Module
 
 	void OnUserPostNick(User *user, const std::string &oldnick) override
 	{
-		if (!IS_LOCAL(user))
+		if (!user->as<LocalUser>())
 			return;
 
 		if (!MatchOnNickChange)

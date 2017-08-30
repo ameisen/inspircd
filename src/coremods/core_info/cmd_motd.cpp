@@ -34,14 +34,14 @@ CmdResult CommandMotd::Handle (const std::vector<std::string>& parameters, User 
 	if (parameters.size() > 0 && parameters[0] != ServerInstance->Config->ServerName)
 	{
 		// Give extra penalty if a non-oper queries the /MOTD of a remote server
-		LocalUser* localuser = IS_LOCAL(user);
+		LocalUser* localuser = user->as<LocalUser>();
 		if ((localuser) && (!user->IsOper()))
 			localuser->CommandFloodPenalty += 2000;
 		return CMD_SUCCESS;
 	}
 
 	ConfigTag* tag = ServerInstance->Config->EmptyTag;
-	LocalUser* localuser = IS_LOCAL(user);
+	LocalUser* localuser = user->as<LocalUser>();
 	if (localuser)
 		tag = localuser->GetClass()->config;
 	std::string motd_name = tag->getString("motd", "motd");

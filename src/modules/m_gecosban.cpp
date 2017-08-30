@@ -19,7 +19,7 @@
 
 #include "inspircd.h"
 
-class ModuleGecosBan : public Module
+class ModuleGecosBan final : public Module
 {
  public:
 	Version GetVersion() override
@@ -27,7 +27,7 @@ class ModuleGecosBan : public Module
 		return Version("Extban 'r' - realname (gecos) ban", VF_OPTCOMMON|VF_VENDOR);
 	}
 
-	ModResult OnCheckBan(User *user, Channel *c, const std::string& mask) override
+	ModResult OnCheckBan(const User *user, const Channel *c, const std::string& mask) final override
 	{
 		if ((mask.length() > 2) && (mask[0] == 'r') && (mask[1] == ':'))
 		{

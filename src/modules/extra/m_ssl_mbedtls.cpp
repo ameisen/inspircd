@@ -96,7 +96,7 @@ namespace mbedTLS
 	 public:
 		bool Seed(Entropy& entropy)
 		{
-			return (mbedtls_ctr_drbg_seed(get(), mbedtls_entropy_func, entropy.get(), NULL, 0) == 0);
+			return (mbedtls_ctr_drbg_seed(get(), mbedtls_entropy_func, entropy.get(), nullptr, 0) == 0);
 		}
 
 		void SetupConf(mbedtls_ssl_config* conf)
@@ -122,7 +122,7 @@ namespace mbedTLS
 		/** Import */
 		X509Key(const std::string& keystr)
 		{
-			int ret = mbedtls_pk_parse_key(get(), reinterpret_cast<const unsigned char*>(keystr.c_str()), keystr.size()+1, NULL, 0);
+			int ret = mbedtls_pk_parse_key(get(), reinterpret_cast<const unsigned char*>(keystr.c_str()), keystr.size()+1, nullptr, 0);
 			ThrowOnError(ret, "Unable to import private key");
 		}
 	};
@@ -189,7 +189,7 @@ namespace mbedTLS
 			ThrowOnError(ret, "Unable to load certificates");
 		}
 
-		bool empty() const { return (get()->raw.p != NULL); }
+		bool empty() const { return (get()->raw.p != nullptr); }
 	};
 
 	class X509CRL : public RAIIObj<mbedtls_x509_crl, mbedtls_x509_crl_init, mbedtls_x509_crl_free>
@@ -258,7 +258,7 @@ namespace mbedTLS
 			mbedtls_ssl_config_init(&conf);
 #ifdef INSPIRCD_MBEDTLS_LIBRARY_DEBUG
 			mbedtls_debug_set_threshold(std::numeric_limits<int>::max());
-			mbedtls_ssl_conf_dbg(&conf, DebugLogFunc, NULL);
+			mbedtls_ssl_conf_dbg(&conf, DebugLogFunc, nullptr);
 #endif
 
 			// TODO: check ret of mbedtls_ssl_config_defaults
@@ -509,7 +509,7 @@ class mbedTLSIOHook : public SSLIOHook
 
 		mbedtls_ssl_close_notify(&sess);
 		mbedtls_ssl_free(&sess);
-		certificate = NULL;
+		certificate = nullptr;
 		status = ISSL_NONE;
 	}
 
@@ -659,7 +659,7 @@ class mbedTLSIOHook : public SSLIOHook
 		else
 			profile->SetupClientSession(&sess);
 
-		mbedtls_ssl_set_bio(&sess, reinterpret_cast<void*>(sock), Push, Pull, NULL);
+		mbedtls_ssl_set_bio(&sess, reinterpret_cast<void*>(sock), Push, Pull, nullptr);
 
 		sock->AddIOHook(this);
 		Handshake(sock);
@@ -909,7 +909,7 @@ class ModuleSSLmbedTLS : public Module
 		if (target_type != TYPE_USER)
 			return;
 
-		LocalUser* user = IS_LOCAL(static_cast<User*>(item));
+		LocalUser* user = static_cast<User*>(item->as<LocalUser>());
 		if ((user) && (user->eh.GetModHook(this)))
 		{
 			// User is using SSL, they're a local user, and they're using our IOHook.

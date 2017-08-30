@@ -49,7 +49,7 @@ class ModuleOperjoin : public Module
 
 		void OnPostOper(User* user, const std::string &opertype, const std::string &opername) override
 		{
-			LocalUser* localuser = IS_LOCAL(user);
+			LocalUser* localuser = user->as<LocalUser>();
 			if (!localuser)
 				return;
 

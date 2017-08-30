@@ -65,7 +65,7 @@ class RemoveBase : public Command
 		const std::string& username = parameters[neworder ? 1 : 0];
 
 		/* Look up the user we're meant to be removing from the channel */
-		if (IS_LOCAL(user))
+		if (user->as<LocalUser>())
 			target = ServerInstance->FindNickOnly(username);
 		else
 			target = ServerInstance->FindNick(username);
@@ -93,7 +93,7 @@ class RemoveBase : public Command
 		}
 
 		/* We support the +Q channel mode via. the m_nokicks module, if the module is loaded and the mode is set then disallow the /remove */
-		if ((!IS_LOCAL(user)) || (!supportnokicks) || (!channel->IsModeSet(nokicksmode)))
+		if ((!user->as<LocalUser>()) || (!supportnokicks) || (!channel->IsModeSet(nokicksmode)))
 		{
 			/* We'll let everyone remove their level and below, eg:
 			 * ops can remove ops, halfops, voices, and those with no mode (no moders actually are set to 1)
@@ -102,10 +102,10 @@ class RemoveBase : public Command
 			 */
 			unsigned int ulevel = channel->GetPrefixValue(user);
 			unsigned int tlevel = channel->GetPrefixValue(target);
-			if ((!IS_LOCAL(user)) || ((ulevel > VOICE_VALUE) && (ulevel >= tlevel) && ((protectedrank == 0) || (tlevel < protectedrank))))
+			if ((!user->as<LocalUser>()) || ((ulevel > VOICE_VALUE) && (ulevel >= tlevel) && ((protectedrank == 0) || (tlevel < protectedrank))))
 			{
 				// REMOVE will be sent to the target's server and it will reply with a PART (or do nothing if it doesn't understand the command)
-				if (!IS_LOCAL(target))
+				if (!target->as<LocalUser>())
 				{
 					// Send an ENCAP REMOVE with parameters being in the old <user> <chan> order which is
 					// compatible with both 2.0 and 3.0. This also turns FPART into REMOVE.

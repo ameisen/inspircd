@@ -93,7 +93,7 @@ class MsgFlood : public ParamMode<MsgFlood, SimpleExtItem<floodsettings> >
 		return MODEACTION_ALLOW;
 	}
 
-	void SerializeParam(Channel* chan, const floodsettings* fs, std::string& out)
+	static void SerializeParam(const Channel* chan, const floodsettings* fs, std::string& out)
 	{
 		if (fs->ban)
 			out.push_back('*');
@@ -121,7 +121,7 @@ class ModuleMsgFlood : public Module
 			return MOD_RES_PASSTHRU;
 
 		Channel* dest = static_cast<Channel*>(voiddest);
-		if ((!IS_LOCAL(user)) || !dest->IsModeSet(mf))
+		if ((!user->as<LocalUser>()) || !dest->IsModeSet(mf))
 			return MOD_RES_PASSTHRU;
 
 		ModResult res;

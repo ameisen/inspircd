@@ -40,7 +40,7 @@ class CommandUninvite : public Command
 	CmdResult Handle (const std::vector<std::string> &parameters, User *user)
 	{
 		User* u;
-		if (IS_LOCAL(user))
+		if (user->as<LocalUser>())
 			u = ServerInstance->FindNickOnly(parameters[0]);
 		else
 			u = ServerInstance->FindNick(parameters[0]);
@@ -61,7 +61,7 @@ class CommandUninvite : public Command
 			return CMD_FAILURE;
 		}
 
-		if (IS_LOCAL(user))
+		if (user->as<LocalUser>())
 		{
 			if (c->GetPrefixValue(user) < HALFOP_VALUE)
 			{
@@ -74,7 +74,7 @@ class CommandUninvite : public Command
 		 * only if the target is local. Otherwise the command will be
 		 * passed to the target users server.
 		 */
-		LocalUser* lu = IS_LOCAL(u);
+		LocalUser* lu = u->as<LocalUser>();
 		if (lu)
 		{
 			// XXX: The source of the numeric we send must be the server of the user doing the /UNINVITE,
