@@ -238,10 +238,10 @@ void UserIOHandler::OnDataReady()
 			user->nick.c_str(), (unsigned long)recvq.length(), user->MyClass->GetRecvqMax());
 		return;
 	}
-	unsigned long sendqmax = ULONG_MAX;
+	unsigned long sendqmax = std::numeric_limits<unsigned long>::max();
 	if (!user->HasPrivPermission("users/flood/increased-buffers"))
 		sendqmax = user->MyClass->GetSendqSoftMax();
-	unsigned long penaltymax = ULONG_MAX;
+	unsigned long penaltymax = std::numeric_limits<unsigned long>::max();
 	if (!user->HasPrivPermission("users/flood/no-fakelag"))
 		penaltymax = user->MyClass->GetPenaltyThreshold() * 1000;
 

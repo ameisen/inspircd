@@ -120,7 +120,7 @@ void LogManager::OpenFileLogs()
 			struct tm *mytime = gmtime(&time);
 			strftime(realtarget, sizeof(realtarget), target.c_str(), mytime);
 			FILE* f = fopen(realtarget, "a");
-			fw = new FileWriter(f, static_cast<unsigned int>(tag->getInt("flush", 20, 1, INT_MAX)));
+			fw = new FileWriter(f, static_cast<unsigned int>(tag->getInt("flush", 20, 1, std::numeric_limits<long>::max())));
 			logmap.insert(std::make_pair(target, fw));
 		}
 		else

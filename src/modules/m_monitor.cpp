@@ -259,7 +259,7 @@ inline void IRCv3::Monitor::Manager::ExtItem::unserialize(SerializeFormat format
 
 	irc::spacesepstream ss(value);
 	for (std::string nick; ss.GetToken(nick); )
-		manager.Watch(static_cast<LocalUser*>(container), nick, UINT_MAX);
+		manager.Watch(static_cast<LocalUser*>(container), nick, std::numeric_limits<unsigned int>::max());
 }
 
 #ifndef INSPIRCD_MONITOR_MANAGER_ONLY

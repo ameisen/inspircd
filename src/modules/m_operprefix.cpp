@@ -34,7 +34,7 @@ class OperPrefixMode : public PrefixMode
 		{
 			std::string pfx = ServerInstance->Config->ConfValue("operprefix")->getString("prefix", "!");
 			prefix = pfx.empty() ? '!' : pfx[0];
-			levelrequired = INT_MAX;
+			levelrequired = std::numeric_limits<int>::max();
 		}
 };
 

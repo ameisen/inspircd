@@ -123,13 +123,12 @@ unsigned int ListModeBase::GetLimit(Channel* channel)
 
 unsigned int ListModeBase::GetLowerLimit()
 {
-	unsigned int limit = UINT_MAX;
-	for (limitlist::iterator iter = chanlimits.begin(); iter != chanlimits.end(); ++iter)
+	unsigned int limit = std::numeric_limits<unsigned int>::max();
+	for (const auto &iter : chanlimits)
 	{
-		if (iter->limit < limit)
-			limit = iter->limit;
+		limit = std::min(limit, iter.limit);
 	}
-	return limit == UINT_MAX ? DEFAULT_LIST_SIZE : limit;
+	return (limit == std::numeric_limits<unsigned int>::max()) ? DEFAULT_LIST_SIZE : limit;
 }
 
 ModeAction ListModeBase::OnModeChange(User* source, User*, Channel* channel, std::string &parameter, bool adding)

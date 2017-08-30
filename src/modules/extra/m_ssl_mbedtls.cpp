@@ -257,7 +257,7 @@ namespace mbedTLS
 		{
 			mbedtls_ssl_config_init(&conf);
 #ifdef INSPIRCD_MBEDTLS_LIBRARY_DEBUG
-			mbedtls_debug_set_threshold(INT_MAX);
+			mbedtls_debug_set_threshold(std::numeric_limits<int>::max());
 			mbedtls_ssl_conf_dbg(&conf, DebugLogFunc, NULL);
 #endif
 
