@@ -30,9 +30,9 @@ class CustomPrefixMode : public PrefixMode
 		, tag(Tag)
 	{
 		std::string v = tag->getString("prefix");
-		prefix = v.c_str()[0];
+		prefix = v[0];
 		v = tag->getString("letter");
-		mode = v.c_str()[0];
+		mode = v[0];
 		levelrequired = tag->getInt("ranktoset", prefixrank);
 		depriv = tag->getBool("depriv", true);
 	}

@@ -236,7 +236,7 @@ class WebSocketHook : public IOHookMiddle
 		if (GetRecvQ().empty())
 			return 0;
 
-		unsigned char opcode = (unsigned char)GetRecvQ().c_str()[0];
+		unsigned char opcode = (unsigned char)GetRecvQ()[0];
 		opcode &= ~WS_FINBIT;
 
 		switch (opcode)

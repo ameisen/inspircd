@@ -66,11 +66,14 @@ void Channel::SetTopic(User* u, const std::string& ntopic, time_t topicts, const
 
 Membership* Channel::AddUser(User* user)
 {
-	std::pair<MemberMap::iterator, bool> ret = userlist.insert(std::make_pair(user, insp::aligned_storage<Membership>()));
-	if (!ret.second)
+	auto result = userlist.try_emplace(user, nullptr);
+	if (!result.second)
+	{
 		return nullptr;
+	}
+	Membership *memb = new Membership(user, this);
+	result.first->second = memb;
 
-	Membership* memb = new(ret.first->second) Membership(user, this);
 	return memb;
 }
 
@@ -105,7 +108,7 @@ void Channel::DelUser(const MemberMap::iterator& membiter)
 {
 	Membership* memb = membiter->second;
 	memb->cull();
-	memb->~Membership();
+	delete memb;
 	userlist.erase(membiter);
 
 	// If this channel became empty then it should be removed
@@ -130,9 +133,9 @@ void Channel::SetDefaultModes()
 
 	list.GetToken(modeseq);
 
-	for (std::string::iterator n = modeseq.begin(); n != modeseq.end(); ++n)
+	for (char c : modeseq)
 	{
-		ModeHandler* mode = ServerInstance->Modes->FindMode(*n, MODETYPE_CHANNEL);
+		ModeHandler* mode = ServerInstance->Modes->FindMode(c, MODETYPE_CHANNEL);
 		if (mode)
 		{
 			if (mode->IsPrefixMode())
@@ -142,7 +145,7 @@ void Channel::SetDefaultModes()
 			{
 				list.GetToken(parameter);
 				// If the parameter begins with a ':' then it's invalid
-				if (parameter.c_str()[0] == ':')
+				if (parameter[0] == ':')
 					continue;
 			}
 			else
@@ -312,9 +315,8 @@ Membership* Channel::ForceJoin(User* user, const std::string* privs, bool bursti
 			PrefixMode* mh = ServerInstance->Modes->FindPrefixMode(*i);
 			if (mh)
 			{
-				std::string nick = user->nick;
 				// Set the mode on the user
-				mh->OnModeChange(ServerInstance->FakeClient, nullptr, this, nick, true);
+				mh->OnModeChange(ServerInstance->FakeClient, nullptr, this, user->nick, true);
 			}
 		}
 	}
@@ -352,9 +354,9 @@ bool Channel::IsBanned(User* user)
 	const ListModeBase::ModeList* bans = banlm->GetList(this);
 	if (bans)
 	{
-		for (ListModeBase::ModeList::const_iterator it = bans->begin(); it != bans->end(); it++)
+		for (const auto &  _ban : *bans)
 		{
-			if (CheckBan(user, it->mask))
+			if (CheckBan(user, _ban.mask))
 				return true;
 		}
 	}
@@ -400,9 +402,9 @@ ModResult Channel::GetExtBanStatus(User *user, char type)
 	const ListModeBase::ModeList* bans = banlm->GetList(this);
 	if (bans)
 	{
-		for (ListModeBase::ModeList::const_iterator it = bans->begin(); it != bans->end(); ++it)
+		for (const auto & _ban : *bans)
 		{
-			if (CheckBan(user, it->mask))
+			if (CheckBan(user, _ban.mask))
 				return MOD_RES_DENY;
 		}
 	}
@@ -458,10 +460,10 @@ void Channel::WriteChannel(User* user, const std::string &text)
 {
 	const std::string message = ":" + user->GetFullHost() + " " + text;
 
-	for (MemberMap::iterator i = userlist.begin(); i != userlist.end(); i++)
+	for (const auto &i : userlist)
 	{
-		if (IS_LOCAL(i->first))
-			i->first->Write(message);
+		if (IS_LOCAL(i.first))
+			i.first->Write(message);
 	}
 }
 
@@ -476,10 +478,10 @@ void Channel::WriteChannelWithServ(const std::string& ServName, const std::strin
 {
 	const std::string message = ":" + (ServName.empty() ? ServerInstance->Config->ServerName : ServName) + " " + text;
 
-	for (MemberMap::iterator i = userlist.begin(); i != userlist.end(); i++)
+	for (const auto &i : userlist)
 	{
-		if (IS_LOCAL(i->first))
-			i->first->Write(message);
+		if (IS_LOCAL(i.first))
+			i.first->Write(message);
 	}
 }
 
@@ -515,15 +517,16 @@ void Channel::RawWriteAllExcept(User* user, bool serversource, char status, CULi
 		if (mh)
 			minrank = mh->GetPrefixRank();
 	}
-	for (MemberMap::iterator i = userlist.begin(); i != userlist.end(); i++)
+
+	for (const auto &i : userlist)
 	{
-		if (IS_LOCAL(i->first) && (except_list.find(i->first) == except_list.end()))
+		if (IS_LOCAL(i.first) && (except_list.find(i.first) == except_list.end()))
 		{
 			/* User doesn't have the status we're after */
-			if (minrank && i->second->getRank() < minrank)
+			if (minrank && i.second->getRank() < minrank)
 				continue;
 
-			i->first->Write(out);
+			i.first->Write(out);
 		}
 	}
 }
@@ -537,7 +540,7 @@ void Channel::WriteAllExceptSender(User* user, bool serversource, char status, c
 
 const char* Channel::ChanModes(bool showkey)
 {
-	static std::string scratch;
+	static std::string scratch; // todo : awful
 	std::string sparam;
 
 	scratch.clear();
@@ -586,9 +589,9 @@ char Membership::GetPrefixChar() const
 	char pf = 0;
 	unsigned int bestrank = 0;
 
-	for (std::string::const_iterator i = modes.begin(); i != modes.end(); ++i)
+	for (char c : modes)
 	{
-		PrefixMode* mh = ServerInstance->Modes->FindPrefixMode(*i);
+		PrefixMode* mh = ServerInstance->Modes->FindPrefixMode(c);
 		if (mh && mh->GetPrefixRank() > bestrank && mh->GetPrefix())
 		{
 			bestrank = mh->GetPrefixRank();
@@ -600,7 +603,7 @@ char Membership::GetPrefixChar() const
 
 unsigned int Membership::getRank()
 {
-	char mchar = modes.c_str()[0];
+	char mchar = modes[0];
 	unsigned int rv = 0;
 	if (mchar)
 	{
@@ -614,9 +617,9 @@ unsigned int Membership::getRank()
 std::string Membership::GetAllPrefixChars() const
 {
 	std::string ret;
-	for (std::string::const_iterator i = modes.begin(); i != modes.end(); ++i)
+	for (char c : modes)
 	{
-		PrefixMode* mh = ServerInstance->Modes->FindPrefixMode(*i);
+		PrefixMode* mh = ServerInstance->Modes->FindPrefixMode(c);
 		if (mh && mh->GetPrefix())
 			ret.push_back(mh->GetPrefix());
 	}

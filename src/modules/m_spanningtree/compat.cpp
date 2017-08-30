@@ -35,7 +35,7 @@ void TreeSocket::WriteLine(const std::string& original_line)
 {
 	if (LinkState == CONNECTED)
 	{
-		if (original_line.c_str()[0] != ':')
+		if (original_line[0] != ':')
 		{
 			ServerInstance->Logs->Log(MODNAME, LOG_DEFAULT, "Sending line without server prefix!");
 			WriteLine(":" + ServerInstance->Config->GetSID() + " " + original_line);
@@ -558,7 +558,7 @@ bool TreeSocket::PreProcessOldProtocolMessage(User*& who, std::string& cmd, std:
 
 			// Check if the PRIVMSG/NOTICE target is a nickname
 			ts.GetToken(token);
-			if (token.c_str()[0] == '#')
+			if (token[0] == '#')
 			{
 				ServerInstance->Logs->Log(MODNAME, LOG_DEBUG, "Unable to translate PUSH %s to user %s from 1202 protocol server %s, target \"%s\"", cmd.c_str(), params[0].c_str(), this->MyRoot->GetName().c_str(), token.c_str());
 				return false;

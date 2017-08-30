@@ -345,7 +345,7 @@ bool TestSuite::DoGenerateUIDTests()
 		return false;
 	}
 
-	if (uidgen.current_uid.c_str()[UUID_LENGTH] != '\0')
+	if (uidgen.current_uid[UUID_LENGTH] != '\0')
 	{
 		std::cout << "GENERATEUID: The null terminator is missing from the end of current_uid" << std::endl;
 		return false;

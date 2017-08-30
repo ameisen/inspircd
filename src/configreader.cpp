@@ -691,7 +691,7 @@ void ServerConfig::ApplyModules(User* user)
 	{
 		const std::string& modname = i->first;
 		// Don't remove core_*.so, just remove m_*.so
-		if (modname.c_str()[0] == 'c')
+		if (modname[0] == 'c')
 			continue;
 		if (ServerInstance->Modules->Unload(i->second))
 		{

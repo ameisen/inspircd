@@ -26,6 +26,7 @@
 #include <deque>
 #include <string>
 #include <list>
+#include <atomic>
 
 /** Dummy class to help enforce culls being parent-called up to classbase */
 class CullResult
@@ -50,8 +51,8 @@ class CoreExport classbase
 	virtual ~classbase();
  private:
 	// uncopyable
-	classbase(const classbase&);
-	void operator=(const classbase&);
+	classbase(const classbase&) = delete;
+	void operator=(const classbase&) = delete;
 };
 
 /** The base class for inspircd classes that provide a wrapping interface, and
@@ -63,10 +64,10 @@ class CoreExport interfacebase
 	interfacebase() {}
 	static inline void* operator new(size_t, void* m) { return m; }
  private:
-	interfacebase(const interfacebase&);
-	void operator=(const interfacebase&);
-	static void* operator new(size_t);
-	static void operator delete(void*);
+	interfacebase(const interfacebase&) = delete;
+	void operator=(const interfacebase&) = delete;
+	static void* operator new(size_t) = delete;
+	static void operator delete(void*) = delete;
 };
 
 /** The base class for inspircd classes that support reference counting.
@@ -84,7 +85,7 @@ class CoreExport interfacebase
  */
 class CoreExport refcountbase
 {
-	mutable unsigned int refcount;
+	mutable std::atomic<unsigned int> refcount{ 0 };
  public:
 	refcountbase();
 	virtual ~refcountbase();
@@ -93,11 +94,11 @@ class CoreExport refcountbase
 	static void* operator new(size_t);
 	static void operator delete(void*);
 	inline void refcount_inc() const { refcount++; }
-	inline bool refcount_dec() const { refcount--; return !refcount; }
+	inline bool refcount_dec() const { auto value = --refcount; return value == 0; }
  private:
 	// uncopyable
-	refcountbase(const refcountbase&);
-	void operator=(const refcountbase&);
+	refcountbase(const refcountbase&) = delete;
+	void operator=(const refcountbase&) = delete;
 };
 
 /** Base class for use count tracking. Uses reference<>, but does not
@@ -107,22 +108,23 @@ class CoreExport refcountbase
  */
 class CoreExport usecountbase
 {
-	mutable unsigned int usecount;
+	mutable std::atomic<unsigned int> usecount{ 0 };
  public:
-	usecountbase() : usecount(0) { }
+	usecountbase() = default;
 	~usecountbase();
 	inline unsigned int GetUseCount() const { return usecount; }
 	inline void refcount_inc() const { usecount++; }
 	inline bool refcount_dec() const { usecount--; return false; }
  private:
 	// uncopyable
-	usecountbase(const usecountbase&);
-	void operator=(const usecountbase&);
+	usecountbase(const usecountbase&) = delete;
+	void operator=(const usecountbase&) = delete;
 };
 
 template <typename T>
 class reference
 {
+	//static_assert(std::is_base_of_v<refcountbase, T>);
 	T* value;
  public:
 	reference() : value(0) { }
@@ -165,10 +167,8 @@ class reference
 	inline bool operator>(const reference<T>& other) const { return value > other.value; }
 	static inline void* operator new(size_t, void* m) { return m; }
  private:
-#ifndef _WIN32
-	static void* operator new(size_t);
-	static void operator delete(void*);
-#endif
+	static void* operator new(size_t) = delete;;
+	static void operator delete(void*) = delete;;
 };
 
 /** This class can be used on its own to represent an exception, or derived to represent a module-specific exception.

@@ -111,7 +111,7 @@ class ModuleOjoin : public Module
  public:
 
 	ModuleOjoin()
-		: np(this, ServerInstance->Config->ConfValue("ojoin")->getString("prefix").c_str()[0])
+		: np(this, ServerInstance->Config->ConfValue("ojoin")->getString("prefix")[0])
 		, mycommand(this, np)
 	{
 	}

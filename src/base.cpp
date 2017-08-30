@@ -71,7 +71,7 @@ void refcountbase::operator delete(void* obj)
 	::operator delete(obj);
 }
 
-refcountbase::refcountbase() : refcount(0)
+refcountbase::refcountbase()
 {
 	if (this != last_heap)
 		throw CoreException("Reference allocate on the stack!");
@@ -79,16 +79,18 @@ refcountbase::refcountbase() : refcount(0)
 
 refcountbase::~refcountbase()
 {
-	if (refcount && ServerInstance)
+	auto count = refcount.load();
+	if (count && ServerInstance)
 		ServerInstance->Logs->Log("CULLLIST", LOG_DEBUG, "refcountbase::~ @%p with refcount %d",
-			(void*)this, refcount);
+			this, count);
 }
 
 usecountbase::~usecountbase()
 {
-	if (usecount && ServerInstance)
+	auto count = usecount.load();
+	if (count && ServerInstance)
 		ServerInstance->Logs->Log("CULLLIST", LOG_DEBUG, "usecountbase::~ @%p with refcount %d",
-			(void*)this, usecount);
+			this, count);
 }
 
 ServiceProvider::~ServiceProvider()

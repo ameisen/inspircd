@@ -188,7 +188,7 @@ class SaslAuthenticator
 		else
 		{
 			/* IP addresses starting with a : on irc are a Bad Thing (tm) */
-			if (ip.c_str()[0] == ':')
+			if (ip[0] == ':')
 				ip.insert(ip.begin(),1,'0');
 		}
 
@@ -298,7 +298,7 @@ class SaslAuthenticator
 
 		SendSASL(params);
 
-		if (parameters[0].c_str()[0] == '*')
+		if (parameters[0][0] == '*')
 		{
 			this->Abort();
 			return false;
